@@ -1,38 +1,35 @@
-# create-svelte
+# my-app
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+- svelte로 app 연습을 목적으로 한다.
+- kalpadb-api와 같은 Restful Api를 갖고 있다고 치고
+- [sveltekit](https://kit.svelte.dev/)을 이용해서 개발
+- bootstrap5을 쓰는 것으로 한다
 
-## Creating a project
+## 프로젝트의 생성
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. sveltekit 프로젝트의 생성
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
+```shell
 npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
+cd my-app
+npm install
 npm run dev -- --open
 ```
 
-## Building
+- ts를 사용하지 않고 js를 사용한다.
 
-To create a production version of your app:
+2. bootstrap5의 설치
 
-```bash
-npm run build
+```shell
+npm install -D bootstrap
 ```
 
-You can preview the production build with `npm run preview`.
+- -D를 써야하나?
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+3. routes 폴더 하위의 +layout.svlete 에 import
+
+```html
+<script>
+    import "bootstrap/dist/css/bootstrap.min.css";
+</script>
+```

@@ -1,0 +1,3 @@
+<h1>diary main</h1>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum facere eos, cumque eum facilis quibusdam est voluptatem ipsam eius. Soluta sit numquam nisi nulla dolores eligendi quidem ratione aperiam, labore explicabo voluptatem, nostrum atque ab neque ducimus aspernatur omnis harum excepturi animi? Hic dolore at maxime facilis veniam voluptatem quidem tempora ipsum totam, obcaecati qui perspiciatis neque animi, odio temporibus?</p>
+<a href="/diary/view">view</a>

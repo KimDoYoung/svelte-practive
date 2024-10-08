@@ -1,3 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<button class="btn btn-primary">button</button>
+<script>
+let title = 'Hello world!';
+const changeTitle = () => {
+    title = 'Hello SvelteKit!';
+}   
+</script>
+<h1>{title}</h1>
+<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae modi dolor itaque numquam reiciendis voluptatum dolorem nisi voluptate commodi. Illo voluptas deleniti quis dicta rerum culpa, dolore voluptates minus esse?</p>
+<button class="btn btn-primary" on:click={changeTitle}>button</button>
+<input type="text" name="title" id="title" bind:value="{title}">
+<a href="/diary">diary</a>
+<style>
+
+</style>
