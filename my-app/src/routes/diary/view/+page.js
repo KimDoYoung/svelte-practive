@@ -8,5 +8,4 @@ export const load =  async ( loadEvent ) =>{
         posts,
         title
     }
-
 } 

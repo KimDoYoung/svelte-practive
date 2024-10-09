@@ -124,3 +124,21 @@ export const comments = [
     { "id": 3, "comment": "This is a third comment" }
 ];
 ```
+* +page.js 와 +page.server.js가 았다.
+* universal 과 server load function이라고 이름을 붙인 모양이다.
+* universal 즉 +page.js는 client즉 browser쪽에서 실행, 민감한 key가 노출될 수 있다.
+* load, data 와 같은 이름은 고정되어 있는가보다.
+* +server.page.js에서
+```javascript
+export const load =  async ( loadEvent ) =>{
+    const {fetch} = loadEvent;
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const posts = await res.json();
+    console.log(posts)
+    const title = 'Fetch Test';
+    return {
+        posts,
+        title
+    }
+} 
+```
