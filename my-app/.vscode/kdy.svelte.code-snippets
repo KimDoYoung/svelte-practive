@@ -1,0 +1,13 @@
+{
+    "init code svelte file" : {
+        "prefix": "init",
+        "body":  [
+            "<script>",
+            "\texport let text = \"Hello, World!\";",
+            "</script>",
+            "{text}\n",
+            "<style>\n</style>",
+        ],
+    }
+}
+
