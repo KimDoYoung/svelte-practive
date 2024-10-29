@@ -1,0 +1,8 @@
+{
+"Image Tag": {
+    "scope": "html",
+    "prefix": "my-img",
+    "body": ["<img src=\"${1:url}\" alt=\"${2:description}\" />"],
+    "description": "Image tag with src and alt attributes"
+  }
+}  

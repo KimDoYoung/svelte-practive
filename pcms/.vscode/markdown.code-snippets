@@ -1,0 +1,20 @@
+{
+  "Markdown Header": {
+    "scope": "markdown",
+    "prefix": "my-header",
+    "body": ["# ${1:Header}"],
+    "description": "Markdown Header"
+  },
+  "Code Block": {
+    "scope": "markdown",
+    "prefix": "my-codeblock",
+    "body": ["```$1", "$2", "```"],
+    "description": "Markdown code block"
+  },
+  "Link": {
+    "scope": "markdown",
+    "prefix": "my-link",
+    "body": ["[${1:Link Text}](${2:url})"],
+    "description": "Markdown link"
+  }
+}

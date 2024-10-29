@@ -1,0 +1,35 @@
+// .vscode/svelte.code-snippets
+{
+    "Svelte Component": {
+      "scope": "svelte",  
+      "prefix": "my-svelte-component",
+      "body": [
+        "<script>",
+        "\timport ${1:Component} from './${1:Component}.svelte';",
+        "</script>",
+        "",
+        "<$1 />"
+      ],
+      "description": "Import and insert a Svelte component"
+    },
+    "Reactive Variable": {
+      "scope": "svelte",
+      "prefix": "my-reactive",
+      "body": ["$: ${1:variable} = ${2:value};"],
+      "description": "Reactive statement"
+    },
+    "Svelte onMount": {
+      "scope": "svelte",
+      "prefix": "my-onmount",
+      "body": [
+        "<script>",
+        "\timport { onMount } from 'svelte';",
+        "",
+        "\tonMount(() => {",
+        "\t\t${1:// Code here}",
+        "\t});",
+        "</script>"
+      ],
+      "description": "Svelte onMount lifecycle function"
+    }
+  }
