@@ -8,7 +8,7 @@
 
 	let diaries: DiaryResponse[]=[];
     let isLoading = true; // 로딩 상태 변수 추가
-    
+    let summaryOnly = true; // 요약 보기 여부 변수 추가
     // API 호출 로직을 함수로 분리
     async function loadDiaries() {
         isLoading = true;
@@ -47,6 +47,13 @@
     <!-- Nav Bar -->
     <NavBar />
     <!-- Main Content -->
+    <section class="control-box">
+        <label>
+            <input type="checkbox" bind:checked={summaryOnly}/>
+            Summary only
+        </label>
+        <a href="/diary/insert">추가</a>
+    </section>
     <section class="content">
         <div>
             {#if isLoading}
@@ -57,8 +64,14 @@
                 <ul>
                     {#each diaries as diary}
                         <li>
-                            <p class="summary">{displayYmd(diary.ymd, true)} {diary.summary}</p>
-                            <!-- <p>{@html displayContent(diary.content)}</p> -->
+                            <p class="diary-summary">{displayYmd(diary.ymd, true)} {diary.summary}
+                                {#if diary.attachments && diary.attachments.length > 0}
+                                    <span>({diary.attachments.length})</span>
+                                {/if}
+                            </p>
+                            {#if !summaryOnly}
+                            <p class="diary-content">{@html displayContent(diary.content)}</p>
+                            {/if}                            
                         </li>
                     {/each}
                 </ul>
@@ -68,10 +81,16 @@
 </main>
 
 <style>
-    .summary {
+    .diary-summary {
         text-align: left;
         margin: 0;
     }
+    .diary-content {
+        text-align: left;
+        margin: 0;
+        background-color: aliceblue;
+        font-size: medium;
+    }    
     ul {
         padding: 0; /* 기본 패딩 제거 */
         margin: 0; /* 기본 마진 제거 */
