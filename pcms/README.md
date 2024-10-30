@@ -19,4 +19,27 @@
     - npm 10.x
     - github
 
+## 초기 설정
 
+1. .env에 이렇게 함
+KALPADB_API_URL_BASE=<http://jskn.iptime.org:8088/api/v1>
+
+2. npm install @picocss/pico 을 수행함.
+
+3. src/app.css에
+@import "@picocss/pico/css/pico.min.css";
+
+```shell
+find node_modules/ -name "pico.min.css"  -print
+```
+
+4. routes/+layout.svelte
+
+```html
+<!-- src/routes/+layout.svelte -->
+<script>
+    import "../app.css";
+</script>
+
+<slot />
+```

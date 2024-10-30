@@ -1,0 +1,46 @@
+/* src/lib/styles/global.css */
+@import "@picocss/pico/css/pico.min.css"; /* Pico CSS */
+
+/* 색상 변수 정의 */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --text-dark-color: #ffffff;
+}
+
+/* 텍스트 색상 유틸리티 */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+.text-danger {
+    color: var(--danger-color) !important;
+}
+
+/* 배경 색상 유틸리티 */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+    color: var(--text-dark-color);
+}
+.bg-light {
+    background-color: var(--light-color) !important;
+    color: var(--dark-color);
+}
+.bg-dark {
+    background-color: var(--dark-color) !important;
+    color: var(--text-dark-color);
+}
+
+/* 기타 공통 스타일 */
+.container {
+    padding: 1rem;
+}
+.content {
+    text-align: center;
+    margin-top: 2rem;
+}
