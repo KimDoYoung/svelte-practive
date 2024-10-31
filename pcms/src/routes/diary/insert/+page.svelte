@@ -23,10 +23,9 @@
     }
 </script>
 
-<main class="container">
-    <NavBar />
+<div class="diary-form">
     <h2>Diary Entry Form</h2>
     
     <!-- DiaryForm 컴포넌트에 초기값을 전달하고 submit 이벤트를 수신 -->
     <DiaryForm ymd="20241030" on:submit={handleSubmit} />
-</main>
+</div>

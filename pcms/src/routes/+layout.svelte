@@ -1,6 +1,10 @@
 <!-- src/routes/+layout.svelte -->
-<script>
+<script lang="ts">
     import "$lib/styles/global.css";
+    import NavBar from '$lib/components/NavBar.svelte';
 </script>
 
-<slot />
+<main class="container">
+    <NavBar />
+    <slot />
+</main>

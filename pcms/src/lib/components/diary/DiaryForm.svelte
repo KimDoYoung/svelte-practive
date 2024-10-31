@@ -49,7 +49,7 @@
 
     <label>
         Content:
-        <textarea bind:value={content} required></textarea>
+        <textarea bind:value={content} required ></textarea>
     </label>
 
     <label>
@@ -83,6 +83,9 @@
         padding: 0.5rem;
         margin: 0.5rem 0;
     }
+    textarea {
+        height: 250px; /* 원하는 높이로 설정 */
+    }    
     ul {
         list-style-type: none;
         padding: 0;

@@ -42,11 +42,7 @@
 	        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 	}    
 </script>
-
-<main class="container">
-    <!-- Nav Bar -->
-    <NavBar />
-    <!-- Main Content -->
+<div class="diary-list">
     <section class="control-box">
         <label>
             <input type="checkbox" bind:checked={summaryOnly}/>
@@ -78,7 +74,7 @@
             {/if}
         </div>
     </section>
-</main>
+</div>
 
 <style>
     .diary-summary {
