@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-        "dev": "vite --mode development", 
-        "build:real": "vite build --mode product",
+		"dev": "vite --mode development",
+		"build:real": "vite build --mode product",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -30,6 +30,7 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
+		"@fortawesome/fontawesome-free": "^6.6.0",
 		"@picocss/pico": "^2.0.6"
 	}
 }

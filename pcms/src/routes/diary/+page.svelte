@@ -1,8 +1,6 @@
 <!-- 파일명 routes/diary/+page.svelte-->
 <script lang="ts">
-    import { page } from '$app/stores';
-    import NavBar from '$lib/components/NavBar.svelte';
-    import { fetchData } from '$lib/api';
+    import { getFetch } from '$lib/api';
     import type { DiaryPageModel, DiaryResponse } from '$lib/types';
     import { onMount } from 'svelte';
 
@@ -13,7 +11,7 @@
     async function loadDiaries() {
         isLoading = true;
         try {
-            const response = await fetchData<DiaryPageModel>(`diaries`);
+            const response = await getFetch<DiaryPageModel>(`diaries`);
             diaries = [...diaries, ...response.data]; // 새로운 데이터를 기존 데이터에 추가
         } catch (error) {
             console.error("데이터를 가져오는 중 오류 발생:", error);

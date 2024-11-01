@@ -1,6 +1,6 @@
 /* src/lib/styles/global.css */
 @import "@picocss/pico/css/pico.min.css"; /* Pico CSS */
-
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 /* 색상 변수 정의 */
 :root {
     --primary-color: #007bff;

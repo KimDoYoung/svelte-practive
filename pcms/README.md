@@ -11,6 +11,7 @@
     - Restful api server (kalpadb-api)와 통신으로 데이터를 주고받음.
     - typescript사용
     - pico css lib 사용
+    - font-awesome 사용
 
 3. 개발환경
     - window 10
@@ -43,3 +44,13 @@ find node_modules/ -name "pico.min.css"  -print
 
 <slot />
 ```
+5. fontawesome의 사용
+```shell
+npm install @fortawesome/fontawesome-free
+```
+
+
+## Profile
+
+- development와 product로 나눔.
+- vite.config.ts 작성

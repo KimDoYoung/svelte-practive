@@ -1,103 +1,195 @@
 <!-- 파일명: src/lib/components/diary/DiaryForm.svelte -->
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import {onMount} from 'svelte';
+    import {getFetch, postFetch, putFetch} from '$lib/api';
+    import type {DiaryResponse, DiaryUpdateRequest, DiaryRequest} from '$lib/types';
+    import { ApiError } from '$lib/errors';
+    import MyMessage from '$lib/components/common/MyMessage.svelte';
+    export let ymd = '';
+    let summary = '';
+    let content = '';
+    let message = '';
+    // 이전 날짜로 이동
+    function prevClick() {
+        if (ymd.length !== 8) return;
+        changeDate(-1);
+    }
 
-    // Props로 초기값을 받을 필드
-    export let ymd: string = '';
-    export let content: string = '';
-    export let summary: string = '';
+    // 다음 날짜로 이동
+    function nextClick() {
+        if (ymd.length !== 8) return;
+        changeDate(1);
+    }
 
-    let files: File[] = [];
-    const dispatch = createEventDispatcher();
+    // 오늘 날짜로 이동
+    function todayClick() {
+        ymd = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        fetchDiary(ymd);
+    }
 
-    // 파일 추가
-    function addFiles(event: Event) {
-        const input = event.target as HTMLInputElement;
-        if (input.files) {
-            files = [...files, ...Array.from(input.files)];
+    // 날짜 변경 함수
+    function changeDate(days: number) {
+        const year = parseInt(ymd.slice(0, 4));
+        const month = parseInt(ymd.slice(4, 6)) - 1;
+        const day = parseInt(ymd.slice(6, 8));
+        const date = new Date(year, month, day);
+        date.setDate(date.getDate() + days);
+        ymd = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+        fetchDiary(ymd);
+    }
+
+    // function prevClick() {
+    //     if(ymd.length !== 8) return;
+    //     const date = new Date(parseInt(ymd.slice(0, 4)), parseInt(ymd.slice(4, 6)) - 1, parseInt(ymd.slice(6, 8)));
+    //     date.setDate(date.getDate() - 1);
+    //     ymd = date.toISOString().slice(0, 10).replace(/-/g, '');
+    // }
+    // function todayClick() {
+    //     if(ymd.length !== 8) return;
+    //     ymd = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    // }
+    // function nextClick() {
+    //     if(ymd.length !== 8) return;
+    //     const year = parseInt(ymd.slice(0, 4));
+    //     const month = parseInt(ymd.slice(4, 6)) - 1;
+    //     const day = parseInt(ymd.slice(6, 8));
+        
+    //     const date = new Date(year, month, day);
+    //     date.setDate(date.getDate() + 1);
+        
+    //     // 년, 월, 일을 각각 추출하여 2자리 형식으로 변환
+    //     const nextYmd = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+        
+    //     ymd = nextYmd;
+    // }
+    
+    async function fetchDiary(ymd: string) {
+        try {
+            const response = await getFetch<DiaryResponse>(`diary/${ymd}`);
+            if(response) {
+                summary = response.summary?? "";
+                content = response.content?? "";
+                // Scroll to the bottom of the textarea
+                const textarea = document.getElementById('content');
+                if (textarea) {
+                    textarea.scrollTop = textarea.scrollHeight;
+                    textarea.focus();
+                }
+            }
+            console.log(response);
+        } catch (error) {
+            console.error('Failed to fetch diary:', error);
+            summary = "";
+            content = "";            
         }
     }
+    // 저장 버튼 클릭 시 호출되는 함수
+    async function saveClick() {
+        try {
+            // 다이어리 데이터 조회
+            await getFetch<DiaryResponse>(`diary/${ymd}`);
 
-    // 파일 삭제
-    function removeFile(index: number) {
-        files = files.filter((_, i) => i !== index);
-    }
+            // 데이터가 존재하면 PUT 요청으로 업데이트
+            const updateData: DiaryUpdateRequest = {
+                content: content || null,
+                summary: summary || null,
+            };
+            await putFetch(`diary/${ymd}`, updateData);
+            message = ("기존 데이터를 성공적으로 업데이트했습니다.");
 
-    // 폼 제출
-    async function submitForm() {
-        const formData = new FormData();
-        formData.append('ymd', ymd);
-        formData.append('content', content);
-        formData.append('summary', summary);
-        files.forEach((file, index) => formData.append(`files[${index}]`, file));
-
-        // submit 이벤트로 formData 전송
-        dispatch('submit', formData);
-    }
+        } catch (error) {
+            if (error instanceof ApiError && error.status === 404) {
+                // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
+                const createData: DiaryRequest = {
+                    ymd,
+                    content: content || null,
+                    summary: summary || null,
+                    attachments:  null,
+                };
+                await postFetch(`diary`, createData);
+                message =("info:새로운 데이터를 성공적으로 생성했습니다.");
+            } else {
+                console.error("저장 중 오류 발생:", error);
+                message = ("error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        }
+    }   
+    onMount(() => {
+        fetchDiary(ymd);
+    });    
 </script>
 
-<form on:submit|preventDefault={submitForm}>
-    <label>
-        Date (YYYYMMDD):
-        <input type="text" bind:value={ymd} placeholder="20231030" required />
-    </label>
-
-    <label>
-        Summary:
-        <input type="text" bind:value={summary} required />
-    </label>
-
-    <label>
-        Content:
-        <textarea bind:value={content} required ></textarea>
-    </label>
-
-    <label>
-        Files:
-        <input type="file" multiple on:change={addFiles} />
-    </label>
-
-    <!-- 파일 미리보기 및 삭제 버튼 -->
-    {#if files.length > 0}
-        <ul>
-            {#each files as file, index}
-                <li>
-                    {file.name}
-                    <button type="button" on:click={() => removeFile(index)}>Remove</button>
-                </li>
-            {/each}
-        </ul>
-    {/if}
-
-    <button type="submit">Submit</button>
+<form>
+    <div class="date-area">
+        <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8">
+        <button type="button" class="icon-button" aria-label="Previous" title="이전" on:click={prevClick}>
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button type="button"  class="icon-button" aria-label="Today" title="오늘" on:click={todayClick}>
+            <i class="fas fa-calendar-day"></i>
+        </button>
+        <button type="button"  class="icon-button" aria-label="Next" title="다음" on:click={nextClick}>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <button type="button" class="text-button" on:click={saveClick}><i class="fas fa-save"></i>저장</button>
+        
+    </div>
+    <div class="summary-area">
+        <input type="text" name="summary" id="summary" bind:value={summary}>
+    </div>
+    <div class="content-area">
+        <textarea name="content" id="content" bind:value={content} style="height:300px"></textarea>
+    </div>
 </form>
+<MyMessage message={"info:sss"} keepSec={10}/>
 
 <style>
-    /* 스타일 유지 */
-    label {
-        display: block;
-        margin: 0.5rem 0;
+    /* date-area 전체 너비와 정렬 설정 */
+    .date-area {
+        display: flex;
+        width: 40vw; /* 전체 화면의 40% */
+        /*max-width: 400px; /* 최대 너비 제한 (선택 사항) */
+        gap: 5px;
+        align-items: center; /* 아이템을 세로로 중앙 정렬 */
     }
-    input, textarea {
-        width: 100%;
-        padding: 0.5rem;
-        margin: 0.5rem 0;
+
+    /* input 스타일 */
+    input[type="text"] {
+        flex: 1; /* 입력 필드가 가능한 넓게 차지 */
+        padding: 8px;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 40px; /* 버튼과 동일한 높이로 설정 */
+        box-sizing: border-box;
     }
-    textarea {
-        height: 250px; /* 원하는 높이로 설정 */
-    }    
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    li {
+
+    /* button 스타일 */
+    .icon-button {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
+        justify-content: center;
+        width: 40px;
+        height: 40px; /* 버튼과 input을 동일한 높이로 */
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #ccc;
     }
-    button {
-        margin-top: 1rem;
-        padding: 0.5rem 1rem;
+    .text-button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px; /* 버튼과 input을 동일한 높이로 */
+        border: none;
+        background-color: cornflowerblue;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 120px;
     }
+
 </style>
