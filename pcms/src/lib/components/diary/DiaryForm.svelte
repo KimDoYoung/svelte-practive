@@ -1,14 +1,22 @@
-<!-- 파일명: src/lib/components/diary/DiaryForm.svelte -->
+<!-- ============================================
+파일명: src/lib/components/diary/DiaryForm.svelte 
+설명: 다이어리 입력 폼 컴포넌트
+사용법: 
+    <DiaryForm {ymd} />
+=============================================== -->
+
 <script lang="ts">
     import {onMount} from 'svelte';
     import {getFetch, postFetch, putFetch} from '$lib/api';
     import type {DiaryResponse, DiaryUpdateRequest, DiaryRequest} from '$lib/types';
     import { ApiError } from '$lib/errors';
     import MyMessage from '$lib/components/common/MyMessage.svelte';
+	import { writable } from 'svelte/store';
+
     export let ymd = '';
     let summary = '';
     let content = '';
-    let message = '';
+    let message = writable('');  // `message`를 스토어로 설정
     // 이전 날짜로 이동
     function prevClick() {
         if (ymd.length !== 8) return;
@@ -35,33 +43,9 @@
         const date = new Date(year, month, day);
         date.setDate(date.getDate() + days);
         ymd = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+        
         fetchDiary(ymd);
     }
-
-    // function prevClick() {
-    //     if(ymd.length !== 8) return;
-    //     const date = new Date(parseInt(ymd.slice(0, 4)), parseInt(ymd.slice(4, 6)) - 1, parseInt(ymd.slice(6, 8)));
-    //     date.setDate(date.getDate() - 1);
-    //     ymd = date.toISOString().slice(0, 10).replace(/-/g, '');
-    // }
-    // function todayClick() {
-    //     if(ymd.length !== 8) return;
-    //     ymd = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    // }
-    // function nextClick() {
-    //     if(ymd.length !== 8) return;
-    //     const year = parseInt(ymd.slice(0, 4));
-    //     const month = parseInt(ymd.slice(4, 6)) - 1;
-    //     const day = parseInt(ymd.slice(6, 8));
-        
-    //     const date = new Date(year, month, day);
-    //     date.setDate(date.getDate() + 1);
-        
-    //     // 년, 월, 일을 각각 추출하여 2자리 형식으로 변환
-    //     const nextYmd = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
-        
-    //     ymd = nextYmd;
-    // }
     
     async function fetchDiary(ymd: string) {
         try {
@@ -95,8 +79,7 @@
                 summary: summary || null,
             };
             await putFetch(`diary/${ymd}`, updateData);
-            message = ("기존 데이터를 성공적으로 업데이트했습니다.");
-
+            message.set("info:기존 데이터를 성공적으로 업데이트했습니다.");
         } catch (error) {
             if (error instanceof ApiError && error.status === 404) {
                 // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
@@ -107,13 +90,20 @@
                     attachments:  null,
                 };
                 await postFetch(`diary`, createData);
-                message =("info:새로운 데이터를 성공적으로 생성했습니다.");
+                message.set("info:새로운 데이터를 성공적으로 생성했습니다.");
             } else {
                 console.error("저장 중 오류 발생:", error);
-                message = ("error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+                message.set("error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
             }
         }
-    }   
+    }
+    // keydown 이벤트 핸들러
+    function handleKeyDown(event: KeyboardEvent) {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault(); // 브라우저 기본 저장 기능 막기
+            saveClick();            // saveClick 함수 실행
+        }
+    }
     onMount(() => {
         fetchDiary(ymd);
     });    
@@ -135,13 +125,13 @@
         
     </div>
     <div class="summary-area">
-        <input type="text" name="summary" id="summary" bind:value={summary}>
+        <input type="text" name="summary" id="summary" bind:value={summary} on:keydown={handleKeyDown}>
     </div>
     <div class="content-area">
-        <textarea name="content" id="content" bind:value={content} style="height:300px"></textarea>
+        <textarea name="content" id="content" bind:value={content} style="height:300px" on:keydown={handleKeyDown}></textarea>
     </div>
 </form>
-<MyMessage message={"info:sss"} keepSec={10}/>
+<MyMessage {message} keepSec={3}/>
 
 <style>
     /* date-area 전체 너비와 정렬 설정 */
@@ -152,12 +142,19 @@
         gap: 5px;
         align-items: center; /* 아이템을 세로로 중앙 정렬 */
     }
-
+    textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 0.8rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
     /* input 스타일 */
     input[type="text"] {
         flex: 1; /* 입력 필드가 가능한 넓게 차지 */
         padding: 8px;
-        font-size: 1em;
+        font-size: 0.8rem;
         border: 1px solid #ccc;
         border-radius: 4px;
         height: 40px; /* 버튼과 동일한 높이로 설정 */

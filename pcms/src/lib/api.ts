@@ -1,6 +1,6 @@
+// src/lib/api.ts
 import { ApiError } from "./errors";
 
-// src/lib/api.ts
 const API_BASE_URL = import.meta.env.VITE_KALPADB_API_URL_BASE;
 
 // 공통 옵션 설정

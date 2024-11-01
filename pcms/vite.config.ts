@@ -2,7 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
-    // 기본 모드는 `.env.local`을 사용하고, 프로덕션 모드는 `.env.real`을 사용
+    // product 기본 모드, 프로덕션 모드는 `.env.product`을 사용
     const envFile = mode === 'product' ? '.env.product' : '.env.development';
 
     // 선택한 환경 파일을 로드하여 환경 변수에 추가

@@ -1,34 +1,38 @@
+<!-- ============================================
+파일: src/lib/components/common/MyMessage.svelte
+설명: 메세지를 표시하고 일정시간 지나면 사라진다.
+사용법: 
+    <MyMessage {message} keepSec={3}/>
+    let message = writable('info:ssss');  // `message`를 스토어로 설정
+    message.set('info:저장되었습니다.'); 
+=============================================== -->
 <script lang="ts">
     import { writable } from 'svelte/store';
 
-    export let message: string = '';  // 표시할 메시지
-    export let keepSec: number = 3;   // 메시지가 유지될 시간 (초 단위)
+    // message를 스토어로 정의합니다.
+    export let message = writable('');  
+    export let keepSec: number = 3;     
 
-    let displayMessage = writable('');  // 화면에 표시될 메시지 상태
-    let messageType = 'info';           // 메시지 타입 ('warning', 'error', 'info')
-    let timeout: ReturnType<typeof setTimeout>; // 타이머 ID 타입 설정
+    let messageType = 'info';           
+    let timeout: ReturnType<typeof setTimeout>; 
 
-    // 메시지가 변경될 때 실행되는 반응성 구문
-    $: {
-        if (message && message.trim() !== "") { // message가 비어 있지 않을 때만 실행
-            const [type, content] = message.split(/:(.+)/); // 유형과 내용 분리
-            messageType = type.toLowerCase();               // 메시지 유형 설정
-            displayMessage.set(content.trim());             // 메시지 내용 설정
+    // 반응형 구문을 수정하여, message 값이 변경될 때 메시지 유형과 내용을 설정하고 타이머를 관리합니다.
+    $: if ($message && $message.trim() !== "") { 
+        const [type, content] = $message.split(/:(.+)/); // 유형과 내용 분리
+        messageType = type.toLowerCase();                // 메시지 유형 설정
+        message.set(content.trim());                     // 메시지 내용 설정
 
-            // 기존 타이머를 클리어하고 새 타이머 설정
-            clearTimeout(timeout);
-            timeout = setTimeout(() => displayMessage.set(''), keepSec * 1000);
-        } else {
-            displayMessage.set(''); // message가 빈 문자열이면 표시 메시지도 빈 상태로 설정
-        }
+        // 기존 타이머를 초기화하고 새로운 타이머 설정
+        clearTimeout(timeout);
+        timeout = setTimeout(() => message.set(''), keepSec * 1000);
     }
 </script>
 
-
+{#if $message} <!-- $message가 비어있지 않을 때만 표시 -->
     <div class="message" class:warning={messageType === 'warning'} class:error={messageType === 'error'} class:info={messageType === 'info'}>
-        {$displayMessage}
+        {$message}
     </div>
-
+{/if}
 
 <style>
     .message {
