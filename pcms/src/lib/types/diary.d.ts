@@ -62,5 +62,6 @@ export interface DiaryPageModel {
     limit: number;
     start_ymd?: string | null; // 선택적 시작 일자
     end_ymd?: string | null;   // 선택적 종료 일자
+    search_text?: string | null; // 선택적 검색어
     order?: string | null;
 }

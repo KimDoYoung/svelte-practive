@@ -1,6 +1,7 @@
 <!-- 파일명 routes/diary/+page.svelte-->
 <script lang="ts">
     import { getFetch } from '$lib/api';
+	import DiarySearch from '$lib/components/diary/DiarySearch.svelte';
     import type { DiaryPageModel, DiaryResponse } from '$lib/types';
     import { onMount } from 'svelte';
 
@@ -46,7 +47,9 @@
             <input type="checkbox" bind:checked={summaryOnly}/>
             Summary only
         </label>
+
         <a href="/diary/insert">추가</a>
+        <!-- <DiarySearch /> -->
     </section>
     <section class="content">
         <div>
