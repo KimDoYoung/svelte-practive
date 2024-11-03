@@ -1,16 +1,28 @@
 // src/routes/diary/[ymd]/+page.ts
-import { getFetch } from '$lib/api';
+import type { DiaryResponse } from '$lib/types';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ params }) => {
-    const { ymd } = params; // URL에서 ymd 파라미터 추출
+const API_BASE_URL = import.meta.env.VITE_KALPADB_API_URL_BASE;
+
+export const load: PageLoad = async ({ params, fetch }) => {
+    const { ymd } = params;
 
     try {
-        // getFetch로 데이터를 가져와 반환
-        const diary = await getFetch(`/diary/${ymd}`);
-        return { diary }; // 페이지에서 사용할 데이터로 반환
-    } catch {
-        // 오류 발생 시 404 상태 코드와 메시지 반환
+        // `fetch`를 사용하여 데이터 요청
+        const url = `${API_BASE_URL}/diary/${ymd}`;
+        console.log(`API 요청 ===> GET ${url}`);
+        const response = await fetch(url);
+        
+        // 응답이 성공적이지 않으면 오류 발생
+        if (!response.ok) {
+            throw new Error(`API 요청 실패: ${response.status}`);
+        }
+
+        const diary: DiaryResponse = await response.json();
+        console.log('데이터 로드 성공:', diary);
+        return { diary };
+    } catch (error) {
+        console.error("데이터 로드 오류:", error);
         return {
             status: 404,
             error: new Error('데이터를 불러오는 중 오류가 발생했습니다.')

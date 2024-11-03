@@ -16,8 +16,9 @@
 3. 개발환경
     - window 10
     - vs-code
-    - node 20.x
-    - npm 10.x
+    - node 20.18.0
+    - npm 10.8.2
+    - svelte 5.1.9 , svelte-kit
     - github
 
 ## 초기 설정
@@ -44,11 +45,12 @@ find node_modules/ -name "pico.min.css"  -print
 
 <slot />
 ```
+
 5. fontawesome의 사용
+
 ```shell
 npm install @fortawesome/fontawesome-free
 ```
-
 
 ## Profile
 
