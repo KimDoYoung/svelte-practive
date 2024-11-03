@@ -70,6 +70,7 @@
     // 저장 버튼 클릭 시 호출되는 함수
     async function saveClick() {
         try {
+            console.log('saveClick:', ymd, summary, content);
             // 다이어리 데이터 조회
             await getFetch<DiaryResponse>(`diary/${ymd}`);
 
@@ -81,14 +82,24 @@
             await putFetch(`diary/${ymd}`, updateData);
             message.set("info:기존 데이터를 성공적으로 업데이트했습니다.");
         } catch (error) {
+            console.error('날짜에 대한 데이터가 없어서 POST로 추가합니다:', error);
+            if (error instanceof ApiError) {
+                console.log('status:', error.status);
+            }
+
             if (error instanceof ApiError && error.status === 404) {
                 // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
+                if (!content && !summary) {
+                    message.set("error:내용이나 요약 중 하나는 입력해야 합니다.");
+                    return;
+                }
                 const createData: DiaryRequest = {
                     ymd,
                     content: content || null,
                     summary: summary || null,
-                    attachments:  null,
+                    attachments:  [],
                 };
+                console.log('createData:', createData);
                 await postFetch(`diary`, createData);
                 message.set("info:새로운 데이터를 성공적으로 생성했습니다.");
             } else {

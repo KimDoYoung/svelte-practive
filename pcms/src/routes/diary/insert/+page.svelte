@@ -1,6 +1,5 @@
 <!-- 파일명: src/routes/diary/insert/+page.svelte -->
 <script lang="ts">
-    import NavBar from '$lib/components/NavBar.svelte';
     import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
 
     // 서버에 데이터 제출

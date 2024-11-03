@@ -27,7 +27,13 @@ async function fetchData<T>(endpoint: string, options: RequestInit = {}): Promis
 
         return await response.json() as T;
     } catch (error) {
-        console.error("API 호출 중 오류 발생:", error);
+        // ApiError가 이미 던져졌다면 그대로 다시 throw
+        if (error instanceof ApiError) {
+            throw error;
+        }
+        
+        // 그 외 오류는 일반적인 500 상태로 처리
+        console.error("API 호출 중 예기치 못한 오류 발생:", error);
         throw new ApiError(500, "API 요청이 실패했습니다. 다시 시도해 주세요.");
     }
 }
