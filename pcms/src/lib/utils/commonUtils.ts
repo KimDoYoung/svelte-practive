@@ -15,3 +15,11 @@ export function displayContent(content: string | null | undefined): string {
         .replace(/\r\n|\n/g, '<br />')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 }  
+
+export function url_concat(...parts: string[]): string {
+    // 각 인자의 앞뒤 슬래시를 제거하고 배열로 만든 후, '/'로 연결
+    return parts
+        .map(part => part.replace(/^\/+|\/+$/g, '')) // 앞뒤 슬래시 제거
+        .filter(part => part.length > 0)             // 빈 문자열 제거
+        .join('/');
+}

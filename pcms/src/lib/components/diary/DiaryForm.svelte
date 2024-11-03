@@ -7,7 +7,7 @@
 
 <script lang="ts">
     import {onMount} from 'svelte';
-    import {getFetch, postFetch, putFetch} from '$lib/api';
+    import {getFetch, postFetch, postFetchMulti, putFetch} from '$lib/api';
     import type {DiaryResponse, DiaryUpdateRequest, DiaryRequest} from '$lib/types';
     import { ApiError } from '$lib/errors';
     import MyMessage from '$lib/components/common/MyMessage.svelte';
@@ -93,14 +93,14 @@
                     message.set("error:내용이나 요약 중 하나는 입력해야 합니다.");
                     return;
                 }
-                const createData: DiaryRequest = {
-                    ymd,
+                const createData = {
+                    ymd, 
                     content: content || null,
                     summary: summary || null,
-                    attachments:  [],
+                    file : []
                 };
                 console.log('createData:', createData);
-                await postFetch(`diary`, createData);
+                await postFetchMulti(`diary`, createData);
                 message.set("info:새로운 데이터를 성공적으로 생성했습니다.");
             } else {
                 console.error("저장 중 오류 발생:", error);
