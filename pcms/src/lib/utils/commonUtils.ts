@@ -1,11 +1,28 @@
 import type { Ymd } from "$lib/types/ymd";
 
+export function yoil(ymd: Ymd, hanja=false): string {
+    const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
+    const yoil = ['일', '월', '화', '수', '목', '금', '토'];
+    const hanjaYoil = ['日', '月', '火', '水', '木', '金', '土'];
+    if(hanja) return hanjaYoil[date.getDay()];
+    return yoil[date.getDay()];
+}
+export function isSaterday(ymd: Ymd): boolean {
+     
+    const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
+    return date.getDay() === 6;
+}
+export function isSunday(ymd: Ymd): boolean {
+     
+    const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
+    return date.getDay() === 0;
+}
+
 export function displayYmd(ymd: string, displayYoil=false): string {
     let s =  `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`;
+    const y = yoil(ymd as Ymd);
     if (displayYoil) {
-        const yoil = ['일', '월', '화', '수', '목', '금', '토'];
-        const date = new Date(s);
-        s += `(${yoil[date.getDay()]})`;
+        s += ` (${y})`;
     }
     return s;
 }

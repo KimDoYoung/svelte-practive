@@ -118,6 +118,16 @@
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault(); // 브라우저 기본 저장 기능 막기
             saveClick();            // saveClick 함수 실행
+        }else if (event.ctrlKey && event.key === 'b') {
+            event.preventDefault(); // 기본 동작 방지
+            const textarea = event.target as HTMLTextAreaElement;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const newText = `**${selectedText}**`;
+            textarea.setRangeText(newText, start, end, 'end');
+            const inputEvent = new Event('input', { bubbles: true });
+            textarea.dispatchEvent(inputEvent);            
         }
     }
     onMount(() => {

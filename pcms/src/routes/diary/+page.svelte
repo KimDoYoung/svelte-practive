@@ -1,14 +1,18 @@
 <!-- 파일명 routes/diary/+page.svelte-->
 <script lang="ts">
     import { getFetch } from '$lib/api';
+	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
 	import DiarySearch from '$lib/components/diary/DiarySearch.svelte';
     import type { DiaryPageModel, DiaryResponse } from '$lib/types';
-    import { displayYmd, displayContent } from '$lib/utils';
+    import { displayYmd, displayContent, todayYmd } from '$lib/utils';
     import { onMount } from 'svelte';
 
 	let diaries: DiaryResponse[]=[];
     let isLoading = true; // 로딩 상태 변수 추가
     let summaryOnly = true; // 요약 보기 여부 변수 추가
+    let showForm = false;
+    let showList = true;
+    let today = todayYmd(); // 오늘 날짜를 가져옴
     // API 호출 로직을 함수로 분리
     async function loadDiaries() {
         isLoading = true;
@@ -29,14 +33,18 @@
 <div class="diary-list">
     <section class="control-box">
         <label>
-            <input type="checkbox" bind:checked={summaryOnly}/>
-            Summary only
+            <input type="checkbox" bind:checked={summaryOnly}/> Summary only
         </label>
-
-        <a href="/diary/insert">추가</a>
+        <label>
+            <input type="checkbox" bind:checked={showList}/> List
+        </label>
+        <label>
+            <input type="checkbox" bind:checked={showForm}/> Form
+        </label>        
         <!-- <DiarySearch /> -->
     </section>
-    <section class="content">
+    <section class="content list-area">
+        {#if showList}
         <div>
             {#if isLoading}
                 <p>Loading...</p>
@@ -59,10 +67,43 @@
                 </ul>
             {/if}
         </div>
+        <div class="control-box">
+            <button class="control-icon" on:click={loadDiaries} aria-label="Previous"><i class="fas fa-arrow-left"></i></button>
+            <button class="control-icon" on:click={loadDiaries} aria-label="Home"><i class="fas fa-circle"></i></button>
+            <button class="control-icon" on:click={loadDiaries} aria-label="next"><i class="fas fa-arrow-right"></i></button>
+        </div>
+        {/if}
+    </section>
+
+    <section class="content form-area">
+        {#if showForm}
+            <DiaryForm ymd={today} />
+        {/if}
     </section>
 </div>
 
 <style>
+    .control-box{
+        display: flex;
+        flex-direction: row; /* 기본 값으로, 가로 정렬 */
+        justify-content: flex-start; /* 왼쪽 정렬 */
+        align-items: center; /* 수직 가운데 정렬 */
+        margin-bottom: 10px;   
+        gap: 10px; /* 아이템 간 X축 간격 설정 */
+    }
+    .control-icon{
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        background-color: #6ecefa;
+        color: white;
+        border: none;
+        border-radius: 10%;
+        cursor: pointer;
+    }
     .diary-summary {
         text-align: left;
         margin: 0;
