@@ -1,3 +1,5 @@
+import type { Ymd } from "$lib/types/ymd";
+
 export function displayYmd(ymd: string, displayYoil=false): string {
     let s =  `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`;
     if (displayYoil) {
@@ -23,3 +25,17 @@ export function url_concat(...parts: string[]): string {
         .filter(part => part.length > 0)             // 빈 문자열 제거
         .join('/');
 }
+
+export function isWeekend(ymd:Ymd): boolean {
+    const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
+    return date.getDay() === 0 || date.getDay() === 6;
+}
+
+export function todayYmd(): Ymd {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(today.getDate()).padStart(2, '0');
+  
+    return `${year}${month}${day}` as Ymd; // yyyymmdd 형식으로 반환
+  }

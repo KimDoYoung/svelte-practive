@@ -24,8 +24,8 @@
     // 페이지가 처음 로드될 때 호출
     onMount(loadDiaries);
 
-  
 </script>
+
 <div class="diary-list">
     <section class="control-box">
         <label>
