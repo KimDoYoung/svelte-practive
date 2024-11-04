@@ -16,6 +16,7 @@
 	import { isWeekend, todayYmd } from '$lib/utils';
 
     import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
+	import InputYmd from '../common/InputYmd.svelte';
 
     export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
     let summary = '';
@@ -126,7 +127,8 @@
 
 <form>
     <div class="date-area">
-        <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8">
+        <!-- <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8"> -->
+        <InputYmd bind:ymd={ymd} />
         <button type="button" class="icon-button" aria-label="Previous" title="요일">
             <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd) ? 'red': 'blue'} hanja={true} />
         </button>

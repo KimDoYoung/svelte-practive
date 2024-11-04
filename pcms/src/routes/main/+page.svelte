@@ -1,7 +1,10 @@
 <!-- src/routes/main/+page.svelte -->
 <script lang="ts">
+	import InputYmd from '$lib/components/common/InputYmd.svelte';
 	import YoilIcon from '$lib/components/common/YoilIcon.svelte';
     import NavBar from '$lib/components/NavBar.svelte';
+
+    let dateValue = '20241104'; // 초기 값
 </script>
 
 <div class="main-area">
@@ -19,6 +22,7 @@
             <YoilIcon ymd="20241108" bgColor="#ff0" textColor="#f00" hanja={true} />
             <YoilIcon ymd="20241109" bgColor="#ff0" textColor="#f00" hanja={true} />
         </div>
+        <InputYmd bind:ymd={dateValue} />
     </section>
 </div>
 
