@@ -1,5 +1,11 @@
 import type { Ymd } from "$lib/types/ymd";
 
+/**
+ * ymd의 요일 문자를 반환
+ * @param ymd yyyymmdd 형식의 날짜 문자열
+ * @param hanja 한자 요일문자를 리턴할지 여부
+ * @returns 요일문자
+ */
 export function yoil(ymd: Ymd, hanja=false): string {
     const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
     const yoil = ['일', '월', '화', '수', '목', '금', '토'];
@@ -7,26 +13,48 @@ export function yoil(ymd: Ymd, hanja=false): string {
     if(hanja) return hanjaYoil[date.getDay()];
     return yoil[date.getDay()];
 }
+/**
+ * ymd가 토요일인지 여부(boolean)를 반환
+ * @param ymd 
+ * @returns 토요일인 경우 true, 나머지는 false
+ */
 export function isSaterday(ymd: Ymd): boolean {
-     
     const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
     return date.getDay() === 6;
 }
+/**
+ * 일요일인지 여부를 반환
+ * @param ymd Ymd타입
+ * @returns 일요일 경우 true, 나머지는 false
+ */
 export function isSunday(ymd: Ymd): boolean {
-     
     const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
     return date.getDay() === 0;
 }
-
-export function displayYmd(ymd: string, displayYoil=false): string {
+/**
+ * ymd를 'yyyy-mm-dd (요일)' 형식으로 반환
+ * @param ymd yyyymmdd 형식의 날짜 문자열
+ * @param displayYoil 요일을 표시할지 여부
+ * @param hanja 한자 요일을 표시할지 여부
+ * @returns 'yyyy-mm-dd (요일)' 형식의 날짜 문자열
+ */
+export function displayYmd(ymd: string, displayYoil=false, hanja=false): string {
     let s =  `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`;
-    const y = yoil(ymd as Ymd);
+    const y = yoil(ymd as Ymd, hanja);
     if (displayYoil) {
         s += ` (${y})`;
     }
     return s;
 }
 // content 문자열 포맷팅: \r\n -> <br />, **text** -> <strong>text</strong>
+/**
+ * enter나 **를 포함한 문자열을 화면에 출력할 수 있도록 변환
+ * \r\n -> <br />
+ * **text** -> <strong>text</strong>
+ * 
+ * @param content html태그를 포함한 문자열
+ * @returns HTML태그를 포함한 문자열
+ */
 export function displayContent(content: string | null | undefined): string {
     if (!content) return '';
     // 줄바꿈을 <br>로, **bold text**를 <strong>bold text</strong>로 변환
@@ -35,6 +63,12 @@ export function displayContent(content: string | null | undefined): string {
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 }  
 
+/**
+ * url의 각 부분을 연결하여 완전한 url을 반환
+ * 각각의 부분에서 앞뒤 슬래시를 제거하고, '/'로 연결
+ * @param parts url의 각 부분
+ * @returns 
+ */
 export function url_concat(...parts: string[]): string {
     // 각 인자의 앞뒤 슬래시를 제거하고 배열로 만든 후, '/'로 연결
     return parts
@@ -43,16 +77,25 @@ export function url_concat(...parts: string[]): string {
         .join('/');
 }
 
+/**
+ * 주말인지 여부를 반환
+ * @param ymd Ymd타입
+ * @returns 토,일인경우 true, 나머지는 false
+ */
 export function isWeekend(ymd:Ymd): boolean {
     const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
     return date.getDay() === 0 || date.getDay() === 6;
 }
 
+/**
+ * 오늘 날짜를 yyyymmdd 형식으로 반환
+ * @returns Ymd타입
+ */
 export function todayYmd(): Ymd {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
     const day = String(today.getDate()).padStart(2, '0');
-  
+
     return `${year}${month}${day}` as Ymd; // yyyymmdd 형식으로 반환
-  }
+}

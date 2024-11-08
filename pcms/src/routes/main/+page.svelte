@@ -15,7 +15,7 @@
     </section>
     <section>
         <div class="grid">
-            <YoilIcon ymd="20241104" bgColor="white" textColor="blue" hanja={true} />
+            <YoilIcon ymd="20241104" bgColor="white" textColor="blue" hanja={false} />
             <YoilIcon ymd="20241105" bgColor="#ff0" textColor="#f00" hanja={true} />
             <YoilIcon ymd="20241106" bgColor="#ff0" textColor="#f00" hanja={true} />
             <YoilIcon ymd="20241107" bgColor="#ff0" textColor="#f00" hanja={true} />
@@ -23,6 +23,7 @@
             <YoilIcon ymd="20241109" bgColor="#ff0" textColor="#f00" hanja={true} />
         </div>
         <InputYmd bind:ymd={dateValue} />
+        {dateValue}
     </section>
 </div>
 
