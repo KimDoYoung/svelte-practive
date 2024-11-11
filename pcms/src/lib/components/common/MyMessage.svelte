@@ -7,30 +7,32 @@
     message.set('info:저장되었습니다.'); 
 =============================================== -->
 <script lang="ts">
-    import { writable } from 'svelte/store';
+    //import { writable } from 'svelte/store';
 
     // message를 스토어로 정의합니다.
-    export let message = writable('');  
-    export let keepSec: number = 3;     
-
-    let messageType = 'info';           
+    //export let message = writable('');  
+    //export let keepSec: number = 3;     
+    let { message = '', keepSec = 3 } = $props();
+    let messageType = $state('info');           
     let timeout: ReturnType<typeof setTimeout>; 
 
     // 반응형 구문을 수정하여, message 값이 변경될 때 메시지 유형과 내용을 설정하고 타이머를 관리합니다.
-    $: if ($message && $message.trim() !== "") { 
-        const [type, content] = $message.split(/:(.+)/); // 유형과 내용 분리
-        messageType = type.toLowerCase();                // 메시지 유형 설정
-        message.set(content.trim());                     // 메시지 내용 설정
+    $effect(() => {
+        if (message && message.trim() !== "") { 
+            const [type, content] = message.split(/:(.+)/); // 유형과 내용 분리
+            messageType = type.toLowerCase();                // 메시지 유형 설정
+            message = content.trim();                        // 메시지 내용 설정
 
-        // 기존 타이머를 초기화하고 새로운 타이머 설정
-        clearTimeout(timeout);
-        timeout = setTimeout(() => message.set(''), keepSec * 1000);
-    }
+            // 기존 타이머를 초기화하고 새로운 타이머 설정
+            clearTimeout(timeout);
+            timeout = setTimeout(() => message = '', keepSec * 1000);
+        }
+    });
 </script>
 
-{#if $message} <!-- $message가 비어있지 않을 때만 표시 -->
+{#if message} <!-- $message가 비어있지 않을 때만 표시 -->
     <div class="message" class:warning={messageType === 'warning'} class:error={messageType === 'error'} class:info={messageType === 'info'}>
-        {$message}
+        {message}
     </div>
 {/if}
 

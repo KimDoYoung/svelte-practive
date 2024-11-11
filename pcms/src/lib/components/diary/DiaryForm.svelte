@@ -6,50 +6,51 @@
 =============================================== -->
 
 <script lang="ts">
-    import {onMount} from 'svelte';
-    import {getFetch,  postFetchMulti, putFetch} from '$lib/api';
-    import type {DiaryResponse, DiaryUpdateRequest} from '$lib/types';
-    import { ApiError } from '$lib/errors';
-    import MyMessage from '$lib/components/common/MyMessage.svelte';
-	import { writable } from 'svelte/store';
+  import {getFetch,  postFetchMulti, putFetch} from '$lib/api';
+  import type {DiaryResponse, DiaryUpdateRequest} from '$lib/types';
+  import { ApiError } from '$lib/errors';
+  import MyMessage from '$lib/components/common/MyMessage.svelte';
 	import YoilIcon from '../common/YoilIcon.svelte';
 	import { isWeekend, todayYmd } from '$lib/utils';
 
-    import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
+  import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
 	import InputYmd from '../common/InputYmd.svelte';
-
-    export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
-    let summary = '';
-    let content = '';
-    let message = writable('');  // `message`를 스토어로 설정
+	
+    //export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
+    let {ymd = ''} = $props();
+    let summary = $state('');
+    let content = $state('');
+    let message = $state('');
+    // let ymd = $state(ymd1);
     // 이전 날짜로 이동
     function prevClick() {
-        if (ymd.length !== 8) return;
+        if ((ymd as string).length !== 8) return;
         changeDate(-1);
     }
 
     // 다음 날짜로 이동
     function nextClick() {
-        if (ymd.length !== 8) return;
+        if ((ymd as string).length !== 8) return;
         changeDate(1);
     }
 
     // 오늘 날짜로 이동
     function todayClick() {
         ymd = todayYmd();
-        fetchDiary(ymd);
+        fetchDiary(ymd as string);
     }
 
     // 날짜 변경 함수
     function changeDate(days: number) {
-        const year = parseInt(ymd.slice(0, 4));
-        const month = parseInt(ymd.slice(4, 6)) - 1;
-        const day = parseInt(ymd.slice(6, 8));
+        let ymd1 = ymd as string;
+        const year = parseInt(ymd1.slice(0, 4));
+        const month = parseInt(ymd1.slice(4, 6)) - 1;
+        const day = parseInt(ymd1.slice(6, 8));
         const date = new Date(year, month, day);
         date.setDate(date.getDate() + days);
-        ymd = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}` as Ymd;
+        ymd1 = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}` as Ymd;
         
-        fetchDiary(ymd);
+        fetchDiary(ymd1);
     }
     
     async function fetchDiary(ymd: string) {
@@ -85,7 +86,7 @@
                 summary: summary || null,
             };
             await putFetch(`diary/${ymd}`, updateData);
-            message.set("info:기존 데이터를 성공적으로 업데이트했습니다.");
+            message="info:기존 데이터를 성공적으로 업데이트했습니다.";
         } catch (error) {
             console.error('날짜에 대한 데이터가 없어서 POST로 추가합니다:', error);
             if (error instanceof ApiError) {
@@ -95,7 +96,7 @@
             if (error instanceof ApiError && error.status === 404) {
                 // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
                 if (!content && !summary) {
-                    message.set("error:내용이나 요약 중 하나는 입력해야 합니다.");
+                    message = "error:내용이나 요약 중 하나는 입력해야 합니다.";
                     return;
                 }
                 const createData = {
@@ -106,10 +107,10 @@
                 };
                 console.log('createData:', createData);
                 await postFetchMulti(`diary`, createData);
-                message.set("info:새로운 데이터를 성공적으로 생성했습니다.");
+                message="info:새로운 데이터를 성공적으로 생성했습니다.";
             } else {
                 console.error("저장 중 오류 발생:", error);
-                message.set("error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+                message="error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.";
             }
         }
     }
@@ -130,36 +131,36 @@
             textarea.dispatchEvent(inputEvent);            
         }
     }
-    onMount(() => {
-        fetchDiary(ymd);
-    });    
+    $effect(() => {
+        fetchDiary(ymd as string);
+    });
 </script>
 
 <form>
     <div class="date-area">
         <!-- <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8"> -->
-        <InputYmd bind:ymd={ymd} />
+        <InputYmd {ymd} />
         <button type="button" class="icon-button" aria-label="Previous" title="요일">
-            <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd) ? 'red': 'blue'} hanja={true} />
+            <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd as string) ? 'red': 'blue'} hanja={true} />
         </button>
 
-        <button type="button" class="icon-button" aria-label="Previous" title="이전" on:click={prevClick}>
+        <button type="button" class="icon-button" aria-label="Previous" title="이전" onclick={prevClick}>
             <i class="fas fa-arrow-left"></i>
         </button>
-        <button type="button"  class="icon-button" aria-label="Today" title="오늘" on:click={todayClick}>
+        <button type="button"  class="icon-button" aria-label="Today" title="오늘" onclick={todayClick}>
             <i class="fas fa-calendar-day"></i>
         </button>
-        <button type="button"  class="icon-button" aria-label="Next" title="다음" on:click={nextClick}>
+        <button type="button"  class="icon-button" aria-label="Next" title="다음" onclick={nextClick}>
             <i class="fas fa-arrow-right"></i>
         </button>
-        <button type="button" class="text-button" on:click={saveClick}><i class="fas fa-save"></i>저장</button>
+        <button type="button" class="text-button" onclick={saveClick}><i class="fas fa-save"></i>저장</button>
         
     </div>
     <div class="summary-area">
-        <input type="text" name="summary" id="summary" bind:value={summary} on:keydown={handleKeyDown}>
+        <input type="text" name="summary" id="summary" bind:value={summary} onkeydown={handleKeyDown}>
     </div>
     <div class="content-area">
-        <textarea name="content" id="content" bind:value={content} style="height:300px" on:keydown={handleKeyDown}></textarea>
+        <textarea name="content" id="content" bind:value={content} style="height:300px" onkeydown={handleKeyDown}></textarea>
     </div>
 </form>
 <MyMessage {message} keepSec={3}/>

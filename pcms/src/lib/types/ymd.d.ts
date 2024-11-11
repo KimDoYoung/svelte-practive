@@ -6,4 +6,4 @@ type Month = `0${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}` | `1${0 | 1 | 2}`;
 type Day = `0${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}` | `${1 | 2}${number}` | `3${0 | 1}`;
 
 // ymd 형식 정의
-export type Ymd = `${Year}${Month}${Day}`;
+export type Ymd = `${Year}${Month}${Day}` | '';

@@ -82,7 +82,7 @@ export function url_concat(...parts: string[]): string {
  * @param ymd Ymd타입
  * @returns 토,일인경우 true, 나머지는 false
  */
-export function isWeekend(ymd:Ymd): boolean {
+export function isWeekend(ymd:string): boolean {
     const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
     return date.getDay() === 0 || date.getDay() === 6;
 }

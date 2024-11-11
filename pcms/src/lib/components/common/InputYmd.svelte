@@ -9,13 +9,13 @@
 -->
   
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
   
-    export let ymd: string = ''; // yyyymmdd 형식으로 값을 유지하는 prop
-    const dispatch = createEventDispatcher();
-  
+    // export let ymd: string = ''; // yyyymmdd 형식으로 값을 유지하는 prop
+    // let {ymd = ''} = $props();
+    let { ymd} = $props()
     // 표시할 날짜 형식 (`YYYY-MM-DD`)
-    $: displayValue = formatDisplay(ymd);
+    //$: displayValue = formatDisplay(ymd);
+    let displayValue = $derived(formatDisplay(ymd as string));
   
     // 사용자가 입력한 값을 yyyymmdd 형식으로 변환하는 함수
     function parseYmd(value: string): string {
@@ -23,7 +23,7 @@
       if (cleanValue.length === 8) {
         return cleanValue;
       }
-      return ymd; // 유효하지 않은 경우 기존 값 유지
+      return value; // 유효하지 않은 경우 기존 값 유지
     }
   
     // yyyymmdd 값을 `YYYY-MM-DD` 형식으로 변환하는 함수
@@ -39,16 +39,16 @@
       const target = event.target as HTMLInputElement;
       const parsedValue = parseYmd(target.value);
       ymd = parsedValue; // ymd 값을 업데이트
-      dispatch('input', ymd); // 변경 사항을 부모로 전달
+    //   dispatch('input', ymd); // 변경 사항을 부모로 전달
     }
   </script>
   
   <input
     type="text"
-    bind:value={displayValue}
+    value={displayValue}
     maxlength="10"
     placeholder="YYYY-MM-DD"
-    on:input={handleInput}
+    oninput={handleInput}
   />
   
   <style>

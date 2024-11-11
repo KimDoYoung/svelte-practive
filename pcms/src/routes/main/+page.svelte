@@ -22,7 +22,7 @@
             <YoilIcon ymd="20241108" bgColor="#ff0" textColor="#f00" hanja={true} />
             <YoilIcon ymd="20241109" bgColor="#ff0" textColor="#f00" hanja={true} />
         </div>
-        <InputYmd bind:ymd={dateValue} />
+        <InputYmd ymd={dateValue} />
         {dateValue}
     </section>
 </div>
@@ -32,4 +32,9 @@
         text-align: center;
         margin-top: 2rem;
     }
+    .grid {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }    
 </style>
