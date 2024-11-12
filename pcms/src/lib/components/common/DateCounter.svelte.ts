@@ -55,16 +55,3 @@ export class DateCounter  {
   }
 
 }
-
-
-// function changeDate(days: number) {
-//   let ymd1 = ymd as string;
-//   const year = parseInt(ymd1.slice(0, 4));
-//   const month = parseInt(ymd1.slice(4, 6)) - 1;
-//   const day = parseInt(ymd1.slice(6, 8));
-//   const date = new Date(year, month, day);
-//   date.setDate(date.getDate() + days);
-//   ymd1 = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}` as Ymd;
-  
-//   fetchDiary(ymd1);
-// }

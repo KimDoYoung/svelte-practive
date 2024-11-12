@@ -3,9 +3,19 @@
 	import InputYmd from '$lib/components/common/InputYmd.svelte';
 	import YoilIcon from '$lib/components/common/YoilIcon.svelte';
   import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
+  import DiaryNavButtons from '$lib/components/diary/DiaryNavButtons.svelte';
 
   let dateValue = '20241104'; // 초기 값
   let dateCounter = new DateCounter(YoilEnum.Hangul);
+  function nextClickPage() {
+    console.log('next page');
+  }
+  function prevClickPage() {
+    console.log('prev page');
+  }
+  function currentClickPage() {
+    console.log('current page');
+  }
 </script>
 
 <div class="main-area">
@@ -17,6 +27,13 @@
         <button onclick={dateCounter.prev}>-</button>
         <button onclick={dateCounter.today}>today</button>
         <button onclick={dateCounter.next}>+</button>
+        <div>
+          <DiaryNavButtons 
+            nextClick={nextClickPage} 
+            prevClick={prevClickPage}
+            currentClick={currentClickPage}
+          /> 
+        </div> 
     </section>
     <section>
         <div class="grid">
