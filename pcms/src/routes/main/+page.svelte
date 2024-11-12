@@ -2,9 +2,10 @@
 <script lang="ts">
 	import InputYmd from '$lib/components/common/InputYmd.svelte';
 	import YoilIcon from '$lib/components/common/YoilIcon.svelte';
-    import NavBar from '$lib/components/NavBar.svelte';
+  import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
 
-    let dateValue = '20241104'; // 초기 값
+  let dateValue = '20241104'; // 초기 값
+  let dateCounter = new DateCounter(YoilEnum.Hangul);
 </script>
 
 <div class="main-area">
@@ -12,6 +13,10 @@
     <section class="content">
         <h1>Welcome to the Main Page</h1>
         <p>This is the main content of the page.</p>
+        <p>Today is {dateCounter.displayYmd}</p>
+        <button onclick={dateCounter.prev}>-</button>
+        <button onclick={dateCounter.today}>today</button>
+        <button onclick={dateCounter.next}>+</button>
     </section>
     <section>
         <div class="grid">
