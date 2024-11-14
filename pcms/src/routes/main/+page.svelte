@@ -4,6 +4,7 @@
 	import YoilIcon from '$lib/components/common/YoilIcon.svelte';
   import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
   import DiaryNavButtons from '$lib/components/diary/DiaryNavButtons.svelte';
+	import DiaryView from '$lib/components/diary/DiaryView.svelte';
 
   let dateValue = '20241104'; // 초기 값
   let dateCounter = new DateCounter(YoilEnum.Hangul);
@@ -33,7 +34,8 @@
             prevClick={prevClickPage}
             currentClick={currentClickPage}
           /> 
-        </div> 
+        </div>
+        <DiaryView ymd={dateCounter.ymd} />
     </section>
     <section>
         <div class="grid">
