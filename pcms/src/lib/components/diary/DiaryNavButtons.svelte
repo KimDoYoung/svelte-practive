@@ -10,9 +10,9 @@
 </script>
 
 <div class="button-group">
-  <button onclick={prevClick}>&lt;</button>
+  <button onclick={prevClick}>◁</button>
   <button onclick={currentClick}>Current</button>
-  <button onclick={nextClick}>&gt;</button>
+  <button onclick={nextClick}>▷</button>
 </div>
 
 <style>
