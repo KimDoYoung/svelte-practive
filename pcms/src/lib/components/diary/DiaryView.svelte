@@ -8,8 +8,7 @@
     import { getFetch } from '$lib/api';
     import type { DiaryResponse, Ymd } from '$lib/types';
 	  import { displayContent, displayYmd } from '$lib/utils';
-    // import {onMount} from 'svelte';
-    // export let ymd: string = '';
+
     let { ymd = '' } = $props()
     
     let diary: DiaryResponse | undefined = $state<DiaryResponse | undefined>(undefined);
