@@ -24,7 +24,7 @@
     <section class="content">
         <h1>Welcome to the Main Page</h1>
         <p>This is the main content of the page.</p>
-        <p>Today is {dateCounter.displayYmd}</p>
+        <p>Today is {dateCounter.displayYmd}<YoilIcon ymd="{dateCounter.ymd}" bgColor="white" textColor="blue" hanja={false} /></p>
         <button onclick={dateCounter.prev}>-</button>
         <button onclick={dateCounter.today}>today</button>
         <button onclick={dateCounter.next}>+</button>
@@ -33,6 +33,7 @@
             nextClick={nextClickPage} 
             prevClick={prevClickPage}
             currentClick={currentClickPage}
+            hometext="Current"
           /> 
         </div>
         <DiaryView ymd={dateCounter.ymd} />

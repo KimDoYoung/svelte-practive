@@ -6,12 +6,12 @@
 =============================================== -->
 <script lang="ts">
     import { getFetch } from '$lib/api';
-    import type { DiaryResponse, Ymd } from '$lib/types';
+    import type { DiaryDetailResponse, Ymd } from '$lib/types';
 	  import { displayContent, displayYmd } from '$lib/utils';
 
     let { ymd = '' } = $props()
     
-    let diary: DiaryResponse | undefined = $state<DiaryResponse | undefined>(undefined);
+    let diary: DiaryDetailResponse | undefined = $state<DiaryDetailResponse | undefined>(undefined);
 
     $effect(() => {
         console.log('ymd:', ymd);
@@ -22,7 +22,7 @@
     })
     async function fetchDiary(ymd: string) {
         try {
-            diary = await getFetch<DiaryResponse>(`diary/${ymd}`);
+            diary = await getFetch<DiaryDetailResponse>(`diary/${ymd}`);
             console.log("response:", diary);
         } catch (error) {
           diary = undefined;
@@ -36,7 +36,8 @@
     <p class="diary-content">{@html displayContent(diary.content)}</p>
     {#if diary.attachments}
         {#each diary.attachments as attachment}
-            <img src={attachment} alt='{diary.ymd} 일기 첨부이미지' />
+        {attachment.url}
+            <img src='{attachment.url}' alt='{diary.ymd} 일기 첨부이미지' />
         {/each}
     {/if}
 {:else}
