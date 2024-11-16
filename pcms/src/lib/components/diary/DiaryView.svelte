@@ -37,7 +37,7 @@
     {#if diary.attachments}
         {#each diary.attachments as attachment}
         {attachment.url}
-            <img src='{attachment.url}' alt='{diary.ymd} 일기 첨부이미지' />
+            <img src='{attachment.url}' alt='{diary.ymd}  첨부이미지' />
         {/each}
     {/if}
 {:else}

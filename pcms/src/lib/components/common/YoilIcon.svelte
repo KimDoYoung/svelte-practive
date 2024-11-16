@@ -38,11 +38,11 @@
     }
   </style>
   
-  <div
+  <span
     class="day-box"
     style="background-color: {bgColor}; color: {textColor}; width: {width}; height: {height};"
     aria-label="요일: {dayOfWeek}"
   >
     {dayOfWeek}
-  </div>
+  </span>
   

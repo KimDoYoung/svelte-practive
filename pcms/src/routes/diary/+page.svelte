@@ -1,11 +1,11 @@
 <!-- 파일명 routes/diary/+page.svelte-->
 <script lang="ts">
-    import { getFetch } from '$lib/api';
+  import { getFetch } from '$lib/api';
 	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
-	import DiarySearch from '$lib/components/diary/DiarySearch.svelte';
-    import type { DiaryPageModel, DiaryResponse } from '$lib/types';
-    import { displayYmd, displayContent, todayYmd } from '$lib/utils';
-    import { onMount } from 'svelte';
+  import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
+  import type { DiaryPageModel, DiaryResponse } from '$lib/types';
+  import { displayYmd, displayContent, todayYmd } from '$lib/utils';
+  import { onMount } from 'svelte';
 
 	let diaries: DiaryResponse[]=[];
     let isLoading = true; // 로딩 상태 변수 추가
@@ -26,8 +26,16 @@
         }
     }
     // 페이지가 처음 로드될 때 호출
-    onMount(loadDiaries);
-
+  onMount(loadDiaries);
+    function nextClickPage() {
+    console.log('next page');
+  }
+  function prevClickPage() {
+    console.log('prev page');
+  }
+  function currentClickPage() {
+    console.log('current page');
+  }
 </script>
 
 <div class="diary-list">
@@ -68,9 +76,12 @@
             {/if}
         </div>
         <div class="control-box">
-            <button class="control-icon" on:click={loadDiaries} aria-label="Previous"><i class="fas fa-arrow-left"></i></button>
-            <button class="control-icon" on:click={loadDiaries} aria-label="Home"><i class="fas fa-circle"></i></button>
-            <button class="control-icon" on:click={loadDiaries} aria-label="next"><i class="fas fa-arrow-right"></i></button>
+          <DiaryNavButtons 
+            nextClick={nextClickPage} 
+            prevClick={prevClickPage}
+            currentClick={currentClickPage}
+            hometext="Current"
+          />           
         </div>
         {/if}
     </section>

@@ -10,6 +10,10 @@
  
 
 </script>
+<!-- <button class="control-icon" on:click={loadDiaries} aria-label="Previous"><i class="fas fa-arrow-left"></i></button>
+<button class="control-icon" on:click={loadDiaries} aria-label="Home"><i class="fas fa-circle"></i></button>
+<button class="control-icon" on:click={loadDiaries} aria-label="next"><i class="fas fa-arrow-right"></i></button> -->
+
 
 <div class="button-group">
   <button onclick={prevClick} title="previous ">◁</button>

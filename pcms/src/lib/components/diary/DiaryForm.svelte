@@ -15,7 +15,10 @@
 
   import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
 	import InputYmd from '../common/InputYmd.svelte';
-	
+  import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
+
+	let dateCounter = new DateCounter(YoilEnum.Hangul);
+
     //export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
     let {ymd = ''} = $props();
     let summary = $state('');
@@ -26,18 +29,21 @@
     function prevClick() {
         if ((ymd as string).length !== 8) return;
         changeDate(-1);
+        dateCounter.prev();
     }
 
     // 다음 날짜로 이동
     function nextClick() {
         if ((ymd as string).length !== 8) return;
         changeDate(1);
+        dateCounter.next();
     }
 
     // 오늘 날짜로 이동
     function todayClick() {
         ymd = todayYmd();
         fetchDiary(ymd as string);
+        dateCounter.today();
     }
 
     // 날짜 변경 함수
@@ -139,10 +145,12 @@
 <form>
     <div class="date-area">
         <!-- <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8"> -->
-        <InputYmd {ymd} />
-        <button type="button" class="icon-button" aria-label="Previous" title="요일">
+        <span class="display-date">
+        {dateCounter.displayYmd}
+        </span>
+        <!-- <button type="button" class="icon-button" aria-label="Previous" title="요일">
             <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd as string) ? 'red': 'blue'} hanja={true} />
-        </button>
+        </button> -->
 
         <button type="button" class="icon-button" aria-label="Previous" title="이전" onclick={prevClick}>
             <i class="fas fa-arrow-left"></i>
