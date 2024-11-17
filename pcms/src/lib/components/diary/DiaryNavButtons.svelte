@@ -16,9 +16,9 @@
 
 
 <div class="button-group">
-  <button onclick={prevClick} title="previous ">◁</button>
-  <button onclick={currentClick} title="{hometext}">{hometext}</button>
-  <button onclick={nextClick} title="next">▷</button>
+  <button onclick={prevClick} title="previous " aria-label="previous"><i class="fa-solid fa-square-caret-left"></i></button>
+  <button onclick={currentClick} title="{hometext}" aria-label="today"><i class="fa-solid fa-calendar-day"></i></button>
+  <button onclick={nextClick} title="next" aria-label="next"><i class="fa-solid fa-square-caret-right"></i></button>
 </div>
 
 <style>

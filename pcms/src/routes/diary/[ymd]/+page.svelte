@@ -17,14 +17,22 @@
   // });
 
 </script>
-<div>
-  <button onclick={()=>{dateCounter.prev(); ymd=dateCounter.ymd}}>-</button>
-  <button onclick={()=>{dateCounter.today(); ymd=dateCounter.ymd}}>today</button>
-  <button onclick={()=>{dateCounter.next(); ymd=dateCounter.ymd}}>+</button>
+<div class="button-group">
+  <button onclick={()=>{dateCounter.prev(); ymd=dateCounter.ymd}}>◁</button>
+  <button onclick={()=>{dateCounter.today(); ymd=dateCounter.ymd}}>○</button>
+  <button onclick={()=>{dateCounter.next(); ymd=dateCounter.ymd}}>▷</button>
+  <button onclick={()=>{ history.back(); }} aria-label="go list"><i class="fa-solid fa-list"></i></button>
 </div>
 <div>
   <DiaryView ymd={ymd}/>
 </div>
 <style>
-
+  .button-group {
+      display: flex;
+      gap: 0.2rem;
+  }
+  button {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+  }
 </style>
