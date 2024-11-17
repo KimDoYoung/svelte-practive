@@ -29,7 +29,8 @@ export class DateCounter  {
   })
   yoilType = YoilEnum.None // 요일표시 enum
 
-  constructor(yoilType = YoilEnum.None) {
+  constructor(ymd: Ymd, yoilType = YoilEnum.None) {
+    this.ymd = ymd
     this.yoilType = yoilType
   }
 
