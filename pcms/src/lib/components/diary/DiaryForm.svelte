@@ -17,10 +17,11 @@
 	import InputYmd from '../common/InputYmd.svelte';
   import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
 
-	let dateCounter = new DateCounter(YoilEnum.Hangul);
+  let {ymd}  = $props(); // Initialize with a valid date string
+
+	let dateCounter = new DateCounter(ymd, YoilEnum.Hangul);
 
     //export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
-    let {ymd = ''} = $props();
     let summary = $state('');
     let content = $state('');
     let message = $state('');

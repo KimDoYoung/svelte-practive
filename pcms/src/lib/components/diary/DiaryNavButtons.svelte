@@ -3,10 +3,9 @@
     nextClick: () => void;
     currentClick: () => void;
     prevClick: () => void;
-    hometext: string;
   }
 
-  let { nextClick, prevClick, currentClick, hometext="Current" } : buttonClickProps = $props() 
+  let { nextClick, prevClick, currentClick} : buttonClickProps = $props() 
  
 
 </script>
@@ -17,14 +16,14 @@
 
 <div class="button-group">
   <button onclick={prevClick} title="previous " aria-label="previous"><i class="fa-solid fa-square-caret-left"></i></button>
-  <button onclick={currentClick} title="{hometext}" aria-label="today"><i class="fa-solid fa-calendar-day"></i></button>
+  <button onclick={currentClick} title="home" aria-label="today"><i class="fa-solid fa-calendar-day"></i></button>
   <button onclick={nextClick} title="next" aria-label="next"><i class="fa-solid fa-square-caret-right"></i></button>
 </div>
 
 <style>
   .button-group {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.2rem;
   }
   button {
       padding: 0.5rem 1rem;

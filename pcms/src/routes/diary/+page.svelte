@@ -80,7 +80,6 @@
             nextClick={nextClickPage} 
             prevClick={prevClickPage}
             currentClick={currentClickPage}
-            hometext="Current"
           />           
         </div>
         {/if}
@@ -102,22 +101,11 @@
         margin-bottom: 10px;   
         gap: 10px; /* 아이템 간 X축 간격 설정 */
     }
-    .control-icon{
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        background-color: #6ecefa;
-        color: white;
-        border: none;
-        border-radius: 10%;
-        cursor: pointer;
-    }
+
     .diary-summary {
         text-align: left;
         margin: 0;
+        font-size: smaller;
     }
     .diary-content {
         text-align: left;

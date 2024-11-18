@@ -9,7 +9,10 @@
     <section class="content">
         <h1>Welcome to the Main Page</h1>
         <p>This is the main content of the page.</p>
-        <AttachUploader target="dairy" ymd="20241117"/>
+        <div class="content">
+            <AttachUploader target="일기" ymd="20241117"/>
+        
+        
     </section>
 </div>
 

@@ -2,7 +2,9 @@
 <script lang="ts">
   import { postFetchMulti}   from '$lib/api';
   import type { Attachment, Ymd } from '$lib/types';
-  let { target = 'dairy', ymd='' } = $props();
+  import { displayYmd } from '$lib/utils';
+  let { target = '日志', ymd='' } = $props();
+  let ymdHuman = $derived(displayYmd(ymd,true))
   const upload = async () => {
     const fileInput = document.getElementById('file') as HTMLInputElement;
     if (!fileInput.files || fileInput.files.length === 0) {
@@ -13,7 +15,7 @@
     const data = {
         files, // 여러 파일 배열 추가
     };
-    let url = target == 'dairy' ? `/diary/attachments/${ymd}` : 'attach';
+    let url = target == '日志' ? `/diary/attachments/${ymd}` : 'attach';
     try {
         const response = await postFetchMulti<Attachment[]>(
             url, // 서버의 업로드 API 엔드포인트
@@ -28,7 +30,7 @@
     }
   }
 </script>
-<p>{ymd}</p>
+<h2>첨부파일 업로더 {target} : {ymdHuman}</h2>
 <input type="file" id="file" name="file" accept="image/*" multiple>
 <button onclick="{upload}">Upload</button>
 <style>
