@@ -3,8 +3,11 @@
   import { postFetchMulti}   from '$lib/api';
   import type { Attachment, Ymd } from '$lib/types';
   import { displayYmd } from '$lib/utils';
-  let { target = '日志', ymd='' } = $props();
+  import { ModalManager } from './ModalManager.svelte';
+
+  let { target = '日志', ymd='', modalId='' } = $props();
   let ymdHuman = $derived(displayYmd(ymd,true))
+
   const upload = async () => {
     const fileInput = document.getElementById('file') as HTMLInputElement;
     if (!fileInput.files || fileInput.files.length === 0) {
@@ -29,9 +32,27 @@
         console.error('업로드 중 오류 발생:', error);
     }
   }
+  let modalManager = new ModalManager();
+  const toggleModal = (event: Event) => {
+    modalManager.toggleModal(event);
+  };
 </script>
-<h2>첨부파일 업로더 {target} : {ymdHuman}</h2>
-<input type="file" id="file" name="file" accept="image/*" multiple>
-<button onclick="{upload}">Upload</button>
+<dialog id="{modalId}">
+<article>
+  <header>
+    <a href="#none" aria-label="Close"  rel="prev" data-target="{modalId}" onclick={(event) => toggleModal(event)}></a>
+    <h3>첨부파일 업로더 {target} : {ymdHuman}</h3>  
+  </header>
+  <p>
+    파일을 선택해주세요.
+    <input type="file" id="file" name="file" accept="image/*" multiple>
+  </p>
+  <footer>
+    <button class="secondary" data-target="{modalId}" onclick={(event) => toggleModal(event)}>Cancel</button>   
+    <button onclick="{upload}">Upload</button>
+  </footer>
+</article>
+</dialog>
+
 <style>
 </style>
