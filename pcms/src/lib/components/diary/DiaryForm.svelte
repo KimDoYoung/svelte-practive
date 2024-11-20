@@ -10,137 +10,151 @@
   import type {DiaryResponse, DiaryUpdateRequest} from '$lib/types';
   import { ApiError } from '$lib/errors';
   import MyMessage from '$lib/components/common/MyMessage.svelte';
-	import YoilIcon from '../common/YoilIcon.svelte';
-	import { isWeekend, todayYmd } from '$lib/utils';
 
   import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
-	import InputYmd from '../common/InputYmd.svelte';
   import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
+	import { generateHashCode, todayYmd } from '$lib/utils';
 
   let {ymd}  = $props(); // Initialize with a valid date string
-
+  
 	let dateCounter = new DateCounter(ymd, YoilEnum.Hangul);
 
-    //export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
-    let summary = $state('');
-    let content = $state('');
-    let message = $state('');
-    // let ymd = $state(ymd1);
-    // 이전 날짜로 이동
-    function prevClick() {
-        if ((ymd as string).length !== 8) return;
-        changeDate(-1);
-        dateCounter.prev();
-    }
+  //export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
+  let summary = $state('');
+  let content = $state('');
+  let message = $state('');
+  let fetchedHashCode = $state(0);
+  let changed = $derived(()=>{
+    const newHashCode = generateHashCode(summary + content);
+    return newHashCode !== fetchedHashCode;
+  });
+  // let ymd = $state(ymd1);
+  // 이전 날짜로 이동
+  function prevClick() {
+      if ((ymd as string).length !== 8) return;
+      if (changed()) {
+        saveClick();
+      } 
+      changeDate(-1);
+      dateCounter.prev();
+  }
 
-    // 다음 날짜로 이동
-    function nextClick() {
-        if ((ymd as string).length !== 8) return;
-        changeDate(1);
-        dateCounter.next();
-    }
+  // 다음 날짜로 이동
+  function nextClick() {
+    if ((ymd as string).length !== 8) return;
+    if (changed()) {
+      saveClick();
+    } 
+    changeDate(1);
+    dateCounter.next();
+  }
 
-    // 오늘 날짜로 이동
-    function todayClick() {
-        ymd = todayYmd();
-        fetchDiary(ymd as string);
-        dateCounter.today();
-    }
+  // 오늘 날짜로 이동
+  function todayClick() {
+    if (changed()) {
+        saveClick();
+    }      
+    ymd = todayYmd();
+    fetchDiary(ymd as string);
+    dateCounter.today();
+  }
 
-    // 날짜 변경 함수
-    function changeDate(days: number) {
-        let ymd1 = ymd as string;
-        const year = parseInt(ymd1.slice(0, 4));
-        const month = parseInt(ymd1.slice(4, 6)) - 1;
-        const day = parseInt(ymd1.slice(6, 8));
-        const date = new Date(year, month, day);
-        date.setDate(date.getDate() + days);
-        ymd1 = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}` as Ymd;
-        
-        fetchDiary(ymd1);
-    }
-    
-    async function fetchDiary(ymd: string) {
-        try {
-            const response = await getFetch<DiaryResponse>(`diary/${ymd}`);
-            if(response) {
-                summary = response.summary?? "";
-                content = response.content?? "";
-                // Scroll to the bottom of the textarea
-                const textarea = document.getElementById('content');
-                if (textarea) {
-                    textarea.scrollTop = textarea.scrollHeight;
-                    textarea.focus();
-                }
-            }
-            console.log(response);
-        } catch (error) {
-            console.error('Failed to fetch diary:', error);
-            summary = "";
-            content = "";            
-        }
-    }
-    // 저장 버튼 클릭 시 호출되는 함수
-    async function saveClick() {
-        try {
-            console.log('saveClick:', ymd, summary, content);
-            // 다이어리 데이터 조회
-            await getFetch<DiaryResponse>(`diary/${ymd}`);
+  // 날짜 변경 함수
+  function changeDate(days: number) {
+      let ymd1 = ymd as string;
+      const year = parseInt(ymd1.slice(0, 4));
+      const month = parseInt(ymd1.slice(4, 6)) - 1;
+      const day = parseInt(ymd1.slice(6, 8));
+      const date = new Date(year, month, day);
+      date.setDate(date.getDate() + days);
+      ymd1 = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}` as Ymd;
+      
+      fetchDiary(ymd1);
+      ymd = ymd1;
+  }
+  
+  async function fetchDiary(ymd: string) {
+      try {
+          const response = await getFetch<DiaryResponse>(`diary/${ymd}`);
+          if(response) {
+              summary = response.summary?? "";
+              content = response.content?? "";
+              fetchedHashCode = generateHashCode(summary + content);
+              // Scroll to the bottom of the textarea
+              const textarea = document.getElementById('content');
+              if (textarea) {
+                  textarea.scrollTop = textarea.scrollHeight;
+                  textarea.focus();
+              }
+          }
+          console.log(response);
+      } catch (error) {
+          console.error('Failed to fetch diary:', error);
+          summary = "";
+          content = "";            
+      }
+  }
+  // 저장 버튼 클릭 시 호출되는 함수
+  async function saveClick() {
+      try {
+          console.log('saveClick:', ymd, summary, content);
+          // 다이어리 데이터 조회
+          await getFetch<DiaryResponse>(`diary/${ymd}`);
 
-            // 데이터가 존재하면 PUT 요청으로 업데이트
-            const updateData: DiaryUpdateRequest = {
-                content: content || null,
-                summary: summary || null,
-            };
-            await putFetch(`diary/${ymd}`, updateData);
-            message="info:기존 데이터를 성공적으로 업데이트했습니다.";
-        } catch (error) {
-            console.error('날짜에 대한 데이터가 없어서 POST로 추가합니다:', error);
-            if (error instanceof ApiError) {
-                console.log('status:', error.status);
-            }
+          // 데이터가 존재하면 PUT 요청으로 업데이트
+          const updateData: DiaryUpdateRequest = {
+              content: content || null,
+              summary: summary || null,
+          };
+          await putFetch(`diary/${ymd}`, updateData);
+          message="info:기존 데이터를 성공적으로 업데이트했습니다.";
+      } catch (error) {
+          console.error('날짜에 대한 데이터가 없어서 POST로 추가합니다:', error);
+          if (error instanceof ApiError) {
+              console.log('status:', error.status);
+          }
 
-            if (error instanceof ApiError && error.status === 404) {
-                // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
-                if (!content && !summary) {
-                    message = "error:내용이나 요약 중 하나는 입력해야 합니다.";
-                    return;
-                }
-                const createData = {
-                    ymd, 
-                    content: content || null,
-                    summary: summary || null,
-                    file : []
-                };
-                console.log('createData:', createData);
-                await postFetchMulti(`diary`, createData);
-                message="info:새로운 데이터를 성공적으로 생성했습니다.";
-            } else {
-                console.error("저장 중 오류 발생:", error);
-                message="error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.";
-            }
-        }
-    }
-    // keydown 이벤트 핸들러
-    function handleKeyDown(event: KeyboardEvent) {
-        if (event.ctrlKey && event.key === 's') {
-            event.preventDefault(); // 브라우저 기본 저장 기능 막기
-            saveClick();            // saveClick 함수 실행
-        }else if (event.ctrlKey && event.key === 'b') {
-            event.preventDefault(); // 기본 동작 방지
-            const textarea = event.target as HTMLTextAreaElement;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            const newText = `**${selectedText}**`;
-            textarea.setRangeText(newText, start, end, 'end');
-            const inputEvent = new Event('input', { bubbles: true });
-            textarea.dispatchEvent(inputEvent);            
-        }
-    }
-    $effect(() => {
-        fetchDiary(ymd as string);
-    });
+          if (error instanceof ApiError && error.status === 404) {
+              // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
+              if (!content && !summary) {
+                  message = "error:내용이나 요약 중 하나는 입력해야 합니다.";
+                  return;
+              }
+              const createData = {
+                  ymd, 
+                  content: content || null,
+                  summary: summary || null,
+                  file : []
+              };
+              console.log('createData:', createData);
+              await postFetchMulti(`diary`, createData);
+              message="info:새로운 데이터를 성공적으로 생성했습니다.";
+          } else {
+              console.error("저장 중 오류 발생:", error);
+              message="error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.";
+          }
+      }
+  }
+  // keydown 이벤트 핸들러
+  function handleKeyDown(event: KeyboardEvent) {
+      if (event.ctrlKey && event.key === 's') {
+          event.preventDefault(); // 브라우저 기본 저장 기능 막기
+          saveClick();            // saveClick 함수 실행
+      }else if (event.ctrlKey && event.key === 'b') {
+          event.preventDefault(); // 기본 동작 방지
+          const textarea = event.target as HTMLTextAreaElement;
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          const selectedText = textarea.value.substring(start, end);
+          const newText = `**${selectedText}**`;
+          textarea.setRangeText(newText, start, end, 'end');
+          const inputEvent = new Event('input', { bubbles: true });
+          textarea.dispatchEvent(inputEvent);            
+      }
+  }
+  $effect(() => {
+      fetchDiary(ymd as string);
+  });
 </script>
 
 <form>

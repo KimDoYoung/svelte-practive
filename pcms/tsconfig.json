@@ -10,7 +10,11 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
-        "types": ["svelte"]
+    "types": ["svelte"]
+    // "baseUrl": ".",
+    // "paths": {
+    //   "$lib/*": ["src/lib/*"]
+    //}        
         // "module": "Node16",
 		// "moduleResolution": "Node16"
 	}

@@ -1,5 +1,32 @@
 import type { Ymd } from "$lib/types/ymd";
 
+export function generateHashCode(input: string) {
+  let hash = 0;
+  if (input.length === 0) return hash;
+
+  for (let i = 0; i < input.length; i++) {
+    const chr = input.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // 32비트 정수로 변환
+  }
+
+  return hash;
+}
+
+// 런타임 검사 함수
+export function isValidYmd(input: string): input is Ymd {
+  const ymdRegex = /^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/;
+  return ymdRegex.test(input);
+}
+
+// 변환 함수
+export function toYmd(input: string): Ymd {
+  if (isValidYmd(input)) {
+    return input; // input이 Ymd 형식으로 확인되면 그대로 반환
+  }
+  throw new Error(`Invalid Ymd format: ${input}`);
+}
+
 /**
  * ymd의 요일 문자를 반환
  * @param ymd yyyymmdd 형식의 날짜 문자열
@@ -18,16 +45,21 @@ export function yoil(ymd: Ymd, hanja=false): string {
  * @param ymd 
  * @returns 토요일인 경우 true, 나머지는 false
  */
-export function isSaterday(ymd: Ymd): boolean {
-    const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
-    return date.getDay() === 6;
+export function isSaterday(ymd: string | Ymd): boolean {
+  if (typeof ymd === 'string') {
+    if (!isValidYmd(ymd)) {
+      throw new Error(`Invalid Ymd format: ${ymd}`);
+    }
+  }  
+  const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
+  return date.getDay() === 6;
 }
 /**
  * 일요일인지 여부를 반환
  * @param ymd Ymd타입
  * @returns 일요일 경우 true, 나머지는 false
  */
-export function isSunday(ymd: Ymd): boolean {
+export function isSunday(ymd: Ymd | string): boolean {
     const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
     return date.getDay() === 0;
 }

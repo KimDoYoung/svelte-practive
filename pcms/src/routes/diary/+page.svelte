@@ -4,7 +4,7 @@
 	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
   import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
   import type { DiaryPageModel, DiaryResponse } from '$lib/types';
-  import { displayYmd, displayContent, todayYmd } from '$lib/utils';
+  import { displayYmd, isSaterday, isSunday, todayYmd } from '$lib/utils';
   import { onMount } from 'svelte';
 
 	let diaries: DiaryResponse[]=[];
@@ -40,16 +40,15 @@
 </script>
 
 <div class="diary-list">
-    <section class="control-box">
-        <label>
-            <input type="checkbox" bind:checked={showList}/> List
-        </label>
-        <label>
-            <input type="checkbox" bind:checked={showForm}/> Form
-        </label>        
-        <!-- <DiarySearch /> -->
-    </section>
     <section class="content list-area">
+        <div class="control-box">
+          <label>
+            <input type="checkbox" bind:checked={showList}/> List
+          </label>
+          <label>
+              <input type="checkbox" bind:checked={showForm}/> Form
+          </label>        
+        </div>
         {#if showList}
         <div>
             {#if isLoading}
@@ -60,7 +59,15 @@
                 <ul>
                     {#each diaries as diary}
                         <li>
-                            <p class="diary-summary">{displayYmd(diary.ymd, true)} <a href="/diary/{diary.ymd}">{diary.summary}</a>
+                            <p class="diary-summary">
+                                {#if isSaterday(diary.ymd)}
+                                <span class="text-saterday">{displayYmd(diary.ymd, true)}</span>
+                                {:else if isSunday(diary.ymd)}
+                                <span class="text-sunday">{displayYmd(diary.ymd, true)}</span>
+                                {:else}
+                                <span>{displayYmd(diary.ymd, true)}</span>
+                                {/if}
+                                <a href="/diary/{diary.ymd}" class="anchor">{diary.summary}</a>
                                 {#if diary.attachments && diary.attachments.length > 0}
                                     <span>({diary.attachments.length})</span>
                                 {/if}
@@ -109,5 +116,22 @@
     }
     ul > li {
         list-style-type: none;
-    }      
+    }
+    .anchor {
+      text-decoration: none; /* 밑줄 제거 */
+      color: inherit; /* 링크 색상을 부모 요소에 따라 설정 */
+      padding: 0.2em 0.4em; /* 클릭 영역 확대 */
+      transition: background-color 0.2s ease; /* 부드러운 전환 효과 */
+    }
+
+    .anchor:hover {
+      background-color: rgba(0, 0, 0, 0.05); /* 엷은 회색 배경 */
+      border-radius: 4px; /* 모서리를 둥글게 */
+    } 
+    .text-saterday {
+        color: blue;
+    }
+    .text-sunday {
+        color: red;
+    }
 </style>
