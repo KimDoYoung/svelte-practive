@@ -12,7 +12,7 @@
     // message를 스토어로 정의합니다.
     //export let message = writable('');  
     //export let keepSec: number = 3;     
-    let { message = '', keepSec = 3 } = $props();
+    let { message , keepSec = 3 } = $props();
     let messageType = $state('info');           
     let timeout: ReturnType<typeof setTimeout>; 
 

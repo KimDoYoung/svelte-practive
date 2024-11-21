@@ -6,14 +6,13 @@
 =============================================== -->
 
 <script lang="ts">
-  import {getFetch,  postFetchMulti, putFetch} from '$lib/api';
   import type {DiaryResponse, DiaryUpdateRequest} from '$lib/types';
-  import { ApiError } from '$lib/errors';
-  import MyMessage from '$lib/components/common/MyMessage.svelte';
-
   import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
-  import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
-	import { displayYmd, generateHashCode, todayYmd } from '$lib/utils';
+  import { ApiError } from '$lib/errors';
+  import {getFetch,  postFetchMulti, putFetch} from '$lib/api';
+	import { generateHashCode, todayYmd } from '$lib/utils';
+  import Alert from '$lib/components/common/Alert.svelte';
+	import ColorDisplayYmd from '../common/ColorDisplayYmd.svelte';
 
   let {ymd}  = $props(); // Initialize with a valid date string
   
@@ -22,7 +21,7 @@
 
   let summary = $state('');
   let content = $state('');
-  let message = $state('');
+  
   // let fetchedHashCode = $state(0);
   // let changed = $derived(()=>{
   //   const newHashCode = generateHashCode(summary + content);
@@ -30,36 +29,49 @@
   // });
 
   let fetchedHashCode = 0;
-  let changed = false;
+  function changed() {
+    const newHashCode = generateHashCode(summary + content);
+    return newHashCode !== fetchedHashCode;
+  }
 
   // 이전 날짜로 이동
   function prevClick() {
       if ((ymd as string).length !== 8) return;
-      if (changed) {
-        saveClick();
-      } 
-      changeDate(-1);
-      // dateCounter.prev();
+      if (changed()) {
+        console.log('next button clicked changed true ' + ymd);
+        saveClick().then(() => {
+          changeDate(-1);
+        });
+      } else {
+        changeDate(-1);
+      }
   }
 
   // 다음 날짜로 이동
   function nextClick() {
     if ((ymd as string).length !== 8) return;
-    if (changed) {
-      saveClick();
-    } 
-    changeDate(1);
-    // dateCounter.next();
+    if (changed()) {
+      console.log('next button clicked changed true ' + ymd);
+      saveClick().then(() => {
+        changeDate(1);
+      });
+    }else {
+      changeDate(1);
+    }
   }
 
   // 오늘 날짜로 이동
   function todayClick() {
-    if (changed) {
-        saveClick();
-    }      
-    ymd = todayYmd();
-    fetchDiary(ymd as string);
-    // dateCounter.today();
+    if (changed()) {
+      console.log('today button clicked changed true ' + ymd);
+        saveClick().then(() => {
+          ymd = todayYmd();
+          fetchDiary(ymd as string);
+        });
+    } else {   
+      ymd = todayYmd();
+      fetchDiary(ymd as string);
+    }
   }
 
   // 날짜 변경 함수
@@ -94,7 +106,8 @@
       } catch (error) {
           console.error('Failed to fetch diary:', error);
           summary = "";
-          content = "";            
+          content = "";
+          fetchedHashCode = generateHashCode(summary + content);
       }
   }
   // 저장 버튼 클릭 시 호출되는 함수
@@ -109,16 +122,20 @@
               content: content || null,
               summary: summary || null,
           };
-          await putFetch(`diary/${ymd}`, updateData);
-          message="info:기존 데이터를 성공적으로 업데이트했습니다.";
+          await putFetch(`diary/${ymd}`, updateData).then((response) => {
+              console.log('response:', response);
+              alertRef?.showAlert("데이터를 성공적으로 업데이트했습니다.", "info", 1000);
+              fetchedHashCode = generateHashCode(summary + content);
+          });
+          
       } catch (error) {
           console.error('날짜에 대한 데이터가 없어서 POST로 추가합니다:', error);
 
           if (error instanceof ApiError && error.status === 404) {
               // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
               if (!content && !summary) {
-                  message = "error:내용이나 요약 중 하나는 입력해야 합니다.";
-                  return;
+                alertRef?.showAlert("내용이나 요약 중 하나는 입력해야 합니다.", "error", 1000);
+                return;
               }
               const createData = {
                   ymd, 
@@ -127,11 +144,14 @@
                   file : []
               };
               console.log('createData:', createData);
-              await postFetchMulti(`diary`, createData);
-              message="info:새로운 데이터를 성공적으로 생성했습니다.";
+              await postFetchMulti(`diary`, createData).then((response) => {
+                  console.log('response:', response);
+                  alertRef?.showAlert("데이터를 성공적으로 생성했습니다.", "info", 1000)
+                  fetchedHashCode = generateHashCode(summary + content);
+              });
           } else {
               console.error("저장 중 오류 발생:", error);
-              message="error:저장 중 오류가 발생했습니다. 다시 시도해 주세요.";
+              alertRef?.showAlert("저장 중 오류가 발생했습니다. 다시 시도해 주세요.", "error", 1000);
           }
       }
   }
@@ -155,14 +175,13 @@
   $effect(() => {
       fetchDiary(ymd as string);
   });
+  let alertRef: Alert | null = null;
 </script>
 
 <form>
     <div class="date-area">
         <!-- <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8"> -->
-        <span class="display-date">
-          {displayYmd(ymd, true, true)}
-        </span>
+        <ColorDisplayYmd {ymd} />
         <!-- <button type="button" class="icon-button" aria-label="Previous" title="요일">
             <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd as string) ? 'red': 'blue'} hanja={true} />
         </button> -->
@@ -186,7 +205,7 @@
         <textarea name="content" id="content" bind:value={content} style="height:300px" onkeydown={handleKeyDown}></textarea>
     </div>
 </form>
-<MyMessage {message} keepSec={3}/>
+<Alert bind:this={alertRef}/>
 
 <style>
     /* date-area 전체 너비와 정렬 설정 */

@@ -5,15 +5,17 @@
 	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
   import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
   import type { DiaryPageModel, DiaryResponse } from '$lib/types';
-  import { displayYmd, isSaterday, isSunday, todayYmd } from '$lib/utils';
+  import { todayYmd } from '$lib/utils';
   import { onMount } from 'svelte';
+  
+  let today = todayYmd(); // 오늘 날짜를 가져옴
 
 	let diaries: DiaryResponse[]=[];
   let isLoading = true; // 로딩 상태 변수 추가
     
   let showForm = false;
   let showList = true;
-  let today = todayYmd(); // 오늘 날짜를 가져옴
+
   // API 호출 로직을 함수로 분리
   async function loadDiaries() {
       isLoading = true;
@@ -27,7 +29,7 @@
           isLoading = false;
       }
   }
-    // 페이지가 처음 로드될 때 호출
+  // 페이지가 처음 로드될 때 호출
   onMount(loadDiaries);
 
   function nextClickPage() {
@@ -38,6 +40,9 @@
   }
   function currentClickPage() {
     console.log('current page');
+  }
+  function dateClick(event: Event) {
+    console.log('date click:', event);
   }
 </script>
 
@@ -62,18 +67,11 @@
                     {#each diaries as diary}
                         <li>
                             <p class="diary-summary">
-                              <ColorDisplayYmd ymd={diary.ymd}/>
-                                <!-- {#if isSaterday(diary.ymd)}
-                                <span class="text-saterday">{displayYmd(diary.ymd, true)}</span>
-                                {:else if isSunday(diary.ymd)}
-                                <span class="text-sunday">{displayYmd(diary.ymd, true)}</span>
-                                {:else}
-                                <span>{displayYmd(diary.ymd, true)}</span>
-                                {/if} -->
-                                <a href="/diary/{diary.ymd}" class="anchor">{diary.summary}</a>
-                                {#if diary.attachments && diary.attachments.length > 0}
-                                    <span>({diary.attachments.length})</span>
-                                {/if}
+                              <ColorDisplayYmd ymd={diary.ymd} />
+                              <a href="/diary/{diary.ymd}" class="anchor">{diary.summary}</a>
+                              {#if diary.attachments && diary.attachments.length > 0}
+                                <span>({diary.attachments.length})</span>
+                              {/if}
                             </p>
                         </li>
                     {/each}

@@ -1,16 +1,31 @@
-<script>
+<script lang="ts">
   import { isSaterday, isSunday, displayYmd } from '$lib/utils';
-  // let ymd = $props();
-  let {ymd} = $props();
-  //export let ymd; // props로 전달된 값을 받음
+  type Props  = {
+    ymd: string;
+    dateClick? : (ymd: string) => void | undefined;
+  }
+  
+
+  let { ymd, dateClick} : Props = $props();
+
+  function clickDate(event: Event) {
+    if (dateClick) {
+      dateClick(ymd);
+    }
+  }
+
+
+
 </script>
+
 {#if ymd && isSaterday(ymd)}
-<span class="text-saterday">{displayYmd(ymd, true)}</span>
+  <a href="#none" onclick={(e)=>clickDate(e)}><span class="text-saterday">{displayYmd(ymd, true)}</span></a>
 {:else if ymd && isSunday(ymd)}
-<span class="text-sunday">{displayYmd(ymd, true)}</span>
+  <a href="#none" onclick={(e)=>clickDate(e)}><span class="text-sunday">{displayYmd(ymd, true)}</span></a>
 {:else if ymd }
-<span>{displayYmd(ymd, true)}</span>
+<a href="#none" onclick={(e)=>clickDate(e)}><span>{displayYmd(ymd, true)}</span></a>
 {/if}
+
 <style>
   .text-saterday {
     color: blue;
