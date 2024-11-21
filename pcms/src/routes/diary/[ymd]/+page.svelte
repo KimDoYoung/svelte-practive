@@ -9,8 +9,9 @@
   import { page } from '$app/stores';
 	import type { Ymd } from '$lib/types';
 
-  let ymd = $state( $page.params.ymd);
-  let dateCounter = $state<DateCounter>(new DateCounter(ymd as Ymd,YoilEnum.Hangul));
+  //let ymd = $state( $page.params.ymd);
+  let ymd = $page.params.ymd;
+  let dateCounter =  new DateCounter(ymd as Ymd, YoilEnum.Hangul);// $state<DateCounter>(new DateCounter(ymd as Ymd,YoilEnum.Hangul));
   // $effect(() => {
   //   ymd = $page.params.ymd;
   //   dateCounter = new DateCounter(ymd as Ymd,YoilEnum.Hangul);

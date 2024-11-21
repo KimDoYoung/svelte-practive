@@ -13,50 +13,53 @@
 
   import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
   import { DateCounter, YoilEnum } from '$lib/components/common/DateCounter.svelte';
-	import { generateHashCode, todayYmd } from '$lib/utils';
+	import { displayYmd, generateHashCode, todayYmd } from '$lib/utils';
 
   let {ymd}  = $props(); // Initialize with a valid date string
   
-	let dateCounter = new DateCounter(ymd, YoilEnum.Hangul);
+	// let dateCounter = new DateCounter(ymd, YoilEnum.Hangul);
 
-  //export let ymd: Ymd = todayYmd(); // Initialize with a valid date string
+
   let summary = $state('');
   let content = $state('');
   let message = $state('');
-  let fetchedHashCode = $state(0);
-  let changed = $derived(()=>{
-    const newHashCode = generateHashCode(summary + content);
-    return newHashCode !== fetchedHashCode;
-  });
-  // let ymd = $state(ymd1);
+  // let fetchedHashCode = $state(0);
+  // let changed = $derived(()=>{
+  //   const newHashCode = generateHashCode(summary + content);
+  //   return newHashCode !== fetchedHashCode;
+  // });
+
+  let fetchedHashCode = 0;
+  let changed = false;
+
   // 이전 날짜로 이동
   function prevClick() {
       if ((ymd as string).length !== 8) return;
-      if (changed()) {
+      if (changed) {
         saveClick();
       } 
       changeDate(-1);
-      dateCounter.prev();
+      // dateCounter.prev();
   }
 
   // 다음 날짜로 이동
   function nextClick() {
     if ((ymd as string).length !== 8) return;
-    if (changed()) {
+    if (changed) {
       saveClick();
     } 
     changeDate(1);
-    dateCounter.next();
+    // dateCounter.next();
   }
 
   // 오늘 날짜로 이동
   function todayClick() {
-    if (changed()) {
+    if (changed) {
         saveClick();
     }      
     ymd = todayYmd();
     fetchDiary(ymd as string);
-    dateCounter.today();
+    // dateCounter.today();
   }
 
   // 날짜 변경 함수
@@ -110,9 +113,6 @@
           message="info:기존 데이터를 성공적으로 업데이트했습니다.";
       } catch (error) {
           console.error('날짜에 대한 데이터가 없어서 POST로 추가합니다:', error);
-          if (error instanceof ApiError) {
-              console.log('status:', error.status);
-          }
 
           if (error instanceof ApiError && error.status === 404) {
               // 404 오류가 발생하면 POST 요청으로 새 데이터 생성
@@ -161,7 +161,7 @@
     <div class="date-area">
         <!-- <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8"> -->
         <span class="display-date">
-        {dateCounter.displayYmd}
+          {displayYmd(ymd, true, true)}
         </span>
         <!-- <button type="button" class="icon-button" aria-label="Previous" title="요일">
             <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd as string) ? 'red': 'blue'} hanja={true} />

@@ -11,7 +11,8 @@ export enum YoilEnum {
  */
 export class DateCounter  {
 
-  ymd = $state(todayYmd()) // YYYYMMDD
+  // ymd = $state(todayYmd()) // YYYYMMDD
+  ymd = ''
   displayYmd = $derived.by(()=>{
     let d = this.ymd.slice(0, 4)+'-'+this.ymd.slice(4, 6)+'-'+this.ymd.slice(6, 8)
     if (this.yoilType === YoilEnum.Hangul) {

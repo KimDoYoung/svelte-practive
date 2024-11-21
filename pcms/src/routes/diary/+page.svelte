@@ -1,6 +1,7 @@
 <!-- 파일명 routes/diary/+page.svelte-->
 <script lang="ts">
   import { getFetch } from '$lib/api';
+	import ColorDisplayYmd from '$lib/components/common/ColorDisplayYmd.svelte';
 	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
   import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
   import type { DiaryPageModel, DiaryResponse } from '$lib/types';
@@ -18,7 +19,8 @@
       isLoading = true;
       try {
           const response = await getFetch<DiaryPageModel>(`/diaries`);
-          diaries = [...diaries, ...response.data]; // 새로운 데이터를 기존 데이터에 추가
+          diaries = [...response.data]; // 새로운 데이터를 기존 데이터에 추가
+          console.log('diaries:', diaries);
       } catch (error) {
           console.error("데이터를 가져오는 중 오류 발생:", error);
       } finally {
@@ -60,13 +62,14 @@
                     {#each diaries as diary}
                         <li>
                             <p class="diary-summary">
-                                {#if isSaterday(diary.ymd)}
+                              <ColorDisplayYmd ymd={diary.ymd}/>
+                                <!-- {#if isSaterday(diary.ymd)}
                                 <span class="text-saterday">{displayYmd(diary.ymd, true)}</span>
                                 {:else if isSunday(diary.ymd)}
                                 <span class="text-sunday">{displayYmd(diary.ymd, true)}</span>
                                 {:else}
                                 <span>{displayYmd(diary.ymd, true)}</span>
-                                {/if}
+                                {/if} -->
                                 <a href="/diary/{diary.ymd}" class="anchor">{diary.summary}</a>
                                 {#if diary.attachments && diary.attachments.length > 0}
                                     <span>({diary.attachments.length})</span>
@@ -128,10 +131,10 @@
       background-color: rgba(0, 0, 0, 0.05); /* 엷은 회색 배경 */
       border-radius: 4px; /* 모서리를 둥글게 */
     } 
-    .text-saterday {
+    /* .text-saterday {
         color: blue;
     }
     .text-sunday {
         color: red;
-    }
+    } */
 </style>
