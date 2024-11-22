@@ -5,8 +5,15 @@
   import { displayYmd } from '$lib/utils';
   import { ModalManager } from './ModalManager.svelte';
 
+  const urlMap = new Map<string, string>([
+    ['日志', '/diary/attachments'],
+    ['일기', '/diary/attachments'],
+    ['장비', '/equipment'],
+  ]);
+
   let { target = '日志', ymd='', modalId='' } = $props();
   let ymdHuman = $derived(displayYmd(ymd,true))
+
 
   const upload = async () => {
     const fileInput = document.getElementById('file') as HTMLInputElement;
@@ -18,7 +25,8 @@
     const data = {
         files, // 여러 파일 배열 추가
     };
-    let url = target == '日志' ? `/diary/attachments/${ymd}` : 'attach';
+    let url = urlMap.get(target) + '/' + ymd || 'attach';
+    console.log('url:', url);
     try {
         const response = await postFetchMulti<Attachment[]>(
             url, // 서버의 업로드 API 엔드포인트

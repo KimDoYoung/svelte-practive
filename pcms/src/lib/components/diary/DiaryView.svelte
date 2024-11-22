@@ -36,8 +36,13 @@
     <p class="diary-content">{@html displayContent(diary.content)}</p>
     {#if diary.attachments}
       <div class="container grid-responsive"> 
-        {#each diary.attachments as attachment}
+        {#each diary.attachments as attachment, index}
+          <div class="diary-image-box">
             <img src='{attachment.url}' alt='{diary.ymd}  첨부이미지' />
+            <div>
+              <a href="#none" aria-label="첨부파일"><i class="fa-solid fa-trash-can trash-icon"></i></a>
+            </div>  
+          </div>  
         {/each}
       </div>  
     {/if}
@@ -52,11 +57,14 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 최소 300px */
   }
 
-  .grid-responsive img {
+  .grid-responsive .diary-image-box {
     width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 8px; /* 커스텀 반경 */
+  }
+  .trash-icon {
+    color: #ff4d4d; /* 밝은 빨간색 */
   }
   .diary-summary{
     font-size: large;
