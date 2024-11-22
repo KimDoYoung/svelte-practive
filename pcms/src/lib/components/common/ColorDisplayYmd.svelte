@@ -1,29 +1,29 @@
 <script lang="ts">
   import { isSaterday, isSunday, displayYmd } from '$lib/utils';
-  type Props  = {
-    ymd: string;
-    dateClick? : (ymd: string) => void | undefined;
-  }
+  // type Props  = {
+  //   ymd: string;
+  //   dateClick? : (ymd: string) => void | undefined;
+  // }
   
 
-  let { ymd, dateClick} : Props = $props();
+  let { ymd}  = $props();
 
-  function clickDate(event: Event) {
-    if (dateClick) {
-      dateClick(ymd);
-    }
-  }
+  // function clickDate(event: Event) {
+  //   if (dateClick) {
+  //     dateClick(ymd);
+  //   }
+  // }
 
 
 
 </script>
 
 {#if ymd && isSaterday(ymd)}
-  <a href="#none" onclick={(e)=>clickDate(e)}><span class="text-saterday">{displayYmd(ymd, true)}</span></a>
+  <span class="text-saterday">{displayYmd(ymd, true)}</span>
 {:else if ymd && isSunday(ymd)}
-  <a href="#none" onclick={(e)=>clickDate(e)}><span class="text-sunday">{displayYmd(ymd, true)}</span></a>
+  <span class="text-sunday">{displayYmd(ymd, true)}</span>
 {:else if ymd }
-<a href="#none" onclick={(e)=>clickDate(e)}><span>{displayYmd(ymd, true)}</span></a>
+  <span>{displayYmd(ymd, true)}</span>
 {/if}
 
 <style>

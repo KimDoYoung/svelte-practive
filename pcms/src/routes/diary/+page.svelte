@@ -6,6 +6,7 @@
   import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
   import type { DiaryPageModel, DiaryResponse } from '$lib/types';
   import { todayYmd } from '$lib/utils';
+  import { toYmd } from '$lib/utils';
   import { onMount } from 'svelte';
   
   let today = todayYmd(); // 오늘 날짜를 가져옴
@@ -32,20 +33,16 @@
   // 페이지가 처음 로드될 때 호출
   onMount(loadDiaries);
 
-  function nextClickPage() {
+  function nextClick() {
     console.log('next page');
   }
-  function prevClickPage() {
+  function prevClick() {
     console.log('prev page');
   }
-  function currentClickPage() {
+  function currentClick() {
     console.log('current page');
   }
-  function dateClick(event: Event) {
-    console.log('date click:', event);
-  }
-</script>
-
+</script>  
 <div class="diary-list">
     <section class="content list-area">
         <div class="control-box">
@@ -67,7 +64,7 @@
                     {#each diaries as diary}
                         <li>
                             <p class="diary-summary">
-                              <ColorDisplayYmd ymd={diary.ymd} />
+                              <a href="#none" class="anchor" onclick={()=>{today= toYmd(diary.ymd)}}><ColorDisplayYmd ymd={diary.ymd} /></a>
                               <a href="/diary/{diary.ymd}" class="anchor">{diary.summary}</a>
                               {#if diary.attachments && diary.attachments.length > 0}
                                 <span>({diary.attachments.length})</span>
@@ -79,20 +76,16 @@
             {/if}
         </div>
         <div class="control-box">
-          <DiaryNavButtons 
-            nextClick={nextClickPage} 
-            prevClick={prevClickPage}
-            currentClick={currentClickPage}
-          />           
+          <DiaryNavButtons {nextClick} {prevClick} {currentClick} />           
         </div>
         {/if}
     </section>
 
+    {#if showForm}
     <section class="content form-area">
-        {#if showForm}
-            <DiaryForm ymd={today} />
-        {/if}
+      <DiaryForm ymd={today} />
     </section>
+    {/if}
 </div>
 
 <style>
@@ -129,10 +122,4 @@
       background-color: rgba(0, 0, 0, 0.05); /* 엷은 회색 배경 */
       border-radius: 4px; /* 모서리를 둥글게 */
     } 
-    /* .text-saterday {
-        color: blue;
-    }
-    .text-sunday {
-        color: red;
-    } */
 </style>

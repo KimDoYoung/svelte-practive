@@ -26,7 +26,15 @@ export function toYmd(input: string): Ymd {
   }
   throw new Error(`Invalid Ymd format: ${input}`);
 }
-
+export function toStr(ymd: Ymd): string {
+  if (ymd === '') {
+      throw new Error('Ymd is an empty string');
+  }
+  if (!/^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/.test(ymd)) {
+      throw new Error(`Invalid Ymd format: ${ymd}`);
+  }
+  return ymd;
+}
 /**
  * ymd의 요일 문자를 반환
  * @param ymd yyyymmdd 형식의 날짜 문자열
