@@ -5,7 +5,7 @@
     <DiaryView {ymd} />
 =============================================== -->
 <script lang="ts">
-    import { getFetch } from '$lib/api';
+    import { deleteFetch, getFetch } from '$lib/api';
     import type { DiaryDetailResponse, Ymd } from '$lib/types';
 	  import { displayContent, displayYmd } from '$lib/utils';
 
@@ -28,7 +28,19 @@
           diary = undefined;
           console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
         }
-    }    
+    } 
+    function deleteAttachImg(node_id:string){
+      if (confirm('첨부 이미지를 삭제하시겠습니까?')){
+        let url = `diary/attachments/${ymd}/${node_id}`;
+        deleteFetch(url).then((response)=>{
+          console.log('response:', response);
+          fetchDiary(ymd);
+        }).catch((error)=>{
+          console.error('첨부 이미지 삭제 중 오류 발생:', error);
+        });
+      }
+
+    }   
 
 </script>
 {#if diary}
@@ -40,7 +52,7 @@
           <div class="diary-image-box">
             <img src='{attachment.url}' alt='{diary.ymd}  첨부이미지' />
             <div>
-              <a href="#none" aria-label="첨부파일"><i class="fa-solid fa-trash-can trash-icon"></i></a>
+              <a href="#none" aria-label="첨부파일" onclick={()=>deleteAttachImg(attachment.node_id)} ><i class="fa-solid fa-trash-can trash-icon"></i></a>
             </div>  
           </div>  
         {/each}

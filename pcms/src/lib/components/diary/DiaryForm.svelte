@@ -14,20 +14,12 @@
   import Alert from '$lib/components/common/Alert.svelte';
 	import ColorDisplayYmd from '../common/ColorDisplayYmd.svelte';
 
-  let {ymd}  = $props(); // Initialize with a valid date string
+  let {ymd}  = $props(); 
   
-	// let dateCounter = new DateCounter(ymd, YoilEnum.Hangul);
-
-
-  let summary = $state('');
+	  let summary = $state('');
   let content = $state('');
   
-  // let fetchedHashCode = $state(0);
-  // let changed = $derived(()=>{
-  //   const newHashCode = generateHashCode(summary + content);
-  //   return newHashCode !== fetchedHashCode;
-  // });
-
+  
   let fetchedHashCode = 0;
   function changed() {
     const newHashCode = generateHashCode(summary + content);
@@ -243,11 +235,10 @@
         width: 40px;
         height: 40px; /* 버튼과 input을 동일한 높이로 */
         border: none;
-        background-color: #007bff;
         color: white;
         border-radius: 4px;
         cursor: pointer;
-        background-color: #ccc;
+        background-color: #526b69;
     }
     .text-button{
         display: flex;
