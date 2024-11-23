@@ -56,3 +56,7 @@ npm install @fortawesome/fontawesome-free
 
 - development와 product로 나눔.
 - vite.config.ts 작성
+
+## 참고
+
+- [Task manage](https://www.youtube.com/watch?v=uSWMvDPpG0k)

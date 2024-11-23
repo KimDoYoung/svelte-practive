@@ -13,6 +13,8 @@
 	import { generateHashCode, todayYmd } from '$lib/utils';
   import Alert from '$lib/components/common/Alert.svelte';
 	import ColorDisplayYmd from '../common/ColorDisplayYmd.svelte';
+	import AttachUploader from '../common/AttachUploader.svelte';
+	import { ModalManager } from '../common/ModalManager.svelte';
 
   let {ymd}  = $props(); 
   
@@ -168,15 +170,18 @@
       fetchDiary(ymd as string);
   });
   let alertRef: Alert | null = null;
+  
+  //이미지 파일 올리기
+  let modalManager = new ModalManager();
+  const toggleAttachUploader = (event: Event) => {
+    console.log('popupAttach');
+    modalManager.toggleModal(event);
+  }  
 </script>
 
 <form>
     <div class="date-area">
-        <!-- <input type="text" name="ymd" id="ymd" bind:value={ymd} maxlength="8"> -->
         <ColorDisplayYmd {ymd} />
-        <!-- <button type="button" class="icon-button" aria-label="Previous" title="요일">
-            <YoilIcon {ymd} bgColor="#ccc" textColor={isWeekend(ymd as string) ? 'red': 'blue'} hanja={true} />
-        </button> -->
 
         <button type="button" class="icon-button" aria-label="Previous" title="이전" onclick={prevClick}>
             <i class="fas fa-arrow-left"></i>
@@ -187,7 +192,10 @@
         <button type="button"  class="icon-button" aria-label="Next" title="다음" onclick={nextClick}>
             <i class="fas fa-arrow-right"></i>
         </button>
-        <button type="button" class="text-button" onclick={saveClick}><i class="fas fa-save"></i>저장</button>
+        <button type="button" class="text-button" title="저장"  aria-label="저장" onclick={saveClick}>
+          <i class="fas fa-save"></i>
+        </button>
+        <button type="button" class="text-button" title="이미지파일올리기" onclick="{(event)=>toggleAttachUploader(event)}" data-target="diary-attach" aria-label="이미지 첨부"><i class="fa-solid fa-upload"></i></button>
         
     </div>
     <div class="summary-area">
@@ -198,12 +206,12 @@
     </div>
 </form>
 <Alert bind:this={alertRef}/>
-
+<AttachUploader target="일기" ymd={ymd} modalId="diary-attach"/>
 <style>
     /* date-area 전체 너비와 정렬 설정 */
     .date-area {
         display: flex;
-        width: 30vw; /* 전체 화면의 40% */
+        width: 40vw; /* 전체 화면의 40% */
         /*max-width: 400px; /* 최대 너비 제한 (선택 사항) */
         gap: 5px;
         align-items: center; /* 아이템을 세로로 중앙 정렬 */
