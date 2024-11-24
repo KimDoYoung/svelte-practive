@@ -31,8 +31,8 @@
       }
   }
   // 페이지가 처음 로드될 때 호출
-  onMount(loadDiaries);
-
+  //onMount(loadDiaries);
+  loadDiaries();
   function nextClick() {
     console.log('next page');
   }
@@ -41,6 +41,12 @@
   }
   function currentClick() {
     console.log('current page');
+  }
+  function goView(ymd: string) {
+    return () => {
+      console.log('goView:', ymd);
+      window.location.href = `diary/${ymd}`;
+    }
   }
 </script>  
 <div class="diary-list">
@@ -65,7 +71,7 @@
                         <li>
                             <p class="diary-summary">
                               <a href="#none" class="anchor" onclick={()=>{today= toYmd(diary.ymd)}}><ColorDisplayYmd ymd={diary.ymd} /></a>
-                              <a href="/diary/{diary.ymd}" class="anchor">{diary.summary}</a>
+                              <a href="#none" class="anchor" onclick={goView(diary.ymd)}>{diary.summary}</a>
                               {#if diary.attachments && diary.attachments.length > 0}
                                 <span>({diary.attachments.length})</span>
                               {/if}
@@ -122,4 +128,4 @@
       background-color: rgba(0, 0, 0, 0.05); /* 엷은 회색 배경 */
       border-radius: 4px; /* 모서리를 둥글게 */
     } 
-</style>
+</style>  
