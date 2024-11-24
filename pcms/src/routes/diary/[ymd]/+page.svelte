@@ -29,19 +29,24 @@
       });
     }
   }
+  const uploadedImage = ()=>{
+    console.log('uploadedImage');
+    ymd = '';
+    ymd = dateCounter.ymd;
+  }
 </script>
 <div class="button-group">
   <button title="이전 일" onclick={()=>{dateCounter.prev(); ymd=dateCounter.ymd}}>◁</button>
   <button title="오늘" onclick={()=>{dateCounter.today(); ymd=dateCounter.ymd}}>○</button>
   <button title="다음 일" onclick={()=>{dateCounter.next(); ymd=dateCounter.ymd}}>▷</button>
-  <button title="리스트로 이동" onclick={()=>{ history.back(); }} aria-label="go list"><i class="fa-solid fa-list"></i></button>
+  <button title="리스트로 이동" onclick={()=>{ window.location.href="/diary" }} aria-label="go list"><i class="fa-solid fa-list"></i></button>
   <button title="이미지파일올리기" onclick="{(event)=>toggleAttachUploader(event)}" data-target="diary-attach" aria-label="이미지 첨부하기"><i class="fa-regular fa-image"></i></button>
-  <button title="삭제" onclick="{deleteDairy}"  aria-label="삭제"><i class="fa-regular fa-trash"></i></button>
+  <button title="삭제" onclick="{deleteDairy}"  aria-label="삭제"><i class="fa-solid fa-trash-can"></i></button>
 </div>
 <div>
   <DiaryView ymd={ymd}/>
 </div>
-<AttachUploader target="일기" ymd={ymd} modalId="diary-attach"/>
+<AttachUploader target="일기" ymd={ymd} modalId="diary-attach" {uploadedImage}/>
 <style>
   .button-group {
       display: flex;

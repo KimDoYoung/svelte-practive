@@ -5,13 +5,16 @@
   import { displayYmd } from '$lib/utils';
   import { ModalManager } from './ModalManager.svelte';
 
+  
   const urlMap = new Map<string, string>([
     ['日志', '/diary/attachments'],
     ['일기', '/diary/attachments'],
     ['장비', '/equipment'],
   ]);
 
-  let { target = '日志', ymd='', modalId='' } = $props();
+  let { target = '日志', ymd='', modalId='', uploadedImage }:{
+    target: string, ymd: string, modalId: string, uploadedImage:()=>void
+  } = $props();
   let ymdHuman = $derived(displayYmd(ymd,true))
 
 
@@ -35,6 +38,7 @@
         console.log('업로드 성공:', response);
         alert('업로드 성공!');
         fileInput.value = ''; // 파일 선택창 초기화
+        uploadedImage();
     } catch (error) {
         alert('업로드 중 오류 발생:' + error);
         console.error('업로드 중 오류 발생:', error);
