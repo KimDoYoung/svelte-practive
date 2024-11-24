@@ -6,10 +6,11 @@
 	import type { Ymd } from '$lib/types';
   import { ModalManager } from "$lib/components/common/ModalManager.svelte";
 	import AttachUploader from '$lib/components/common/AttachUploader.svelte';
+  import { deleteFetch } from '$lib/api';
 
 
   let ymd = $page.params.ymd;
-  let dateCounter =  new DateCounter(ymd as Ymd, YoilEnum.Hangul);// $state<DateCounter>(new DateCounter(ymd as Ymd,YoilEnum.Hangul));
+  let dateCounter =  new DateCounter(ymd as Ymd, YoilEnum.Hangul);
   
   let modalManager = new ModalManager();
   const toggleAttachUploader = (event: Event) => {
@@ -19,7 +20,7 @@
   const deleteDairy = ()=>{
     if (confirm('일기를 삭제하시겠습니까?')){
       let url = `diary/${ymd}`;
-      fetch(url, {method:'DELETE'}).then((response)=>{
+      deleteFetch(url).then((response)=>{
         console.log('response:', response);
         dateCounter.prev();
         ymd = dateCounter.ymd;

@@ -19,13 +19,13 @@
       console.log('ymd:', ymd);
       fetchDiary(ymd);
   });
-  $inspect(()=>{
-      console.log('diary:', diary);
-  })
+  // $inspect(()=>{
+  //     console.log('diary:', diary);
+  // })
   async function fetchDiary(ymd: string) {
       try {
           diary = await getFetch<DiaryDetailResponse>(`diary/${ymd}`);
-          console.log("response:", diary);
+          //console.log("response:", diary);
       } catch (error) {
         diary = undefined;
         console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
