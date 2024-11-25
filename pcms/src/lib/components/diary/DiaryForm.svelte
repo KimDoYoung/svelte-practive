@@ -15,6 +15,7 @@
 	import ColorDisplayYmd from '../common/ColorDisplayYmd.svelte';
 	import AttachUploader from '../common/AttachUploader.svelte';
 	import { ModalManager } from '../common/ModalManager.svelte';
+	import EmojiPicker from './EmojiPicker.svelte';
 
   let {ymd}  = $props(); 
   
@@ -202,11 +203,12 @@
         <input type="text" name="summary" id="summary" bind:value={summary} onkeydown={handleKeyDown}>
     </div>
     <div class="content-area">
-        <textarea name="content" id="content" bind:value={content} style="height:300px" onkeydown={handleKeyDown}></textarea>
+        <textarea name="content" id="content" bind:value={content} style="height:300px;" onkeydown={handleKeyDown}></textarea>
     </div>
+    <EmojiPicker textareaId="content"/>
 </form>
 <Alert bind:this={alertRef}/>
-<AttachUploader target="일기" ymd={ymd} modalId="diary-attach"/>
+<AttachUploader target="일기" ymd={ymd} modalId="diary-attach" uploadedImage={()=>{alert('uploaded')}}/>
 <style>
     /* date-area 전체 너비와 정렬 설정 */
     .date-area {
@@ -218,11 +220,13 @@
     }
     textarea {
         width: 100%;
+        /* height: 300px; */
         padding: 8px;
         font-size: 0.8rem;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+        
     }
     /* input 스타일 */
     input[type="text"] {

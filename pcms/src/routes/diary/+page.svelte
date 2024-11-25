@@ -14,7 +14,7 @@
 	let diaries: DiaryResponse[]=[];
   let isLoading = true; // 로딩 상태 변수 추가
     
-  let showForm = false;
+  let showForm = true;
   let showList = true;
 
   // API 호출 로직을 함수로 분리
