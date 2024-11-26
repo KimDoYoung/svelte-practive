@@ -4,11 +4,14 @@
 	import ColorDisplayYmd from '$lib/components/common/ColorDisplayYmd.svelte';
 	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
   import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
-  import type { DiaryPageModel, DiaryResponse } from '$lib/types';
+  import type { DiaryListRequest, DiaryPageModel, DiaryResponse } from '$lib/types';
   import { todayYmd } from '$lib/utils';
   import { toYmd } from '$lib/utils';
   import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
   
+
+
   let today = todayYmd(); // 오늘 날짜를 가져옴
 
 	let diaries: DiaryResponse[]=[];
@@ -17,11 +20,25 @@
   let showForm = true;
   let showList = true;
 
+  let page = 1;  
+
+  const getListParam = (page:number) => {
+    return {
+      start_ymd :'19000101',
+      end_ymd: '99991231',
+      start_index: (page - 1) * 10,
+      limit: 10,
+      search_text:  null,
+      order: 'desc',
+      summary_only: 'true'
+    }
+  }
+
   // API 호출 로직을 함수로 분리
-  async function loadDiaries() {
+  async function loadDiaries(page:number = 1) {
       isLoading = true;
       try {
-          const response = await getFetch<DiaryPageModel>(`/diaries`);
+          const response = await getFetch<DiaryPageModel>(`/diaries`, getListParam(page));
           diaries = [...response.data]; // 새로운 데이터를 기존 데이터에 추가
           console.log('diaries:', diaries);
       } catch (error) {
@@ -33,14 +50,21 @@
   // 페이지가 처음 로드될 때 호출
   //onMount(loadDiaries);
   loadDiaries();
-  function nextClick() {
-    console.log('next page');
-  }
   function prevClick() {
+    console.log('next page');
+    page += 1;
+    loadDiaries(page);
+  }
+  function nextClick() {
+    if (page > 1) {
+      page -= 1;
+      loadDiaries(page);
+    }
     console.log('prev page');
   }
   function currentClick() {
-    console.log('current page');
+    page = 1;
+    loadDiaries(page);
   }
   function goView(ymd: string) {
     return () => {
@@ -49,7 +73,7 @@
     }
   }
 </script>  
-<div class="diary-list">
+<div class="diary-list"  transition:fade>
     <section class="content list-area">
         <div class="control-box">
           <label>
@@ -86,13 +110,14 @@
         </div>
         {/if}
     </section>
-
-    {#if showForm}
-    <section class="content form-area">
-      <DiaryForm ymd={today} />
-    </section>
-    {/if}
 </div>
+{#if showForm}
+<div>
+  <section class="content form-area">
+    <DiaryForm ymd={today} />
+  </section>
+</div>
+{/if}  
 
 <style>
     .control-box{

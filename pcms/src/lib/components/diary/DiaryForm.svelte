@@ -6,7 +6,7 @@
 =============================================== -->
 
 <script lang="ts">
-  import type {DiaryResponse, DiaryUpdateRequest} from '$lib/types';
+  import type { DiaryResponse, DiaryUpdateRequest} from '$lib/types';
   import type { Ymd } from '$lib/types'; // Add this line to import Ymd type
   import { ApiError } from '$lib/errors';
   import {getFetch,  postFetchMulti, putFetch} from '$lib/api';
@@ -19,9 +19,9 @@
 
   let {ymd}  = $props(); 
   
-	  let summary = $state('');
+	let summary = $state('');
   let content = $state('');
-  
+
   
   let fetchedHashCode = 0;
   function changed() {

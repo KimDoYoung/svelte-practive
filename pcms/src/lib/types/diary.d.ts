@@ -65,3 +65,14 @@ export interface DiaryPageModel {
     search_text?: string | null; // 선택적 검색어
     order?: string | null;
 }
+
+//diaries?start_ymd=19000101&end_ymd=99991231&start_index=10&limit=10&order=desc&summary_only=false
+export interface DiaryListRequest {
+    start_ymd?: string | null; // 선택적 시작 일자
+    end_ymd?: string | null;   // 선택적 종료 일자
+    start_index?: number;
+    limit?: number;
+    search_text?: string | null; // 선택적 검색어
+    order?: string | null;
+    summary_only?: boolean;
+}

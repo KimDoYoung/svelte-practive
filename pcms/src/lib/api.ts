@@ -9,10 +9,22 @@ const defaultHeaders = {
     'Content-Type': 'application/json',
 };
 
+function buildQueryString(params: Record<string, unknown>): string {
+  return Object.entries(params)
+      .filter(([_, value]) => value !== null && value !== undefined) // null 또는 undefined 값은 제외
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value as string | number | boolean)}`)
+      .join('&');
+}
+
 // 기본 fetch 함수
-async function fetchData<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = url_concat(API_BASE_URL, endpoint);
-    console.log(`API 요청 ===> ${options.method || 'GET'} ${url}`);
+async function fetchData<T>(endpoint: string, 
+          options: RequestInit = {},
+          params?: Record<string, unknown>
+
+): Promise<T> {
+    const queryString = params ? `?${buildQueryString(params)}` : '';
+    const url = url_concat(API_BASE_URL, `${endpoint}${queryString}`);
+    console.log(`API 요청 ===> ${options.method || 'GET'} ${url}`);    
 
     try {
         const response = await fetch(url, {
@@ -40,8 +52,8 @@ async function fetchData<T>(endpoint: string, options: RequestInit = {}): Promis
 }
 
 // GET 요청 함수
-export async function getFetch<T>(endpoint: string): Promise<T> {
-    return fetchData<T>(endpoint, { method: 'GET' });
+export async function getFetch<T>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
+  return fetchData<T>(endpoint, { method: 'GET' }, params);
 }
 
 // POST 요청 함수
