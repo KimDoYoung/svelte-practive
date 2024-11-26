@@ -1,7 +1,7 @@
 <script lang="ts">
   let {textareaId} = $props(); // textarea의 id (외부에서 전달받음)
 
-  let emojis = ['😊', '😂', '❤️', '😃','😱','😬','🚴‍♂️','🥺','😰','★']; // 기본 이모지 목록
+  let emojis = ['😊', '😂', '❤️', '😃','😱','😬','🚴‍♂️','🥺','😰','★','☂','☀','❄','☁']; // 기본 이모지 목록
 
 
   // 이모지를 클릭했을 때 textarea에 삽입하는 함수
@@ -48,9 +48,10 @@
     cursor: pointer;
     font-size: 1.5rem;
     transition: transform 0.2s ease;
+    text-decoration: none;
   }
   .emoji:hover {
-    transform: scale(1.2);
+    transform: scale(1.3);
   }
 </style>
 
