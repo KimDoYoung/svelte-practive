@@ -57,11 +57,16 @@ export async function getFetch<T>(endpoint: string, params?: Record<string, unkn
 }
 
 // POST 요청 함수
-export async function postFetch<T>(endpoint: string, body: unknown): Promise<T> {
-    return fetchData<T>(endpoint, {
-        method: 'POST',
-        body: JSON.stringify(body),
-    });
+export async function postFetch<T>(
+  endpoint: string,
+  body: unknown,
+  params?: Record<string, unknown>
+): Promise<T> {
+
+  return fetchData<T>(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(body),
+  }, params);
 }
 
 // PUT 요청 함수
