@@ -1,6 +1,14 @@
 <!-- 파일명 : C:\Users\deHong\Documents\kdy\svelte-practive\pcms\src\lib\components\todo/TodoCard.svelte -->
 <script lang="ts">  
-  let {todo} = $props()
+  import type { TodoBase } from '../../types';
+
+  type TodoCardType = { 
+    deleteClick: (id: number) => void,
+    todo: TodoBase 
+  }
+
+  let {todo, deleteClick} : TodoCardType = $props()
+
 </script>
 <!-- html -->
 <div class="todo-card">
@@ -8,7 +16,7 @@
   <div class="todo-card-date">{todo.input_dt}</div>
   <button 
     class="todo-card-delete" 
-    aria-label="삭제">
+    aria-label="삭제" onclick={()=>deleteClick(todo.id)}>
     <i class="fas fa-x"></i>
   </button>  
 </div>
