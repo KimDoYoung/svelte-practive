@@ -4,10 +4,9 @@
 	import ColorDisplayYmd from '$lib/components/common/ColorDisplayYmd.svelte';
 	import DiaryForm from '$lib/components/diary/DiaryForm.svelte';
   import DiaryNavButtons  from '$lib/components/diary/DiaryNavButtons.svelte';
-  import type { DiaryListRequest, DiaryPageModel, DiaryResponse } from '$lib/types';
+  import type {  DiaryPageModel, DiaryResponse } from '$lib/types';
   import { todayYmd } from '$lib/utils';
   import { toYmd } from '$lib/utils';
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   
 
