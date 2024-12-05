@@ -19,6 +19,8 @@
   let mode: string = $state('list')
   const upsertButtonClicked = (snote: SnoteCreate) => {
     console.log('저장 버튼 클릭' + JSON.stringify(snote, null, 2));
+    mode = 'list';
+    loadSnotes({limit:10, start_index:pageInfo.last_index - pageInfo.limit});
   }
   let snotes: SnoteBase[] = $state([]);
 
