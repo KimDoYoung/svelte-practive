@@ -1,3 +1,5 @@
+import { getFetch } from '$lib/api';
+import type { SnoteHintPassword } from '$lib/types/snote';
 import CryptoJS from 'crypto-js';
 
 export class SnoteCrypto {
@@ -7,12 +9,8 @@ export class SnoteCrypto {
    * 서버에서 랜덤 힌트와 해시된 비밀번호를 가져옵니다.
    * @returns 랜덤 힌트와 해시된 비밀번호 객체
    */
-  static async fetchRandomHintAndHash(): Promise<{ hint: string; pwhash: string }> {
-    const response = await fetch('http://127.0.0.1:8000/api/get-random-hint');
-    if (!response.ok) {
-      throw new Error('Failed to fetch hint and password hash from server.');
-    }
-    return response.json();
+  static async fetchRandomHintAndHash() {
+    return await getFetch<SnoteHintPassword>('/snote/get-random-hint')
   }
 
   /**
@@ -31,25 +29,22 @@ export class SnoteCrypto {
       throw new Error('Message is required for encryption.');
     }
 
-    let finalPassword: string;
     let finalHint: string;
     let passwordHash: string;
 
     if (password) {
       // 사용자가 비밀번호를 제공한 경우
-      finalPassword = password;
       finalHint = hint || '사용자 정의 힌트 없음';
       passwordHash = CryptoJS.SHA256(password).toString();
     } else {
       // 비밀번호와 힌트가 없으면 서버에서 가져오기
       const serverData = await this.fetchRandomHintAndHash();
       finalHint = serverData.hint;
-      passwordHash = serverData.pwhash;
-      finalPassword = serverData.pwhash; // 해시를 비밀번호로 사용
+      passwordHash = serverData.password;
     }
 
     // 메시지 암호화
-    const encryptedText = CryptoJS.AES.encrypt(message, finalPassword).toString();
+    const encryptedText = CryptoJS.AES.encrypt(message, password!).toString();
 
     // 포맷팅된 문자열 반환
     return `${this.MAGIC_STRING}[${finalHint}][${passwordHash}][${encryptedText}]`;

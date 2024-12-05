@@ -66,7 +66,7 @@
 <div class="main-area">
   <section class="content">
       <h1>Welcome to my world</h1>
-      <p>Step into my heart. Leave your cares behind</p>
+      <p>Step down my world. Step into my heart. Leave your cares behind</p>
   </section>
   <section class="todo-area">
     <div class="todo-area-header">

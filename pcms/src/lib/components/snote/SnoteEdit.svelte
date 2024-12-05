@@ -3,26 +3,46 @@
   기능 : Snote 편집 컴포넌트
 -->
 <script lang="ts">
+	import { getFetch, postFetch } from '$lib/api';
+  import type { SnoteCreate, SnoteHintPassword } from '$lib/types'
+  import {SnoteCrypto} from '$lib/utils/snote_crypto'
 
-import type { SnoteCreate } from '$lib/types'
-
-type SnoteEditType = {
-  upsertButtonClicked: (snote: SnoteCreate) => void,
-}
-let {upsertButtonClicked} : SnoteEditType = $props()
-let snote: SnoteCreate = $state({
-  title: '',
-  hint: '',
-  note: '',
-  password: ''
-});
-
-$effect(() => {
-  console.log('SnoteEdit 컴포넌트가 마운트 되었습니다.')
-  return () => {
-    console.log('SnoteEdit 컴포넌트가 언마운트 되었습니다.')
+  type SnoteEditType = {
+    upsertButtonClicked: (snote: SnoteCreate) => void,
+    cancelButtonClicked: () => void
   }
-})  
+  let {upsertButtonClicked, cancelButtonClicked} : SnoteEditType = $props()
+  let snote: SnoteCreate = $state({
+    title: '',
+    hint: '',
+    note: '',
+    password: ''
+  });
+
+  $effect(() => {
+    console.log('SnoteEdit 컴포넌트가 마운트 되었습니다.')
+    return () => {
+      console.log('SnoteEdit 컴포넌트가 언마운트 되었습니다.')
+    }
+  })
+  const  validate_and_fire = async () => {
+    let title: string = '';
+    let encrypted_note: string = '';
+
+    if (!snote.title) {
+      snote.title = '제목없음 '+ new Date().toLocaleString()
+    }
+    title = snote.title
+    if (!snote.note) {
+      alert('내용을 입력해주세요')
+      return
+    }
+    encrypted_note = await SnoteCrypto.encrypt(snote.note, snote.password, snote.hint)
+    console.log('암호화된 노트 : ' + encrypted_note)
+    postFetch('/snote', { title : title, note: encrypted_note}).then(()=>{
+      upsertButtonClicked(snote);
+    });
+  }  
 </script>
 <!-- html -->
 <section>
@@ -36,10 +56,11 @@ $effect(() => {
       </div>
       <div>
         <label for="password">Password</label>
-        <input type="text" name="password" id="password" placeholder="패스워드" bind:value={snote.password}>
+        <input type="password" name="password" id="password" placeholder="패스워드" bind:value={snote.password}>
       </div>
     </div>
-  <button onclick={()=>{upsertButtonClicked(snote)}}>저장</button>
+  <button onclick={()=>{validate_and_fire()}}>저장</button>
+  <button class="secondary" onclick={()=>{cancelButtonClicked()}}>취소</button>
   </form>
 </section>
 

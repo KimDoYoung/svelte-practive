@@ -12,3 +12,15 @@ export interface SnoteCreate {
   note?: string;
   password?: string;
 }
+
+export interface SnoteHintPassword {
+  hint: string;
+  password: string;
+}
+
+export interface SnoteList {
+  snote_list: SnoteBase[];
+  last_index : number;
+  next_exist : boolean;
+  limit : number;
+}
