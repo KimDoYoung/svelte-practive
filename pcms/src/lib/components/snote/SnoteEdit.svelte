@@ -27,7 +27,7 @@
   })
 
   //검증후 암호화하고 저장, 부모에게 알림
-  const  validate_and_fire = async () => {
+  const  validate_and_event_fire = async () => {
     let title: string = '';
     let encrypted_note: string = '';
 
@@ -44,7 +44,11 @@
     postFetch('/snote', { title : title, note: encrypted_note}).then(()=>{
       upsertButtonClicked(snote);
     });
-  }  
+  }
+  // TODO: api에서 암호화하지 말고 그냥 평문 패스워드를 보내야한다.
+  // TODO: crypto에 decrypt함수를 만들어서 사용해야한다.
+  // TODO: 새로운 것은 id를 -1로 하자. props로 받을 수 있는가? SnoteCreate 받아서 decrypt를 해야한다. 
+
 </script>
 <!-- html -->
 <section>
@@ -61,7 +65,7 @@
         <input type="password" name="password" id="password" placeholder="패스워드" bind:value={snote.password}>
       </div>
     </div>
-  <button onclick={()=>{validate_and_fire()}}>저장</button>
+  <button onclick={()=>{validate_and_event_fire()}}>저장</button>
   <button class="secondary" onclick={()=>{cancelButtonClicked()}}>취소</button>
   </form>
 </section>
