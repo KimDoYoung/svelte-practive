@@ -3,8 +3,8 @@
   기능 : Snote 편집 컴포넌트
 -->
 <script lang="ts">
-	import { getFetch, postFetch } from '$lib/api';
-  import type { SnoteCreate, SnoteHintPassword } from '$lib/types'
+	import {  postFetch } from '$lib/api';
+  import type { SnoteCreate } from '$lib/types'
   import {SnoteCrypto} from '$lib/utils/snote_crypto'
 
   type SnoteEditType = {
@@ -25,6 +25,8 @@
       console.log('SnoteEdit 컴포넌트가 언마운트 되었습니다.')
     }
   })
+
+  //검증후 암호화하고 저장, 부모에게 알림
   const  validate_and_fire = async () => {
     let title: string = '';
     let encrypted_note: string = '';
