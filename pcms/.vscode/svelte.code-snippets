@@ -2,15 +2,12 @@
 {
     "svelte페이지 생성":{
         "scope": "svelte",  
-        "prefix":"my-new=svelte",
+        "prefix":"my-new-page",
         "body":[
-        "<!-- 파일명 : $TM_DIRECTORY/$TM_FILENAME -->",
+        "<!-- 파일명 : $TM_FILENAME -->",
         "<script lang=\"ts\">",
-        "\timport NavBar from '\\$lib/components/NavBar.svelte';",
         "</script>",
         "\t<main class=\"container\">",
-        "\t\t<!-- Nav Bar -->",
-        "\t\t<NavBar />",
         "\t<!-- Main Content -->",
         "\t\t<section class=\"content\">",
         "\t\t\t<h1>111</h1>",
@@ -20,5 +17,35 @@
         "</style>"
         ],
         "description":"svelte페이지 생성"
-    }
-  }
+    },
+    "svelte component template":{
+      "prefix":"my-new-component",
+      "body":[
+      "<!-- 파일명 : $TM_FILENAME -->",
+      "<script lang=\"ts\">",
+      "</script>",
+      "<!-- html -->",
+      "<style>",
+      "</style>"
+      ],
+      "description":"새로운 스벨트 컴포넌트 템플릿1"
+    },
+    "props template":{ 
+      "body":[
+      "import type { TodoBase } from '../../types';",
+      "type TodoCardType = {",
+      "deleteClick: (id: number) => void,",
+      "todo: TodoBase",
+      "}",
+      "let {todo, deleteClick} : TodoCardType = $props()"
+      ],
+      "description":"props의 사용법 1"
+    },  
+  "object를 strng으로 바꾸어 준다":{
+    "prefix":"my-object-to-string",
+    "body":[
+    "console.log('저장 버튼 클릭' + JSON.stringify(snote, null, 2));"
+    ],
+    "description":"console.log같은것 사용할 때 좋음 object를 strng으로 바꾸어 준다"
+  },    
+}

@@ -8,6 +8,8 @@
     <ul>
         <li><a href="/main">Home</a></li>
         <li><a href="/diary">Diary</a></li>
+        <li><a href="/calendar">Calendar</a></li>
+        <li><a href="/snote">Snote</a></li>
     </ul>
 </nav>
 

@@ -43,10 +43,23 @@
     postFetch('/todo', {"todos": input_todos}).then(()=>{
       loadTodos();
     });
+    // let checkbox = document.getElementById('edit-visible-checkbox') as HTMLInputElement;
+    // checkbox.checked = false;
+    editVisible = false;
   }
   const checkboxClick = () => {
     let checkbox = document.getElementById('edit-visible-checkbox') as HTMLInputElement;
     editVisible =  checkbox.checked;
+    if (editVisible) {
+      for (let i = 1; i <= 9; i++) {
+        const input = document.getElementById(`todo-input${i}`) as HTMLInputElement;
+        if (input) {
+          input.value = '';
+        }
+      }
+      const input = document.getElementById('todo-input1') as HTMLInputElement;
+      input.focus();
+    }
   }
 </script>
 
@@ -57,8 +70,11 @@
   </section>
   <section class="todo-area">
     <div class="todo-area-header">
-      <label for="todo-chekcbox">추가</label> <input type="checkbox" id="edit-visible-checkbox" onclick={checkboxClick}/>
-      <h2>Just do it now!</h2>
+      <label for="edit-visible-checkbox">
+        <input type="checkbox" id="edit-visible-checkbox" name="edit-visible-checkbox" role="switch"  onclick={checkboxClick} />
+        추가
+      </label>      
+      <!-- <label for="todo-chekcbox">추가</label> <input type="checkbox" id="edit-visible-checkbox" onclick={checkboxClick}/> -->
     </div>
     {#if editVisible}
     <div class="edit-area">

@@ -23,19 +23,23 @@
 
 ## 초기 설정
 
-1. .env에 이렇게 함
-KALPADB_API_URL_BASE=<http://jskn.iptime.org:8088/api/v1>
+1. env에 이렇게 함
 
-2. npm install @picocss/pico 을 수행함.
+  KALPADB_API_URL_BASE=<http://jskn.iptime.org:8088/api/v1>
 
-3. src/app.css에
+2.npm install @picocss/pico 을 수행함.
+
+- [examples](https://codesandbox.io/embed/4mrnhq?)
+
+3.src/app.css에
+  
 @import "@picocss/pico/css/pico.min.css";
 
 ```shell
 find node_modules/ -name "pico.min.css"  -print
 ```
 
-4. routes/+layout.svelte
+1. routes/+layout.svelte
 
 ```html
 <!-- src/routes/+layout.svelte -->

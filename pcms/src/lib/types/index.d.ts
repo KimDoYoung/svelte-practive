@@ -2,3 +2,4 @@
 export * from './diary';
 export * from './ymd';
 export * from './todo';
+export * from './snote';
