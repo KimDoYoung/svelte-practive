@@ -24,3 +24,16 @@ export interface SnoteList {
   next_exist : boolean;
   limit : number;
 }
+
+export interface SnoteTitleNote {
+  id: number;
+  title: string;
+  note: string;
+}
+
+//실제 저장된 데이터의 구조를 분해해서 보여주는 인터페이스
+export interface SnoteParse {
+  hint: string;
+  hashPassword: string;
+  encryptedText: string;
+}

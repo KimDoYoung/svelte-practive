@@ -1,5 +1,5 @@
+import type { SnoteHintPassword, SnoteParse } from '$lib/types/snote';
 import { getFetch } from '$lib/api';
-import type { SnoteHintPassword } from '$lib/types/snote';
 import CryptoJS from 'crypto-js';
 
 export class SnoteCrypto {
@@ -48,5 +48,48 @@ export class SnoteCrypto {
 
     // 포맷팅된 문자열 반환
     return `${this.MAGIC_STRING}[${finalHint}][${passwordHash}][${encryptedText}]`;
+  }
+  /**
+     * 주어진 encryptedNote를 파싱하여 SnoteParse 형태로 반환합니다.
+     * @param encryptedNote
+     * @returns SnoteParse
+     */
+  static async parse(encryptedNote: string): Promise<SnoteParse> {
+    // MAGIC_STRING 확인
+    if (!encryptedNote.startsWith(this.MAGIC_STRING)) {
+      throw new Error("Invalid format: Missing MAGIC_STRING prefix");
+    }
+
+    // MAGIC_STRING 이후의 부분 추출
+    const content = encryptedNote.slice(this.MAGIC_STRING.length);
+
+    // 패턴에 맞는 내용 추출
+    const match = content.match(/^\[(.*?)\]\[(.*?)\]\[(.*?)\]$/);
+
+    if (!match || match.length !== 4) {
+      throw new Error("Invalid format: Unable to parse the note");
+    }
+
+    const [, hint, hashPassword, encryptedText] = match;
+
+    // 결과 반환
+    return {
+      hint,
+      hashPassword,
+      encryptedText,
+    };
+  }
+  /**
+   * 주어진 SnoteParse를 복호화하여 원본 메시지를 반환합니다.
+   * @param snoteParse
+   * @param password
+   * @returns
+   */
+  static decrypt(snoteParse: SnoteParse, password: string): string {
+    // 비밀번호 해시값 비교
+    if (snoteParse.hashPassword !== CryptoJS.SHA256(password).toString()) {
+      throw new Error("Invalid password");
+    }
+    return CryptoJS.AES.decrypt(snoteParse.encryptedText, password).toString(CryptoJS.enc.Utf8);
   }
 }

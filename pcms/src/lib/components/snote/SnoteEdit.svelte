@@ -4,14 +4,15 @@
 -->
 <script lang="ts">
 	import {  postFetch } from '$lib/api';
-  import type { SnoteCreate } from '$lib/types'
+  import type { SnoteCreate, SnoteTitleNote } from '$lib/types'
   import {SnoteCrypto} from '$lib/utils/snote_crypto'
 
   type SnoteEditType = {
     upsertButtonClicked: (snote: SnoteCreate) => void,
     cancelButtonClicked: () => void
   }
-  let {upsertButtonClicked, cancelButtonClicked} : SnoteEditType = $props()
+  let { upsertButtonClicked, cancelButtonClicked} : SnoteEditType = $props()
+  
   let snote: SnoteCreate = $state({
     title: '',
     hint: '',
@@ -45,10 +46,6 @@
       upsertButtonClicked(snote);
     });
   }
-  // TODO: api에서 암호화하지 말고 그냥 평문 패스워드를 보내야한다.
-  // TODO: crypto에 decrypt함수를 만들어서 사용해야한다.
-  // TODO: 새로운 것은 id를 -1로 하자. props로 받을 수 있는가? SnoteCreate 받아서 decrypt를 해야한다. 
-
 </script>
 <!-- html -->
 <section>
