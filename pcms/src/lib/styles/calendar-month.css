@@ -1,0 +1,125 @@
+/* 요일 Row 스타일 */
+.week {
+  font-weight: bold;
+  background-color: #e9ecef;
+  border-bottom: 2px solid #ddd;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  font-size: 16px; /* 요일 글씨 크기 */
+  padding: 10px 0; /* 글씨 높이에 맞게 조정 */
+  line-height: 1.5; /* 텍스트 줄 높이 */
+}
+
+/* 기본 Row와 Column 스타일 */
+.row {
+  display: flex;
+}
+
+.col-week {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* 숫자와 다른 내용을 세로 정렬 */
+  align-items: flex-center; /* 왼쪽 정렬 */
+  border: 1px solid #ddd;
+  /* height: 150px; 고정된 높이 */
+  box-sizing: border-box;
+  position: relative; /* 날짜 숫자의 위치 조정을 위해 필요 */
+  padding: 5px; /* 내부 여백 추가 */
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* 숫자와 다른 내용을 세로 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  justify-content: flex-start; /* 위쪽 정렬 */
+  border: 1px solid #ddd;
+  height: 150px; /* 고정된 높이 */
+  box-sizing: border-box;
+  position: relative; /* 날짜 숫자의 위치 조정을 위해 필요 */
+  padding: 5px; /* 내부 여백 추가 */
+}
+
+/* 날짜 숫자 스타일 */
+.day span {
+  font-size: 12px; /* 숫자 크기 */
+  font-weight: normal;
+  position: absolute; /* 왼쪽 상단 고정 */
+  top: 5px;
+  left: 5px;
+}
+
+/* 이벤트 텍스트 스타일 */
+.holiday,
+.event-sang {
+  font-size: 12px; /* 글씨 크기 */
+  color: #555; /* 약간 어두운 색 */
+  margin-top: 20px; /* 날짜 숫자 아래에 배치 */
+  padding-left: 5px; /* 왼쪽 여백 */
+}
+
+/* 공휴일 텍스트 강조 (설날, 개천절 등) */
+.holiday.text-holiday {
+  color: red; /* 빨간색 */
+  font-weight: bold;
+}
+
+/* 배경색 및 텍스트 스타일 */
+.bg-light {
+  background-color: #f8f9fa;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.text-holiday {
+  color: red;
+  font-weight: bold;
+}
+
+.text-saterday {
+  color: blue;
+}
+
+.not-this-month {
+  color: #aaa;
+  font-style: italic; /* 기울임체 적용 */
+}
+
+.not-this-month-saterday {
+  color: lightblue;
+  font-style: italic; /* 기울임체 적용 */
+}
+
+/* 오늘 날짜 강조 */
+.bg-today {
+  background-color: #ffeb3b;
+  border: 2px solid #f9a825;
+}
+
+/* 달력 컨테이너 */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .day span {
+    font-size: 10px; /* 작은 화면에서 숫자 크기 축소 */
+  }
+
+  .week {
+    font-size: 14px; /* 요일 텍스트 크기 축소 */
+  }
+
+  .holiday,
+  .event-sang {
+    font-size: 10px; /* 이벤트 텍스트 크기 축소 */
+  }
+}

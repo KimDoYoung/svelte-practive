@@ -31,7 +31,7 @@ export class Calendar1Month extends CalendarBase {
 
     if (isHoliday || isSunday) return "text-holiday";
     if (isSaturday) return "text-saterday";
-    return "";
+    return "text-normal";
   }
 
   private getEventClassName(eventName: string): string {
@@ -51,13 +51,13 @@ export class Calendar1Month extends CalendarBase {
     const heightStyle = maxEventCount >= 6 ? 'style="min-height: 200px;"' : "";
 
     let html = '<div class="row">';
-    html += '<div class="col bg-light text-center text-danger week">일</div>';
-    html += '<div class="col bg-light text-center week">월</div>';
-    html += '<div class="col bg-light text-center week">화</div>';
-    html += '<div class="col bg-light text-center week">수</div>';
-    html += '<div class="col bg-light text-center week">목</div>';
-    html += '<div class="col bg-light text-center week">금</div>';
-    html += '<div class="col bg-light text-center week">토</div>';
+    html += '<div class="col-week bg-light text-center text-danger week">일</div>';
+    html += '<div class="col-week bg-light text-center week">월</div>';
+    html += '<div class="col-week bg-light text-center week">화</div>';
+    html += '<div class="col-week bg-light text-center week">수</div>';
+    html += '<div class="col-week bg-light text-center week">목</div>';
+    html += '<div class="col-week bg-light text-center week">금</div>';
+    html += '<div class="col-week bg-light text-center text-saterday week">토</div>';
     html += "</div>";
 
     let i = 0;
@@ -73,8 +73,8 @@ export class Calendar1Month extends CalendarBase {
       }
 
       const isToday = ymd === today;
-      let dayHtml = `<div class="col day ${
-        isToday ? "bg-today" : ""
+      let dayHtml = `<div class="col day${
+        isToday ? " bg-today" : ""
       }" data-ymd="${ymd}" ${heightStyle}>`;
       const clsName = this.choiceDayNumberClass(i, ymd);
       dayHtml += `<span class="${clsName}">${parseInt(
