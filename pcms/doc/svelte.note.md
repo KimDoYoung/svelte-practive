@@ -22,3 +22,15 @@
     <i class="fas fa-x"></i>
   </button> 
 ```
+
+## effect
+
+```javascript
+  $effect(() => {
+    loadSnotes({limit:10, start_index:0});
+    return () => {
+      console.log('Snote 페이지가 언마운트 되었습니다.')
+    }
+  })
+```
+

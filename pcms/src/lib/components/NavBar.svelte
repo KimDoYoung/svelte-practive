@@ -4,9 +4,8 @@
 </script>
 
 <nav class="bg-light">
-    <a href="/" class="contrast">MyApp</a>
+    <a href="/" class="contrast">PCMS</a>
     <ul>
-        <li><a href="/main">Home</a></li>
         <li><a href="/diary">Diary</a></li>
         <li><a href="/calendar">Calendar</a></li>
         <li><a href="/snote">Snote</a></li>
