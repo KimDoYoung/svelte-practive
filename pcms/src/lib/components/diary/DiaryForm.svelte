@@ -16,7 +16,8 @@
 	import AttachUploader from '../common/AttachUploader.svelte';
 	import { ModalManager } from '../common/ModalManager.svelte';
 	import EmojiPicker from './EmojiPicker.svelte';
-
+  //TODO : 수정되었다는 것과 save버튼과 연동
+  //TODO : 10초마다 자동저장 
   let {ymd}  = $props(); 
   
 	let summary = $state('');

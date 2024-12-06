@@ -32,18 +32,36 @@
       scrap_url: "",
     },
   ]);  
+  const dayClick = (ymd: string, schedule:string) => {
+    alert(`Date clicked: ${ymd} ${schedule}`);
+  };
 </script>
   <main class="container">
       <div class="horizon">
-        <button onclick={minus}>-</button>
-        <h2>{year}년 {month}월</h2>
-        <button onclick={plus}>+</button>
+        <button onclick={minus} aria-label="Prev Month"><i class="fas fa-arrow-left"></i></button>
+        <h3>{year}년 {month}월</h3>
+        <button onclick={plus} aria-label="Next Month"><i class="fas fa-arrow-right"></i></button>
       </div>
-      <CalendarMonth {year} {month} {holidays} {eventDays}/>
+      <CalendarMonth {year} {month} {holidays} {eventDays} {dayClick}/>
   </main>
 <style>
   .horizon {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    vertical-align: center;
+    gap: 10px;
+  }
+  .horizon button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px; /* 버튼과 input을 동일한 높이로 */
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #526b69;
   }
 </style>

@@ -49,7 +49,12 @@
 }
 
 /* 이벤트 텍스트 스타일 */
-.holiday,
+.holiday {
+  font-size: 12px; /* 글씨 크기 */
+  color: red; /* 빨간색 */
+  margin-top: 20px; /* 날짜 숫자 아래에 배치 */
+  padding-left: 5px; /* 왼쪽 여백 */
+}
 .event-sang {
   font-size: 12px; /* 글씨 크기 */
   color: #555; /* 약간 어두운 색 */
@@ -97,8 +102,8 @@
 
 /* 오늘 날짜 강조 */
 .bg-today {
-  background-color: #ffeb3b;
-  border: 2px solid #f9a825;
+  background-color: #f4f4ee;
+  border: 2px solid #ebdeca;
 }
 
 /* 달력 컨테이너 */
@@ -106,6 +111,24 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* hover 효과 */
+.day:hover {
+  background-color: #f6eed7; /* 배경색 변경 */
+  cursor: pointer;
+  /* transform: scale(1.05); 살짝 확대 */
+}
+
+.day:hover span {
+  /* color: #ff6f61; 날짜 숫자 색상 강조 */
+  font-weight: bold; /* 날짜 숫자 굵게 */
+  transform: scale(1.5);
+}
+
+.day:hover .holiday {
+  color: #ff4500; /* 공휴일 텍스트 강조 */
+  font-weight: bold;
 }
 
 /* 반응형 디자인 */
@@ -118,8 +141,10 @@
     font-size: 14px; /* 요일 텍스트 크기 축소 */
   }
 
-  .holiday,
-  .event-sang {
+  .holiday {
     font-size: 10px; /* 이벤트 텍스트 크기 축소 */
+  }
+  .event-sang {
+    font-size: 102px; /* 이벤트 텍스트 크기 축소 */
   }
 }
