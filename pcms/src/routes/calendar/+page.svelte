@@ -1,8 +1,10 @@
 <!-- 파일명 : src\routes\calendar/+page.svelte -->
 <script lang="ts">
+	import CalendarEdit from '$lib/components/calendar/CalendarEdit.svelte';
   import  CalendarMonth  from '$lib/components/calendar/CalendarMonth.svelte';
   let year = $state(2024)
   let month = $state(12)
+  let visibleForm = $state(false);
   const plus = () => {
     month += 1;
     if (month > 12) {
@@ -35,14 +37,29 @@
   const dayClick = (ymd: string, schedule:string) => {
     alert(`Date clicked: ${ymd} ${schedule}`);
   };
+  const goHome = () => {
+    year = new Date().getFullYear();
+    month = new Date().getMonth() + 1;
+  }
+  const showForm = () => {
+    console.log(year, month);
+    visibleForm = !visibleForm;
+  }
 </script>
   <main class="container">
-      <div class="horizon">
-        <button onclick={minus} aria-label="Prev Month"><i class="fas fa-arrow-left"></i></button>
-        <h3>{year}년 {month}월</h3>
-        <button onclick={plus} aria-label="Next Month"><i class="fas fa-arrow-right"></i></button>
+    {#if visibleForm}
+      <div>
+        <CalendarEdit />
       </div>
-      <CalendarMonth {year} {month} {holidays} {eventDays} {dayClick}/>
+    {/if}
+    <div class="horizon">
+      <button onclick={minus} aria-label="Prev Month"><i class="fas fa-arrow-left"></i></button>
+      <h3>{year}년 {month}월</h3>
+      <button onclick={plus} aria-label="Next Month"><i class="fas fa-arrow-right"></i></button>
+      <button onclick={goHome} aria-label="today"><i class="fas fa-arrow-right"></i></button>
+      <button onclick={showForm} aria-label="edit calendar"><i class="fa-regular fa-pen-to-square"></i></button>
+    </div>
+    <CalendarMonth {year} {month} {holidays} {eventDays} {dayClick}/>
   </main>
 <style>
   .horizon {
