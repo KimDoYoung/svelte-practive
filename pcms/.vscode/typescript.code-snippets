@@ -1,0 +1,20 @@
+{
+  "svelte페이지 생성":{
+      "scope": "typescript",  
+      "prefix":"my-111",
+      "body":[
+      "<!-- 파일명 : $TM_FILENAME -->",
+      "<script lang=\"ts\">",
+      "</script>",
+      "\t<main class=\"container\">",
+      "\t<!-- Main Content -->",
+      "\t\t<section class=\"content\">",
+      "\t\t\t<h1>111</h1>",
+      "\t\t</section>",
+      "\t</main>",
+      "<style>",
+      "</style>"
+      ],
+      "description":"svelte페이지 생성"
+  }
+}

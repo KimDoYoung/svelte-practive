@@ -19,6 +19,7 @@
         "description":"svelte페이지 생성"
     },
     "svelte component template":{
+      "scope": "svelte",
       "prefix":"my-new-component",
       "body":[
       "<!-- 파일명 : $TM_FILENAME -->",
@@ -31,6 +32,7 @@
       "description":"새로운 스벨트 컴포넌트 템플릿1"
     },
     "props template":{ 
+      "prefix":"my-props-template",
       "body":[
       "import type { TodoBase } from '../../types';",
       "type TodoCardType = {",

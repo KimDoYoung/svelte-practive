@@ -4,7 +4,10 @@
   import  CalendarMonth  from '$lib/components/calendar/CalendarMonth.svelte';
   let year = $state(2024)
   let month = $state(12)
+
   let visibleForm = $state(false);
+
+
   const plus = () => {
     month += 1;
     if (month > 12) {
@@ -45,11 +48,18 @@
     console.log(year, month);
     visibleForm = !visibleForm;
   }
+  const editCancelNotice = () => {
+    visibleForm = false;
+  }
+  const editChangeNotice = () => {
+    visibleForm = false;
+  }
+  
 </script>
   <main class="container">
     {#if visibleForm}
       <div>
-        <CalendarEdit />
+        <CalendarEdit {editCancelNotice} {editChangeNotice}/>
       </div>
     {/if}
     <div class="horizon">

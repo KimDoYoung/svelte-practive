@@ -1,6 +1,8 @@
 <!-- 파일명 : \src\routes\snote/+page.svelte -->
 <script lang="ts">
-	import { deleteFetch, getFetch } from "$lib/api";
+  //TODO: Snote 수정
+  //TODO:  보기 
+  import { deleteFetch, getFetch } from "$lib/api";
   import SnoteEdit from "$lib/components/snote/SnoteEdit.svelte";
 	import type { SnoteBase, SnoteCreate, SnoteList } from "$lib/types/snote";
   type SnotePageType = {

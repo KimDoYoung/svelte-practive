@@ -1,3 +1,4 @@
+
 import type { SnoteHintPassword, SnoteParse } from '$lib/types/snote';
 import { getFetch } from '$lib/api';
 import CryptoJS from 'crypto-js';
