@@ -26,7 +26,7 @@
 
   let holidays = $state( [
     { name: "개천절", ymd: "20241206" },
-    { name: "설날", ymd: "20241201" },
+    { name: "설날", ymd: "20241209" },
   ]);
 
   let eventDays = $state( [
@@ -45,10 +45,12 @@
     year = new Date().getFullYear();
     month = new Date().getMonth() + 1;
   }
+  // edito form button
   const showForm = () => {
     console.log(year, month);
     visibleForm = !visibleForm;
   }
+  // 
   const editCancelNotice = () => {
     visibleForm = false;
   }
@@ -67,7 +69,7 @@
       <button onclick={minus} aria-label="Prev Month"><i class="fas fa-arrow-left"></i></button>
       <h3>{year}년 {month}월</h3>
       <button onclick={plus} aria-label="Next Month"><i class="fas fa-arrow-right"></i></button>
-      <button onclick={goHome} aria-label="today"><i class="fas fa-arrow-right"></i></button>
+      <button onclick={goHome} aria-label="today"><i class="fas fa-home"></i></button>
       <button onclick={showForm} aria-label="edit calendar"><i class="fa-regular fa-pen-to-square"></i></button>
     </div>
     <CalendarMonth {year} {month} {holidays} {eventDays} {dayClick}/>

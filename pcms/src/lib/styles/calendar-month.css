@@ -105,7 +105,10 @@
   background-color: #f4f4ee;
   border: 2px solid #ebdeca;
 }
-
+span.text-today {
+  font-size: 16px;
+  font-weight: bold;
+}
 /* 달력 컨테이너 */
 .calendar-container {
   display: flex;

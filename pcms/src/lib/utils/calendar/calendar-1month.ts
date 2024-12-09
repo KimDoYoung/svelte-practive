@@ -23,14 +23,28 @@ export class Calendar1Month extends CalendarBase {
     const isSunday = dayIndex % 7 === 0;
     const isSaturday = dayIndex % 7 === 6;
 
+    let css: string = "";
     if (!isThisMonth) {
-      if (isHoliday || isSunday) return "not-this-month-holiday";
-      if (isSaturday) return "not-this-month-saterday";
-      return "not-this-month";
+      if (isHoliday || isSunday) {
+        css = "not-this-month-holiday";
+      }else if (isSaturday) {  
+        css = "not-this-month-saterday";
+      }else {
+        css =  "not-this-month";
+      }
+      return css;
     }
 
-    if (isHoliday || isSunday) return "text-holiday";
-    if (isSaturday) return "text-saterday";
+    if (isHoliday || isSunday) {
+      css =  "text-holiday";
+    }else if (isSaturday) {
+      css= "text-saterday";
+    }
+
+    if (this.today() == ymd) {
+      return css + " text-today";
+    }
+    if( css != "") return css;
     return "text-normal";
   }
 
@@ -73,13 +87,9 @@ export class Calendar1Month extends CalendarBase {
       }
 
       const isToday = ymd === today;
-      let dayHtml = `<div class="col day${
-        isToday ? " bg-today" : ""
-      }" data-ymd="${ymd}" ${heightStyle}>`;
+      let dayHtml = `<div class="col day${isToday ? " bg-today" : ""}" data-ymd="${ymd}" ${heightStyle}>`;
       const clsName = this.choiceDayNumberClass(i, ymd);
-      dayHtml += `<span class="${clsName}">${parseInt(
-        ymd.substring(6)
-      )}</span>`;
+      dayHtml += `<span class="${clsName}">${parseInt(ymd.substring(6))}</span>`;
 
       const holidayEvents = this.holidays.filter(
         (holiday) => holiday.ymd === ymd
