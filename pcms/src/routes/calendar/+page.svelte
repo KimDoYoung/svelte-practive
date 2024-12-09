@@ -2,8 +2,9 @@
 <script lang="ts">
 	import CalendarEdit from '$lib/components/calendar/CalendarEdit.svelte';
   import  CalendarMonth  from '$lib/components/calendar/CalendarMonth.svelte';
-  let year = $state(2024)
-  let month = $state(12)
+  import { DateYmdUtil } from '$lib/utils';
+  let year = $state(DateYmdUtil.todayYear());
+  let month = $state(DateYmdUtil.todayMonth());
 
   let visibleForm = $state(false);
 
