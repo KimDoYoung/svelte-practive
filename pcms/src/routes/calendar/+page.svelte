@@ -3,6 +3,9 @@
 	import CalendarEdit from '$lib/components/calendar/CalendarEdit.svelte';
   import  CalendarMonth  from '$lib/components/calendar/CalendarMonth.svelte';
   import { DateYmdUtil } from '$lib/utils';
+  import { getFetch } from '$lib/api';
+	import type { CalendarResponse } from '$lib/types';
+
   let year = $state(DateYmdUtil.todayYear());
   let month = $state(DateYmdUtil.todayMonth());
 
@@ -24,20 +27,7 @@
     }
   }
 
-  let holidays = $state( [
-    { name: "개천절", ymd: "20241206" },
-    { name: "설날", ymd: "20241209" },
-  ]);
-
-  let eventDays = $state( [
-    {
-      company: "노브랜드",
-      name: "상장일",
-      ymd: "20241216",
-      title: "공모주 상장",
-      scrap_url: "",
-    },
-  ]);  
+  let calendar_data: CalendarResponse[] = $state([]);
   const dayClick = (ymd: string, schedule:string) => {
     alert(`Date clicked: ${ymd} ${schedule}`);
   };
@@ -57,7 +47,18 @@
   const editChangeNotice = () => {
     visibleForm = false;
   }
-  
+  const loadData = async (year: number, month: number) => {
+    console.log(year, month);
+    const response = await getFetch<CalendarResponse[]>(`/calendar/${year}${month<10?'0':''}${month}`);
+    console.log(response);
+    calendar_data = response;
+  }
+  $effect(() => {
+    loadData(year,month);
+    return () => {
+      console.log('Calendar Page 언마운트 되었습니다');
+    }
+  });
 </script>
   <main class="container">
     {#if visibleForm}
@@ -72,7 +73,7 @@
       <button onclick={goHome} aria-label="today"><i class="fas fa-home"></i></button>
       <button onclick={showForm} aria-label="edit calendar"><i class="fa-regular fa-pen-to-square"></i></button>
     </div>
-    <CalendarMonth {year} {month} {holidays} {eventDays} {dayClick}/>
+    <CalendarMonth {year} {month} {calendar_data} {dayClick}/>
   </main>
 <style>
   .horizon {

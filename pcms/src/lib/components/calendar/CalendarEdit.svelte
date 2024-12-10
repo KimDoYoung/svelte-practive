@@ -14,8 +14,8 @@
     const section = document.querySelector(".calendar-form-area"); // section 선택
     const gubun = (section?.querySelector('input[name="gubun"]:checked') as HTMLInputElement)?.value;
     const sorl = (section?.querySelector('input[name="sorl"]:checked') as HTMLInputElement)?.value;
-    const ymd = (document.querySelector('.calendar-form-area input[name="ymd"]') as HTMLInputElement)?.value;
-    const content = (document.querySelector('input[name="content"]') as HTMLInputElement)?.value;
+    const ymd = (section?.querySelector('.calendar-form-area input[name="ymd"]') as HTMLInputElement)?.value;
+    const content = (section?.querySelector('input[name="content"]') as HTMLInputElement)?.value;
 
     if (ymd && content) {
       if (!DateYmdUtil.isValidYmd(ymd)) {

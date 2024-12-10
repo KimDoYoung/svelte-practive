@@ -2,16 +2,18 @@
 <script lang="ts">
   import '$lib/styles/calendar-month.css';
   import {Calendar1Month} from '$lib/utils/calendar/calendar-1month';  
+  import type { CalendarResponse } from '$lib/types';
+
   type CalendarMonthType = {
     dayClick: (ymd: string, schedule: string) => void,
     year: number,
     month: number,
-    holidays: {name: string, ymd: string}[],
-    eventDays: {company: string, name: string, ymd: string, title: string, scrap_url: string}[]
+    calendar_data : CalendarResponse[],
   } ;
-  let {dayClick, year, month, holidays, eventDays}: CalendarMonthType = $props();
-  const calendar = new Calendar1Month(holidays, eventDays);
+  let {dayClick, year, month, calendar_data}: CalendarMonthType = $props();
+  const calendar = new Calendar1Month(calendar_data);
   let html = $derived.by(() => {
+    calendar.setCalendarData(calendar_data);
     let html =  calendar.renderCalendar(year, month);
     console.log("[" + html + "]");
     return html;

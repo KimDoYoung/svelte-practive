@@ -1,19 +1,13 @@
 // Calendar1Month.ts
 import { CalendarBase } from "./calendar-base";
-import { addYmd, cutString, zeroPad } from "./calendar-util";
+import { addYmd, zeroPad } from "./calendar-util";
+import type { CalendarResponse } from "$lib/types";
 
 export class Calendar1Month extends CalendarBase {
   constructor(
-    holidays: { name: string; ymd: string }[] = [],
-    eventDays: {
-      company: string;
-      name: string;
-      ymd: string;
-      title: string;
-      scrap_url: string;
-    }[] = []
+    data: CalendarResponse[]
   ) {
-    super(holidays, eventDays);
+    super(data);
   }
 
   private choiceDayNumberClass(dayIndex: number, ymd: string): string {
@@ -48,11 +42,10 @@ export class Calendar1Month extends CalendarBase {
     return "text-normal";
   }
 
-  private getEventClassName(eventName: string): string {
-    if (eventName.includes("상장일")) return "event-sang";
-    if (eventName.includes("청약일")) return "event-cheong";
-    if (eventName.includes("환불일")) return "event-whan";
-    if (eventName.includes("납입일")) return "event-nap";
+  private getEventClassName(gubun: string): string {
+    if (gubun === 'E') return "gubun-event";
+    else if (gubun === 'Y') return "gubun-year";
+    else if (gubun === 'M') return "gubun-month";
     return "";
   }
 
@@ -89,22 +82,19 @@ export class Calendar1Month extends CalendarBase {
       const isToday = ymd === today;
       let dayHtml = `<div class="col day${isToday ? " bg-today" : ""}" data-ymd="${ymd}" ${heightStyle}>`;
       const clsName = this.choiceDayNumberClass(i, ymd);
-      dayHtml += `<span class="${clsName}">${parseInt(ymd.substring(6))}</span>`;
+      dayHtml += `<span class="${clsName}">${parseInt(ymd.substring(6))}</span>`; //일자
 
       const holidayEvents = this.holidays.filter(
         (holiday) => holiday.ymd === ymd
       );
       holidayEvents.forEach((holiday) => {
-        dayHtml += `<div class="holiday">${holiday.name}</div>`;
+        dayHtml += `<div class="holiday">${holiday.content}</div>`;
       });
 
       const eventDays = this.eventDays.filter((event) => event.ymd === ymd);
       eventDays.forEach((event) => {
-        const company = cutString(event.company, 6);
-        const eventClsName = this.getEventClassName(event.name);
-        const url = event.scrap_url;
-        const title = event.title;
-        dayHtml += `<div class="${eventClsName} ipo_event" title="${title}"><a href="${url}" target="_blank">${company}</a> ${event.name}</div>`;
+        const eventClsName = this.getEventClassName(event.gubun);
+        dayHtml += `<div class="${eventClsName} ipo_event">${event.content}</div>`;
       });
 
       dayHtml += "</div>";

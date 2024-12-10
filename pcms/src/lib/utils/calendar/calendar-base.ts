@@ -7,33 +7,20 @@ import {
   getEndYmd,
   todayYmd,
 } from "./calendar-util";
-
+import type { CalendarResponse } from "$lib/types";
 export abstract class CalendarBase {
   protected currentYear: number;
   protected currentMonth: number;
-  protected holidays: { name: string; ymd: string }[] = [];
-  protected eventDays: {
-    company: string;
-    name: string;
-    ymd: string;
-    title: string;
-    scrap_url: string;
-  }[] = [];
+  protected data: CalendarResponse[] = [];
+  protected holidays: CalendarResponse[] = [];
+  protected eventDays: CalendarResponse[] = [];
 
   constructor(
-    holidays: { name: string; ymd: string }[] = [],
-    eventDays: {
-      company: string;
-      name: string;
-      ymd: string;
-      title: string;
-      scrap_url: string;
-    }[] = []
+    data : CalendarResponse[]
   ) {
-    this.holidays = holidays;
-    this.eventDays = eventDays;
     this.currentYear = new Date().getFullYear();
     this.currentMonth = new Date().getMonth() + 1;
+    this.setCalendarData(data);
   }
 
   /** 이전 월 계산 */
@@ -65,7 +52,7 @@ export abstract class CalendarBase {
     let maxCount = 0;
     let ymd = startYmd;
     while (ymd <= endYmd) {
-      const eventCount = this.eventDays.filter((event) => event.ymd === ymd)
+      const eventCount = this.data.filter((event) => event.ymd === ymd)
         .length;
       maxCount = Math.max(maxCount, eventCount);
       ymd = addYmd(ymd, 1);
@@ -82,19 +69,10 @@ export abstract class CalendarBase {
   }
 
   /** 휴일과 이벤트를 동적으로 업데이트 */
-  public setHolidays(holidays: { name: string; ymd: string }[]): void {
-    this.holidays = holidays;
+  public setCalendarData(data: CalendarResponse[]): void {
+    this.data = data;
+    this.holidays = data.filter((event) => event.gubun === "H");
+    this.eventDays = data.filter((event) => event.gubun === "E");
   }
 
-  public setEventDays(
-    eventDays: {
-      company: string;
-      name: string;
-      ymd: string;
-      title: string;
-      scrap_url: string;
-    }[]
-  ): void {
-    this.eventDays = eventDays;
-  }
 }
