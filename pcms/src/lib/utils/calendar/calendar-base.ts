@@ -16,10 +16,13 @@ export abstract class CalendarBase {
   protected eventDays: CalendarResponse[] = [];
 
   constructor(
+    year: number, month: number,
     data : CalendarResponse[]
   ) {
-    this.currentYear = new Date().getFullYear();
-    this.currentMonth = new Date().getMonth() + 1;
+    this.currentYear = year;
+    this.currentMonth = month;
+    // this.currentYear = new Date().getFullYear();
+    // this.currentMonth = new Date().getMonth() + 1;
     this.setCalendarData(data);
   }
 

@@ -3,7 +3,7 @@
 	import CalendarEdit from '$lib/components/calendar/CalendarEdit.svelte';
   import  CalendarMonth  from '$lib/components/calendar/CalendarMonth.svelte';
   import { DateYmdUtil } from '$lib/utils';
-  import { getFetch } from '$lib/api';
+  import { getFetch, postFetch } from '$lib/api';
 	import type { CalendarResponse } from '$lib/types';
 
   let year = $state(DateYmdUtil.todayYear());
@@ -30,6 +30,13 @@
   let calendar_data: CalendarResponse[] = $state([]);
   const dayClick = (ymd: string, schedule:string) => {
     alert(`Date clicked: ${ymd} ${schedule}`);
+    const data = {
+      gubun : 'E',sorl:'S',ymd:ymd, content:schedule
+    }
+    postFetch('/calendar', data).then((response: any) => {
+      console.log(response);
+      loadData(year, month);
+    });
   };
   const goHome = () => {
     year = new Date().getFullYear();

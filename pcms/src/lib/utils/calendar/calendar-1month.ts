@@ -5,9 +5,10 @@ import type { CalendarResponse } from "$lib/types";
 
 export class Calendar1Month extends CalendarBase {
   constructor(
+    year: number, month: number,
     data: CalendarResponse[]
   ) {
-    super(data);
+    super(year,month, data);
   }
 
   private choiceDayNumberClass(dayIndex: number, ymd: string): string {

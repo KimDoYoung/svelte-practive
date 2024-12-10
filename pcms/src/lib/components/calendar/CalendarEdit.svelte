@@ -31,7 +31,6 @@
 </script>
 <!-- html -->
 <section class="calendar-form-area">
-  <form action="">
     <div class="grid">
       <input type="radio" name="gubun" id="gubun1" value="H">
       <label for="gubun1">이벤트</label>
@@ -58,7 +57,6 @@
       <button onclick={(e)=>{saveButtonClick(e)}}>저장</button>
       <button class="secondary" onclick={editCancelNotice}>취소</button>
     </div>
-  </form>
 </section>
 
 <style>
