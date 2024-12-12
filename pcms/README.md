@@ -64,3 +64,16 @@ npm install @fortawesome/fontawesome-free
 ## 참고
 
 - [Task manage](https://www.youtube.com/watch?v=uSWMvDPpG0k)
+
+## 소감
+
+뭔가 정립된 방법이 있어야하지 않을까? 생각이 든다. 반응성이라는 것이 좋긴한데, 두번 데이터를 가져온다든지.
+두번 rendering된다든지 한다.
+
+- 짧은 코드로 동작과 의미를 확인
+- 개발 방법 즉 정해진 방법을 기록하고 그대로 하는게 좋지 않을까?
+- 반응성을 따라가면서 디버그 할 수 있는 방법이 있으면 좋을텐데.
+
+### 의문점 확인해서 명확히 인지할 것들
+
+

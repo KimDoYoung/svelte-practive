@@ -9,6 +9,16 @@
         <li><a href="/diary">Diary</a></li>
         <li><a href="/calendar">Calendar</a></li>
         <li><a href="/snote">Snote</a></li>
+        <li>
+          <details class="dropdown" role="list">
+            <summary>Movie</summary>
+            <ul>
+              <li><a href="/movie/review">Review</a></li>
+              <li><a href="/movie">Movie</a></li>
+              <li><a href="/movie/hdd">Hdd</a></li>
+            </ul>
+          </details>
+        </li>
     </ul>
 </nav>
 

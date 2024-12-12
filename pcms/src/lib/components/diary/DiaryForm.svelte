@@ -18,6 +18,7 @@
 	import EmojiPicker from './EmojiPicker.svelte';
   //TODO : 수정되었다는 것과 save버튼과 연동
   //TODO : 10초마다 자동저장 
+  //TODO: 단어 선택 ctrl+shift+H -> 한자 가져오기  (선택영역의 글자->보내기+ 받아서 1개이면 바로 한자로 변환, 2개이상이면 단어로 변환, 모두 넣고 지우자)
   let {ymd}  = $props(); 
   
 	let summary = $state('');

@@ -1,7 +1,8 @@
 <!-- 파일명 : \src\routes\snote/+page.svelte -->
 <script lang="ts">
-  //TODO: Snote 수정
-  //TODO:  보기 
+  //TODO: Snote 수정 페이지 만들기
+  //TODO:  보기 페이지 만들기(암호해독)
+
   import { deleteFetch, getFetch } from "$lib/api";
   import SnoteEdit from "$lib/components/snote/SnoteEdit.svelte";
 	import type { SnoteBase, SnoteCreate, SnoteList } from "$lib/types/snote";
