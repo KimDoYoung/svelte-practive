@@ -1,10 +1,11 @@
 <!-- src/lib/components/NavBar.svelte -->
 <script lang="ts">
     // 필요한 props나 상태가 있다면 여기서 정의
+    let {currentPageTitle} = $props();
 </script>
 
 <nav class="bg-light">
-    <a href="/" class="contrast">PCMS</a>
+    <a href="/" class="contrast">PCMS{#if currentPageTitle}-{currentPageTitle}{/if}</a>
     <ul>
         <li><a href="/diary">Diary</a></li>
         <li><a href="/calendar">Calendar</a></li>

@@ -4,3 +4,4 @@ export * from './ymd';
 export * from './todo';
 export * from './snote';
 export * from './calendar';
+export * from './movie';

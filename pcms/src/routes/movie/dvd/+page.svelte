@@ -6,10 +6,9 @@
   }
 </script>
 
-<main class="container">
-  <h3>영화-dvd</h3>
+<section>
   <SearchInput {searchInputClick} placeholder_text="찾고자하는 키워드"/>
-</main>
+</section>
 
 <style>
 </style>

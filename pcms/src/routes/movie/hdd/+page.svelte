@@ -1,11 +1,12 @@
 <!-- 파일명 : +page.svelte -->
 <script lang="ts">
+  import SearchInput from "$lib/components/common/SearchInput.svelte";
+  const searchInputClick = (keyword: string) => {
+    console.log(keyword);
+  }
 </script>
-  <main class="container">
-  <!-- Main Content -->
-    <section class="content">
-      <h1>111</h1>
-    </section>
-  </main>
+<section>
+  <SearchInput {searchInputClick} placeholder_text="찾고자하는 키워드"/>
+</section>
 <style>
 </style>
