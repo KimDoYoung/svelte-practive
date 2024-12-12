@@ -14,7 +14,7 @@
             <summary>Movie</summary>
             <ul>
               <li><a href="/movie/review">Review</a></li>
-              <li><a href="/movie">Movie</a></li>
+              <li><a href="/movie/dvd">DVD</a></li>
               <li><a href="/movie/hdd">Hdd</a></li>
             </ul>
           </details>

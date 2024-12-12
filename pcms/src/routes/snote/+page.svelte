@@ -56,10 +56,11 @@
     loadSnotes({limit:10, start_index:start_index});
   }
   const viewClick = (id:number) => {
-    window.location.href = '/snote/'+id;
+    window.location.href = '/snote/view/'+id;
   }
   const editClick = (id:number) => {
     console.log('edit click' + id);
+    window.location.href = '/snote/edit/'+id;
     mode = 'edit';
   }
   const deleteClick = (id:number) => {
