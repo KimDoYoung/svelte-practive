@@ -56,6 +56,14 @@ find node_modules/ -name "pico.min.css"  -print
 npm install @fortawesome/fontawesome-free
 ```
 
+## 외부 라이브러리
+
+1. [각 국가들의 국기](https://github.com/hampusborgos/country-flags/tree/main)
+
+   ```shell
+   npm install --save svg-country-flags
+   ```
+
 ## Profile
 
 - development와 product로 나눔.
@@ -75,5 +83,3 @@ npm install @fortawesome/fontawesome-free
 - 반응성을 따라가면서 디버그 할 수 있는 방법이 있으면 좋을텐데.
 
 ### 의문점 확인해서 명확히 인지할 것들
-
-

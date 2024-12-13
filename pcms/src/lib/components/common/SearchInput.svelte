@@ -23,7 +23,7 @@
 <div class="search-area">
   <div class="input-wrapper">
     <input type="search" id="search" name="search" placeholder={placeholder_text} onkeydown={handleKeydown}>
-    <button class="btn-search" type="button" aria-label="Search" onclick={()=>{handleButtonClick}}>
+    <button class="btn-search" type="button" aria-label="Search" onclick={handleButtonClick}>
       <i class="fa fa-search"></i>
     </button>
   </div>

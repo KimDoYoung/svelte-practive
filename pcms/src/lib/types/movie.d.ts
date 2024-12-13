@@ -24,5 +24,6 @@ export interface MovieReviewListResponse {
   list: MovieReviewItem[];
   item_count: number;
   next_data_exists: boolean;
+  start_index: number;
   next_index: number;
 }
