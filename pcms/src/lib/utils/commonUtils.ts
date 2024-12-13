@@ -139,3 +139,12 @@ export function todayYmd(): Ymd {
 
     return `${year}${month}${day}` as Ymd; // yyyymmdd 형식으로 반환
 }
+
+export function clean_text(text: string): string {
+  return text
+  .replace(/\n/g, '\\n') // 줄바꿈 처리
+  .replace(/\t/g, '\\t') // 탭 처리
+  .replace(/"/g, '\\"') // 따옴표 이스케이프
+  .replace(/\\/g, '\\\\') // 백슬래시 이스케이프
+  .trim(); // 앞뒤 공백 제거
+}
