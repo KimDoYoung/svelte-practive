@@ -1,5 +1,4 @@
-<!-- 파일명 : +page.svelte -->
-<!--
+<!-- 
   파일명 : /review/+page.svelte
   영화감상평 검색
 -->
@@ -7,14 +6,16 @@
   import SearchInput from "$lib/components/common/SearchInput.svelte";
   import NationalFlag from "$lib/components/common/NationalFlag.svelte";
   import StarLevel from "$lib/components/common/StarLevel.svelte";
-	import { getFetch } from "$lib/api.js";
-	import type { MovieReviewListResponse } from "$lib/types";
+	import { deleteFetch, getFetch } from "$lib/api.js";
+	import type { MovieReviewListResponse, MovieReviewItem } from "$lib/types";
+  import MovieReviewDetail from "$lib/components/movie/MovieReviewDetail.svelte";
+
 	// import { load } from "../../+page.server";
   let {data}= $props();
   let mode = $state('list');
   let pageNo = 1;
   let search_text = "";
-
+  let review = $state({} as MovieReviewItem);
 
   const loadPage = async () => {
     let start_index = (pageNo - 1) * 10;
@@ -30,22 +31,29 @@
       data = response;
     });
   }
+
   const LoadView = (id:number) => {
     mode = 'edit';
     //TODO : 상세보기 페이지로 이동 kalpadb-api에서 구현도 안함.
+    getFetch<MovieReviewItem>("/movie_review/" + id).then((response) => {
+      console.log("response", response);
+      review =  response;
+    });
   }
-
+  //
   const searchInputClick = (keyword: string) => {
     console.log("검색버튼 click " + keyword);
     search_text = keyword;
     pageNo = 1;
     loadPage();
   }
+  //다음버튼
   const handleNextButton = () => {
     console.log("다음버튼 클릭");
     pageNo += 1;
     loadPage();
   }
+  //이전버튼
   const handlePrevButton = () => {
     console.log("이전버튼 클릭");
     pageNo -= 1;
@@ -55,6 +63,7 @@
     loadPage();
 
   }
+  // 제목클릭 상세보기
   const clickMovieReview = (e: MouseEvent) => {
     console.log("clickMovieReview", e);
     const target = e.target as HTMLElement;
@@ -62,6 +71,23 @@
     console.log("id", id);
     LoadView(Number(id));
   }  
+  // 삭제
+  const handleDelete = (e: MouseEvent) => {
+    console.log("handleDelete", e);
+    const target = e.target as HTMLElement;
+    const id = target.getAttribute("data-id");
+    const title = target.getAttribute("data-title");
+    console.log("id", id);
+    if (confirm(title + " 삭제하시겠습니까?")) {
+      deleteFetch("/movie_reviews/" + id).then((response) => {
+        console.log("response", response);
+        loadPage();
+      });
+    }
+  }
+  const handleGoListButton = () => {
+    mode = 'list';
+  }
   $effect(() => {
     console.log("영화감상평....effect");
     return () => {
@@ -83,6 +109,11 @@
         <div class="review-item__nara"><NationalFlag country={review.nara}/></div>
         <div class="review-item__year">{review.year}</div>
         <div class="review-item__lvl"><StarLevel level={review.lvl}/></div>
+        <div class="review-item__delete">
+          <a href="#none" data-title={review.title} data-id={review.id} onclick={handleDelete} aria-label="delete review">
+              <i class="fa-solid fa-trash-can"></i>
+          </a>
+      </div>
       </div>
     </div>    
     {/each}
@@ -97,7 +128,7 @@
   {/if}
 </section>
 <section class="movie-review-view"  class:visible={mode === 'edit'} class:hidden={mode !== 'edit'}>
-1111
+  <MovieReviewDetail {review} {handleGoListButton}/>
 </section>
 <style>
   a{
@@ -152,5 +183,14 @@
   /* 보이는 상태 */
   .visible {
     display: block;
+  }
+
+  .review-item__delete a {
+      color: #666;
+      text-decoration: none;
+  }
+  .review-item__delete a:hover .fa-trash-can {
+      color: #ff0000;
+      transition: color 0.2s ease;
   }
 </style>

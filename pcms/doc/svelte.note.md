@@ -23,6 +23,19 @@
   </button> 
 ```
 
+## $derived
+
+```javascript
+let doubled = $derived(count * 2);
+let total = $derived.by(() => {
+  let total = 0;
+  for (const n of numbers) {
+   total += n;
+  }
+  return total;
+ });
+```
+
 ## effect
 
 ```javascript
