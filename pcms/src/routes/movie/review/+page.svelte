@@ -30,6 +30,10 @@
       data = response;
     });
   }
+  const LoadView = (id:number) => {
+    mode = 'edit';
+    //TODO : 상세보기 페이지로 이동 kalpadb-api에서 구현도 안함.
+  }
 
   const searchInputClick = (keyword: string) => {
     console.log("검색버튼 click " + keyword);
@@ -56,6 +60,7 @@
     const target = e.target as HTMLElement;
     const id = target.getAttribute("data-id");
     console.log("id", id);
+    LoadView(Number(id));
   }  
   $effect(() => {
     console.log("영화감상평....effect");
