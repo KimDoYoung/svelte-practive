@@ -33,7 +33,7 @@
   }
 
   const LoadView = (id:number) => {
-    mode = 'edit';
+   
     //TODO : 상세보기 페이지로 이동 kalpadb-api에서 구현도 안함.
     getFetch<MovieReviewItem>("/movie_review/" + id).then((response) => {
       console.log("response", response);
@@ -70,6 +70,7 @@
     const id = target.getAttribute("data-id");
     console.log("id", id);
     LoadView(Number(id));
+    mode = 'view';
   }  
   // 삭제
   const handleDelete = (e: MouseEvent) => {
@@ -85,8 +86,18 @@
       });
     }
   }
+  //리스트화면 이동
   const handleGoListButton = () => {
     mode = 'list';
+  }
+  //수정화면 이동
+  const handleEdit = (e: MouseEvent) => {
+    console.log("handleEdit", e);
+    const target = e.target as HTMLElement;
+    const id = target.getAttribute("data-id");
+    console.log("id", id);
+    LoadView(Number(id));
+    mode = 'update';
   }
   $effect(() => {
     console.log("영화감상평....effect");
@@ -113,7 +124,12 @@
           <a href="#none" data-title={review.title} data-id={review.id} onclick={handleDelete} aria-label="delete review">
               <i class="fa-solid fa-trash-can"></i>
           </a>
-      </div>
+        </div>
+        <div class="review-item__update">
+          <a href="#none" data-title={review.title} data-id={review.id} onclick={handleEdit} aria-label="edit review">
+              <i class="fa-solid fa-edit"></i>
+          </a>
+        </div>
       </div>
     </div>    
     {/each}
@@ -127,8 +143,12 @@
     </div>
   {/if}
 </section>
-<section class="movie-review-view"  class:visible={mode === 'edit'} class:hidden={mode !== 'edit'}>
+<section class="movie-review-view"  class:visible={mode === 'view'} class:hidden={mode !== 'view'}>
   <MovieReviewDetail {review} {handleGoListButton}/>
+</section>
+
+<section class="movie-reivew-edit"  class:visible={mode === 'update'} class:hidden={mode !== 'update'}>
+  수정화면
 </section>
 <style>
   a{
@@ -193,4 +213,12 @@
       color: #ff0000;
       transition: color 0.2s ease;
   }
+  .review-item__update a {
+      color: #666;
+      text-decoration: none;
+  }
+  .review-item__update a:hover .fa-edit {
+      color: #2838e3;
+      transition: color 0.2s ease;
+  }  
 </style>

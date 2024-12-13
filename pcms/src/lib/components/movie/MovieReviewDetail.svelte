@@ -14,7 +14,7 @@
 </script>
 <!-- html -->
 <h1>{review.title}</h1>
-<h3><StarLevel level={review.lvl}/></h3>
+<div><StarLevel level={review.lvl}/> </div>
 <div class="sub-info">
     <span>{review.nara} ({review.year})</span>
     <span>감상일자 : {formattedYmd}</span>
