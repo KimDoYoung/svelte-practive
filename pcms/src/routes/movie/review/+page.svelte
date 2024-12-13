@@ -7,16 +7,56 @@
   import SearchInput from "$lib/components/common/SearchInput.svelte";
   import NationalFlag from "$lib/components/common/NationalFlag.svelte";
   import StarLevel from "$lib/components/common/StarLevel.svelte";
-	// import type { MovieReviewListResponse } from "$lib/types";
+	import { getFetch } from "$lib/api.js";
+	import type { MovieReviewListResponse } from "$lib/types";
 	// import { load } from "../../+page.server";
   let {data}= $props();
+  let mode = $state('list');
+  let pageNo = 1;
+  let search_text = "";
+
+
+  const loadPage = async () => {
+    let start_index = (pageNo - 1) * 10;
+    let params = {
+      start_index: start_index,
+      search_text: search_text,
+      limit : 10,
+      include_content:false
+    }
+    console.log("params", params);
+    getFetch<MovieReviewListResponse>("/movie_reviews", params).then((response) => {
+      console.log("response", response);
+      data = response;
+    });
+  }
 
   const searchInputClick = (keyword: string) => {
     console.log("검색버튼 click " + keyword);
+    search_text = keyword;
+    pageNo = 1;
+    loadPage();
   }
   const handleNextButton = () => {
     console.log("다음버튼 클릭");
+    pageNo += 1;
+    loadPage();
   }
+  const handlePrevButton = () => {
+    console.log("이전버튼 클릭");
+    pageNo -= 1;
+    if (pageNo < 1) {
+      pageNo = 1;
+    }
+    loadPage();
+
+  }
+  const clickMovieReview = (e: MouseEvent) => {
+    console.log("clickMovieReview", e);
+    const target = e.target as HTMLElement;
+    const id = target.getAttribute("data-id");
+    console.log("id", id);
+  }  
   $effect(() => {
     console.log("영화감상평....effect");
     return () => {
@@ -24,23 +64,20 @@
     };
   });
 </script>
-<section>
+<section class="movie-review-list" class:visible={mode === 'list'} class:hidden={mode !== 'list'}>
   <SearchInput {searchInputClick} placeholder_text="Review 찾고자하는 키워드"/>
   {#if data.list.length === 0}
     <div>검색결과가 없습니다.</div>
   {:else}
     {#each data.list as review, index}
-    <div class="review-item" id="{String(review.id)}">
+    <div class="review-item">
       <div class="review-item__left">
-        <div class="review-item__title">{review.title}</div>
+        <div class="review-item__title"><a href="#none" onclick={clickMovieReview} data-id="{review.id}">{review.title}</a></div>
       </div>
       <div class="review-item__right">
         <div class="review-item__nara"><NationalFlag country={review.nara}/></div>
         <div class="review-item__year">{review.year}</div>
-        <div class="review-item__lvl">
-          <StarLevel level={review.lvl}/>
-
-        </div>
+        <div class="review-item__lvl"><StarLevel level={review.lvl}/></div>
       </div>
     </div>    
     {/each}
@@ -54,7 +91,14 @@
     </div>
   {/if}
 </section>
+<section class="movie-review-view"  class:visible={mode === 'edit'} class:hidden={mode !== 'edit'}>
+1111
+</section>
 <style>
+  a{
+    text-decoration: none;
+    color: black;
+  }
   .button-area {
     display: flex;
     justify-content: flex-start;
@@ -96,4 +140,12 @@
     white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
   }
 
+  .hidden {
+    display: none;
+  }
+
+  /* 보이는 상태 */
+  .visible {
+    display: block;
+  }
 </style>

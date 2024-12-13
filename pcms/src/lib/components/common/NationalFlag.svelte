@@ -15,6 +15,7 @@
     display: inline-block;
     width: 32px; /* 아이콘 크기 */
     height: 32px;
+    margin-left: 2px;
   }
 
   .national-flag img {

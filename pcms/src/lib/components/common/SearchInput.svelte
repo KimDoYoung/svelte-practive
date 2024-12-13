@@ -7,10 +7,10 @@
   let { searchInputClick, placeholder_text }: SearchInputType = $props();
   const handleButtonClick = () => {
     const search = document.getElementById('search') as HTMLInputElement;
-    if(search.value === '') {
-      alert('검색어를 입력해주세요.');
-      return;
-    }
+    // if(search.value === '') {
+    //   alert('검색어를 입력해주세요.');
+    //   return ;
+    // }
     searchInputClick(search.value);
   }
   const handleKeydown = (e: KeyboardEvent) => {
@@ -52,7 +52,21 @@
     font-size: 16px;
     box-sizing: border-box;
   }
-  
+  .btn-init {
+    position: absolute;
+    top: 35%;
+    right: 10px; /* 버튼 위치 조정 */
+    transform: translateY(-50%);
+    border: none;
+    background: rgb(150, 150, 216);
+    color: white;
+    padding: 0.7rem 0.7rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   /* 버튼 스타일 */
   .btn-search {
     position: absolute;
