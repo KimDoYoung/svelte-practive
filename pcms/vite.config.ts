@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
 
     // 선택한 환경 파일을 로드하여 환경 변수에 추가
     const env = loadEnv(mode, process.cwd(), envFile);
-
+    
     // Vite 설정 반환
     return {
         plugins: [sveltekit()],
@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
             'process.env': Object.fromEntries(
                 Object.entries(env).map(([key, val]) => [`process.env.${key}`, val])
             )
-        }
+        },
+    
     };
 });

@@ -9,6 +9,7 @@
 	import { deleteFetch, getFetch } from "$lib/api.js";
 	import type { MovieReviewListResponse, MovieReviewItem } from "$lib/types";
   import MovieReviewDetail from "$lib/components/movie/MovieReviewDetail.svelte";
+  import MovieReviewEdit from "$lib/components/movie/MovieReviewEdit.svelte";
 
 	// import { load } from "../../+page.server";
   let {data}= $props();
@@ -148,7 +149,7 @@
 </section>
 
 <section class="movie-reivew-edit"  class:visible={mode === 'update'} class:hidden={mode !== 'update'}>
-  수정화면
+  <MovieReviewEdit mode="update" {review} {handleGoListButton}/>
 </section>
 <style>
   a {
