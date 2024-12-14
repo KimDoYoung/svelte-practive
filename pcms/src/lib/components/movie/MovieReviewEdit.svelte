@@ -1,10 +1,11 @@
 <!-- 파일명 : MovieReviewEdit.svelte -->
 <script lang="ts">
-
-  import Editor from '@toast-ui/editor';
-  import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
-  import '@toast-ui/editor/dist/toastui-editor-viewer.css'; // Editor's Viewer's Style
+  // import Quill from 'quill';
+  // import Link from 'quill/formats/link';
+  // import "quill/dist/quill.core.css";
+  import 'quill/dist/quill.snow.css';
 	import type { MovieReviewItem } from '$lib/types';
+	import { onMount } from 'svelte';
   
   type MovieReviewEditType = {
     mode: string;
@@ -12,19 +13,31 @@
     handleGoListButton: () => void;
   }
   let {review, mode, handleGoListButton} :MovieReviewEditType  = $props();
-  let editor: Editor;
+  let quill;
+  let editor: any;
 
-  $effect(() => {
-    editor = new Editor({
-      el: document.querySelector('#content'),
-      height: '600px',
-      initialEditType: 'wysiwyg',
-      previewStyle: 'vertical',
-      usageStatistics: false
-    });
+  onMount(async () => {
+    if (typeof window !== 'undefined') {
+      const Quill = (await import('quill')).default;
+      editor = new Quill('#editor-container', {
+        theme: 'snow',
+      });
+      // DOM에서 role="button" 제거
+      const buttons = document.querySelectorAll('.ql-picker-label[role="button"]');
+      buttons.forEach((button) => {
+        button.removeAttribute('role');
+      });      
+    }
   });
 </script>
 <!-- html -->
-<div id="content"></div>
+<div  class="quill-container">
+  <div id="editor-container">
+    <p>Hello World!</p>
+    <p>Some initial <strong>bold</strong> text</p>
+    <p><br /></p>
+  </div>
+</div>
 <style>
+
 </style>
