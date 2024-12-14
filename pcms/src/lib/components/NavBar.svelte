@@ -5,7 +5,7 @@
 </script>
 
 <nav class="bg-light">
-    <a href="/" class="contrast">PCMS{#if currentPageTitle}-{currentPageTitle}{/if}</a>
+    <a href="/" class="contrast">PCMS<strong>{#if currentPageTitle}-{currentPageTitle}{/if}</strong></a>
     <ul>
         <li><a href="/diary">Diary</a></li>
         <li><a href="/calendar">Calendar</a></li>

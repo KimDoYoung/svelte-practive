@@ -17,6 +17,7 @@
   let search_text = "";
   let review = $state({} as MovieReviewItem);
 
+  //1페이지의 리스트 데이터를 가져온다
   const loadPage = async () => {
     let start_index = (pageNo - 1) * 10;
     let params = {
@@ -31,16 +32,14 @@
       data = response;
     });
   }
-
+  //1개의 영화감상평을 가져온다
   const LoadView = (id:number) => {
-   
-    //TODO : 상세보기 페이지로 이동 kalpadb-api에서 구현도 안함.
     getFetch<MovieReviewItem>("/movie_review/" + id).then((response) => {
       console.log("response", response);
       review =  response;
     });
   }
-  //
+  //검색어 입력 후 검색버튼 클릭
   const searchInputClick = (keyword: string) => {
     console.log("검색버튼 click " + keyword);
     search_text = keyword;
@@ -143,6 +142,7 @@
     </div>
   {/if}
 </section>
+
 <section class="movie-review-view"  class:visible={mode === 'view'} class:hidden={mode !== 'view'}>
   <MovieReviewDetail {review} {handleGoListButton}/>
 </section>
@@ -151,7 +151,7 @@
   수정화면
 </section>
 <style>
-  a{
+  a {
     text-decoration: none;
     color: black;
   }
