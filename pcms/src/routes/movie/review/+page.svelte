@@ -75,11 +75,14 @@
   // 삭제
   const handleDelete = (e: MouseEvent) => {
     console.log("handleDelete", e);
-    const target = e.target as HTMLElement;
+    // const target = e.target as HTMLElement;
+    const target = (e.target as HTMLElement).closest('a');
+    if (!target) return;
+
     const id = target.getAttribute("data-id");
     const title = target.getAttribute("data-title");
     console.log("id", id);
-    if (confirm(title + " 삭제하시겠습니까?")) {
+    if (confirm(`[${title}] 삭제하시겠습니까?`)) {
       deleteFetch("/movie_reviews/" + id).then((response) => {
         console.log("response", response);
         loadPage();
@@ -89,16 +92,24 @@
   //리스트화면 이동
   const handleGoListButton = () => {
     mode = 'list';
-  }
+  };
   //수정화면 이동
   const handleEdit = (e: MouseEvent) => {
+    e.stopPropagation();
     console.log("handleEdit", e);
-    const target = e.target as HTMLElement;
-    const id = target.getAttribute("data-id");
-    console.log("id", id);
-    LoadView(Number(id));
-    mode = 'update';
-  }
+    
+    // 클릭한 요소에서 가장 가까운 <a> 태그를 찾음
+    const target = (e.target as HTMLElement).closest('a');
+    if (target) {
+      const id = target.getAttribute("data-id");
+      console.log("edit id", id);
+      if (id) {
+        LoadView(Number(id));
+        mode = 'update';
+      }
+    }
+  };
+
   $effect(() => {
     console.log("영화감상평....effect");
     return () => {

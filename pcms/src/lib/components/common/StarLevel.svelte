@@ -2,7 +2,7 @@
   let {level} = $props();
 
   // 별의 상태 배열 (true: 활성화, false: 비활성화)
-  let stars = Array(5).fill(false).map((_, index) => index < level);
+  let stars = $derived(Array(5).fill(false).map((_, index) => index < level));
 
 </script>
 <div class="star-level">

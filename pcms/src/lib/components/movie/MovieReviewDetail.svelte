@@ -14,12 +14,12 @@
 </script>
 <!-- html -->
 <h1>{review.title}</h1>
-<div> <StarLevel level={review.lvl}/></div>
 <div class="sub-info">
+    <div> <StarLevel level={review.lvl} /> </div>
     <span>{review.nara} ({review.year})</span>
     <span>감상일자 : {formattedYmd}</span>
     <a href="#none" aria-label="목록으로" onclick={handleGoListButton} title="목록으로">
-      <i class="fa-solid fa-list"></i>
+        <i class="fa-solid fa-list"></i>
     </a>
 </div>
 <hr>

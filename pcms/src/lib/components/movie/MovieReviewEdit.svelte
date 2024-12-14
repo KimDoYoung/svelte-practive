@@ -15,6 +15,8 @@
   let {review, mode, handleGoListButton} :MovieReviewEditType  = $props();
   let quill;
   let editor: any;
+  let html = $derived(review.content);
+
 
   onMount(async () => {
     if (typeof window !== 'undefined') {
@@ -29,15 +31,26 @@
       });      
     }
   });
+  // $: if (editor && review.content) {
+  //   editor.setContents(editor.clipboard.convert(review.content));
+  // }  
+  $effect( () => {
+    // let initialContent = editor.clipboard.convert(html)
+    // editor.setContents(initialContent, 'silent')     
+    // if(editor && review.content){
+    //     // editor.setContents(review.content);
+    //     let initialContent = editor.clipboard.convert(review.content)
+    //     editor.setContents(initialContent, 'silent')        
+    //     // editor.setContents(editor.clipboard.convert(review.content));
+    // }
+  });
 </script>
 <!-- html -->
-<div  class="quill-container">
-  <div id="editor-container">
-    <p>Hello World!</p>
-    <p>Some initial <strong>bold</strong> text</p>
-    <p><br /></p>
-  </div>
-</div>
+  <div class="edit-title"><h3>{review.title}</h3></div>
+  <div id="editor-container">{@html html}</div>
+  <div class="button-area">
+    <button onclick={handleGoListButton}>목록</button>
+  </div>  
 <style>
 
 </style>
