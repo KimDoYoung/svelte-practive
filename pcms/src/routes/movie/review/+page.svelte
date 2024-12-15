@@ -85,7 +85,7 @@
     const title = target.getAttribute("data-title");
     console.log("id", id);
     if (confirm(`[${title}] 삭제하시겠습니까?`)) {
-      deleteFetch("/movie_reviews/" + id).then((response) => {
+      deleteFetch("/movie_review/" + id).then((response) => {
         console.log("response", response);
         loadPage();
       });
@@ -125,7 +125,7 @@
     review.year = review.year;
     review.content = review.content;
     console.log("review", review);
-    postFetch("/movie_reviews", review).then((response) => {
+    postFetch("/movie_review", review).then((response) => {
       console.log("response", response);
       loadPage();
       mode = 'list';
