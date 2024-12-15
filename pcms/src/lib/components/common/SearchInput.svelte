@@ -40,8 +40,8 @@
   /* 입력 필드와 버튼을 감싸는 Wrapper */
   .input-wrapper {
     position: relative;
-    width: 50%;
-  }
+    width: 100%;
+  } 
   
   /* 입력 필드 스타일 */
   input[type="search"] {

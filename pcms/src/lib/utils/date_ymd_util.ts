@@ -5,7 +5,7 @@ export class DateYmdUtil {
 
   static todayYmd() {
     const today = new Date();
-    return `${today.getFullYear()}-${this.pad(today.getMonth() + 1)}-${this.pad(today.getDate())}`;
+    return `${today.getFullYear()}${this.pad(today.getMonth() + 1)}${this.pad(today.getDate())}`;
   }
   static todayYear(){
     const today = new Date();

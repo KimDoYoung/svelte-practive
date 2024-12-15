@@ -9,7 +9,7 @@
 	import { deleteFetch, getFetch, postFetch } from "$lib/api.js";
 	import type { MovieReviewListResponse, MovieReviewItem } from "$lib/types";
   import MovieReviewDetail from "$lib/components/movie/MovieReviewDetail.svelte";
-  import MovieReviewEdit from "$lib/components/movie/MovieReviewEdit.svelte";
+  // import MovieReviewEdit from "$lib/components/movie/MovieReviewEdit.svelte";
 	import { DateYmdUtil } from "$lib/utils/date_ymd_util.js";
 
 	// import { load } from "../../+page.server";
@@ -114,6 +114,7 @@
   //신규화면 이동
   const handleNewButton = () => {
     const today = DateYmdUtil.todayYmd();
+    review = {lvl:3, ymd: today} as MovieReviewItem;
     mode = 'insert';
   };
   // 신규등록
@@ -189,7 +190,7 @@
 </section>
 
 <section class="movie-reivew-edit"  class:visible={mode === 'insert'} class:hidden={mode !== 'insert'}>
-  <MovieReviewEdit mode="insert"  {handleGoListButton} {handleInsertButton}/>
+  <!-- <MovieReviewEdit mode="insert"  {handleGoListButton} {handleInsertButton}/> -->
 </section>
 
 <style>
