@@ -14,7 +14,7 @@
 	// import { load } from "../../+page.server";
   let {data}= $props();
   let mode = $state('list');
-  let pageNo = 1;
+  let pageNo = $state(1);
   let search_text = "";
   let review = $state({} as MovieReviewItem);
 
@@ -31,6 +31,7 @@
     getFetch<MovieReviewListResponse>("/movie_reviews", params).then((response) => {
       console.log("response", response);
       data = response;
+      pageNo = Math.floor(data.start_index / 10) + 1;
     });
   }
   //1개의 영화감상평을 가져온다
@@ -125,7 +126,7 @@
     {#each data.list as review, index}
     <div class="review-item">
       <div class="review-item__left">
-        <div class="review-item__title"><a href="#none" onclick={clickMovieReview} data-id="{review.id}">{review.title}</a></div>
+        <div class="review-item__title">{(pageNo-1)*10+index+1} <a href="#none" onclick={clickMovieReview} data-id="{review.id}">{review.title}</a></div>
       </div>
       <div class="review-item__right">
         <div class="review-item__nara"><NationalFlag country={review.nara}/></div>

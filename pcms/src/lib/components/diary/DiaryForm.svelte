@@ -19,13 +19,18 @@
   //TODO : 수정되었다는 것과 save버튼과 연동
   //TODO : 10초마다 자동저장 
   //TODO: 단어 선택 ctrl+shift+H -> 한자 가져오기  (선택영역의 글자->보내기+ 받아서 1개이면 바로 한자로 변환, 2개이상이면 단어로 변환, 모두 넣고 지우자)
-  let {ymd}  = $props(); 
+  type DiaryFormType = {
+    ymd: Ymd;
+    formKeyPressed : (event: KeyboardEvent) => void;
+  }
+  let {ymd, formKeyPressed}: DiaryFormType  = $props(); 
   
 	let summary = $state('');
   let content = $state('');
-
-  
   let fetchedHashCode = 0;
+
+
+  // 변경 여부 확인
   function changed() {
     const newHashCode = generateHashCode(summary + content);
     return newHashCode !== fetchedHashCode;
@@ -82,7 +87,7 @@
       ymd1 = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}` as Ymd;
       
       fetchDiary(ymd1);
-      ymd = ymd1;
+      ymd =  ymd1 as Ymd;
   }
   
   async function fetchDiary(ymd: string) {
@@ -167,6 +172,9 @@
           textarea.setRangeText(newText, start, end, 'end');
           const inputEvent = new Event('input', { bubbles: true });
           textarea.dispatchEvent(inputEvent);            
+      }else if (event.ctrlKey && event.key === 'm') {
+          event.preventDefault(); // 기본 동작 방지
+          formKeyPressed(event);
       }
   }
   $effect(() => {

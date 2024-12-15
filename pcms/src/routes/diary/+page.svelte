@@ -71,6 +71,11 @@
       window.location.href = `diary/${ymd}`;
     }
   }
+  function formKeyPressed(event: KeyboardEvent) {
+    if(event.ctrlKey && event.key === 'm') {
+      showList = !showList;
+    }
+  }
 </script>  
 <div class="diary-list"  transition:fade>
     <section class="content list-area">
@@ -92,7 +97,7 @@
                 <ul>
                     {#each diaries as diary}
                         <li>
-                            <p class="diary-summary">
+                              <p class="diary-summary">
                               <a href="#none" class="anchor" onclick={()=>{today= toYmd(diary.ymd)}}><ColorDisplayYmd ymd={diary.ymd} /></a>
                               <a href="#none" class="anchor" onclick={goView(diary.ymd)}>{diary.summary}</a>
                               {#if diary.attachments && diary.attachments.length > 0}
@@ -113,7 +118,7 @@
 {#if showForm}
 <div>
   <section class="content form-area">
-    <DiaryForm ymd={today} />
+    <DiaryForm ymd={today} {formKeyPressed}/>
   </section>
 </div>
 {/if}  

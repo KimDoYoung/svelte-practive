@@ -2,6 +2,12 @@
 <script lang="ts">
     // 필요한 props나 상태가 있다면 여기서 정의
     let {currentPageTitle} = $props();
+    const closeDropdown = () => {
+        const dropdown = document.getElementById("movie-drop-down");
+        if (dropdown) {
+            dropdown.removeAttribute("open");
+        }
+    }
 </script>
 
 <nav class="bg-light">
@@ -11,12 +17,12 @@
         <li><a href="/calendar">Calendar</a></li>
         <li><a href="/snote">Snote</a></li>
         <li>
-          <details class="dropdown" role="list">
+          <details class="dropdown" role="list" id="movie-drop-down">
             <summary>Movie</summary>
-            <ul>
-              <li><a href="/movie/review">Review</a></li>
-              <li><a href="/movie/dvd">DVD</a></li>
-              <li><a href="/movie/hdd">Hdd</a></li>
+            <ul dir="rtl">
+              <li><a href="/movie/review" onclick={closeDropdown}>Review</a></li>
+              <li><a href="/movie/dvd" onclick={closeDropdown}>DVD</a></li>
+              <li><a href="/movie/hdd" onclick={closeDropdown}>Hdd</a></li>
             </ul>
           </details>
         </li>
