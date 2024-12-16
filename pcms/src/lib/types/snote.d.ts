@@ -37,3 +37,10 @@ export interface SnoteParse {
   hashPassword: string;
   encryptedText: string;
 }
+
+export interface SnoteResponse {
+  id: number;
+  title: string;
+  note: string;
+  create_dt: string;
+}

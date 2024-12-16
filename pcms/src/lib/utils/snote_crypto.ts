@@ -50,17 +50,24 @@ export class SnoteCrypto {
     // 포맷팅된 문자열 반환
     return `${this.MAGIC_STRING}[${finalHint}][${passwordHash}][${encryptedText}]`;
   }
+  static passwordHash(password: string): string {
+    return CryptoJS.SHA256(password).toString();
+  }
   /**
      * 주어진 encryptedNote를 파싱하여 SnoteParse 형태로 반환합니다.
      * @param encryptedNote
      * @returns SnoteParse
      */
-  static async parse(encryptedNote: string): Promise<SnoteParse> {
+  static parse(encryptedNote: string): SnoteParse {
+    // 유효성
+    if (!encryptedNote || typeof encryptedNote !== 'string') {
+      throw new Error('Invalid input: encryptedNote must be a non-empty string');
+    }
+  
     // MAGIC_STRING 확인
     if (!encryptedNote.startsWith(this.MAGIC_STRING)) {
-      throw new Error("Invalid format: Missing MAGIC_STRING prefix");
+      throw new Error('Invalid format: Missing MAGIC_STRING prefix');
     }
-
     // MAGIC_STRING 이후의 부분 추출
     const content = encryptedNote.slice(this.MAGIC_STRING.length);
 
@@ -92,5 +99,9 @@ export class SnoteCrypto {
       throw new Error("Invalid password");
     }
     return CryptoJS.AES.decrypt(snoteParse.encryptedText, password).toString(CryptoJS.enc.Utf8);
+  }
+  static decryptNote(encryptedText: string, password: string): string {
+    const plain_text = CryptoJS.AES.decrypt(encryptedText, password).toString(CryptoJS.enc.Utf8);
+    return plain_text;
   }
 }
