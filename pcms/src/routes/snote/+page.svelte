@@ -1,7 +1,5 @@
 <!-- 파일명 : \src\routes\snote/+page.svelte -->
 <script lang="ts">
-  //TODO: Snote 수정 페이지 만들기
-  //TODO:  보기 페이지 만들기(암호해독)
 
   import { deleteFetch, getFetch } from "$lib/api";
   import SnoteEdit from "$lib/components/snote/SnoteEdit.svelte";
@@ -104,8 +102,7 @@
                   <td>{snote.title}</td>
                   <td>{snote.create_dt}</td>
                   <td>
-                    <button class="" aria-label="View" onclick={()=>viewClick(snote.id)}><i class="fa-regular fa-eye"></i></button>
-                    <button class="secondary" aria-label="Edit" onclick={()=>editClick(snote.id)}><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button aria-label="Edit" onclick={()=>editClick(snote.id)}><i class="fa-regular fa-pen-to-square"></i></button>
                     <button class="contrast" aria-label="Delete" onclick={()=>deleteClick(snote.id)}><i class="fa-solid fa-trash-can"></i></button>
                   </td>
                 </tr>
