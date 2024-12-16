@@ -1,3 +1,11 @@
+<!-- 
+  사용방법 
+  1. 위치에 <Alert bind:this={alertRef}/> 추가
+  2. script에 let alertRef: Alert | null = null;
+  3. alertRef?.showAlert("메시지", "info", 3000); 호출
+  4. info, success, warning, error 4가지 중 1개의 타입
+ -->
+
 <script lang="ts">
   // 알림 메시지
   // 알림 타입 (info, success, warning, error 등)

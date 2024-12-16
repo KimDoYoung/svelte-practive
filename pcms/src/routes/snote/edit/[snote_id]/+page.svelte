@@ -3,9 +3,11 @@
   import { SnoteCrypto } from '$lib/utils/snote_crypto';
 	import { onMount } from 'svelte';
   import {postFetch} from '$lib/api';
+	import Alert from '$lib/components/common/Alert.svelte';
 
+  let alertRef: Alert | null = null;
   let {data} = $props();
-  let message = $state('');
+//  let message = $state('');
   let plain_text = $state('')
   const doEncrypt = () => {
     let pwElm = document.getElementById('password');
@@ -16,11 +18,10 @@
     }
     let passwordHash = SnoteCrypto.passwordHash(pw);
     if (passwordHash !== data.hashPassword){
-      message = '패스워드가 일치하지 않습니다.';
+      alertRef?.showAlert("패스워드가 일치하지 않습니다.", "warning", 1500);
       return;
     }
-    plain_text = SnoteCrypto.decryptNote(data.encryptedText, pw);
-    message ='';
+    plain_text = SnoteCrypto.decryptNote(data.encryptedText, pw);   
   }
   const handleKeydown = (e: KeyboardEvent) => {
     if(e.key === 'Enter') {
@@ -34,11 +35,11 @@
       const text = noteElm.value; // textarea의 내용을 가져옴
       navigator.clipboard.writeText(text) // Clipboard API 사용
         .then(() => {
-          message = ('클립보드에 복사되었습니다.');
+          alertRef?.showAlert("클립보드에 복사되었습니다.", "success", 1500);
         })
         .catch(err => {
           console.error('클립보드 복사 실패:', err);
-          message = ('클립보드 복사에 실패했습니다.');
+          alertRef?.showAlert("클립보드에 복사되었습니다.", "error", 1500);
         });
     } else {
       alert('복사할 내용이 없습니다.');
@@ -57,7 +58,7 @@
     let encrypted_note = await SnoteCrypto.encrypt(note, pw, hint)
     console.log('암호화된 노트 : ' + encrypted_note)
     postFetch('/snote', {id: data.id, title : title, note: encrypted_note}).then(()=>{
-      message = '저장되었습니다.';
+      alertRef?.showAlert("저장되었습니다.", "success", 1500);
     });
   }
   const goSnoteList = () => {
@@ -87,16 +88,16 @@
   </fieldset>
   <!-- <button onclick={doEncrypt}>해독</button> -->
 </div>
-{#if message}
-<div>{message}</div>
-{/if}
+
+<Alert bind:this={alertRef}/>
+
 <div class="note-area">
   <textarea name="encrypted_note" id="encrypted_note" style="height:300px">{plain_text}</textarea>
 </div>
 <div class="button-area">
   <button onclick={updateSnote}>저장</button>
   <button class="secondary" onclick={copyClipboard}>클립보드로 복사</button>
-  <button class="secondary" onclick={goSnoteList}>리스트로 이동</button>
+  <button class="contrast" onclick={goSnoteList}>리스트로 이동</button>
 </div>
 
 <style>

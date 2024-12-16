@@ -82,7 +82,6 @@
   })
 </script>
   <main class="container">
-      <h1>Snote</h1>
       {#if mode === 'list'}
         <div class="btn-area"><button onclick={()=>{mode='edit'}}>추가</button></div>
         <div class="overflow-auto">
