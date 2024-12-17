@@ -16,6 +16,7 @@
         <li><a href="/diary">Diary</a></li>
         <li><a href="/calendar">Calendar</a></li>
         <li><a href="/snote">Snote</a></li>
+        <li><a href="/jangbi">Jangbi</a></li>
         <li>
           <details class="dropdown" role="list" id="movie-drop-down">
             <summary>Movie</summary>

@@ -5,3 +5,4 @@ export * from './todo';
 export * from './snote';
 export * from './calendar';
 export * from './movie';
+export * from './jangbi';

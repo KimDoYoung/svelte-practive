@@ -159,6 +159,7 @@
       <div class="review-item__right">
         <div class="review-item__nara"><NationalFlag country={review.nara}/></div>
         <div class="review-item__year">{review.year}</div>
+        <div class="review-item__ymd">{DateYmdUtil.displayYmd(review.ymd)}</div>
         <div class="review-item__lvl"><StarLevel level={review.lvl}/></div>
         <div class="review-item__delete">
           <a href="#none" data-title={review.title} data-id={review.id} onclick={handleDelete} aria-label="delete review">

@@ -32,6 +32,7 @@
       summary_only: 'true'
     }
   }
+  //  TODO : summary only를 false로 변경하면 attachments가 null로 나옴 api에서 수정해야함
 
   // API 호출 로직을 함수로 분리
   async function loadDiaries(page:number = 1) {
