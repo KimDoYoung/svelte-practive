@@ -13,6 +13,14 @@
     <div>{jangbi.cost}</div>
   </div>
 {/each}
+<div class="button-area">
+  {#if data.start_index > 0}
+    <button>이전</button>
+  {/if}
+  {#if data.next_data_exists}
+    <button>다음</button>
+  {/if}
+</div>
 <style>
   .jangbi-item-container {
     display: flex;

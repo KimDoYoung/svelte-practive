@@ -77,4 +77,5 @@ export interface JangbiListResponse {
   item_count: number;
   next_data_exists: true,
   next_index: number;
+  start_index: number;
 }

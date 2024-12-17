@@ -1,3 +1,6 @@
+/**
+ * jangbi page load
+ */
 import type { PageLoad } from './$types';
 import { API_BASE_URL } from '$lib/pcms_config';
 import type { JangbiListResponse } from '$lib/types';
