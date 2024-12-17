@@ -2,6 +2,7 @@
   파일명 : /review/+page.svelte
   영화감상평 검색
 -->
+  <!-- TODO: 이미지 업로드 그리고 url 바로 입력하기 -->
 <script lang="ts">
   import SearchInput from "$lib/components/common/SearchInput.svelte";
   import NationalFlag from "$lib/components/common/NationalFlag.svelte";
