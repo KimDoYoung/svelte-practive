@@ -148,3 +148,7 @@ export function clean_text(text: string): string {
   .replace(/\\/g, '\\\\') // 백슬래시 이스케이프
   .trim(); // 앞뒤 공백 제거
 }
+
+export function displayMoney(amount: number): string {
+  return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}

@@ -24,7 +24,7 @@ export class DateYmdUtil {
    * @returns 
    */
   static displayYmd(ymd: string) {
-    console.log("displayYmd:", ymd);
+    //console.log("displayYmd:", ymd);
     if (!this.isValidYmd(ymd)) {
       return "XXXX-XX-XX";
     }
