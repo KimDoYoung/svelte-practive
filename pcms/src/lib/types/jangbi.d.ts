@@ -25,6 +25,14 @@ export interface JangbiResponse {
   modify_dt: Date;
 }
 
+export interface JangbiSearchCondition {
+  start_ymd : string;
+  end_ymd : string;
+  lvl: string;
+  order_direction : string;
+  search_text : string;
+}
+
 // Jangbi 목록 요청 인터페이스
 export interface JangbiListRequest {
   /** 검색 시작일 (YYYYMMDD) */
@@ -35,6 +43,12 @@ export interface JangbiListRequest {
 
   /** 정렬 방향 (desc 또는 asc) */
   order_direction: 'desc' | 'asc';
+
+  /** 검색어 */
+  search_text: string;
+
+  /** 레벨 */
+  lvl: string;
 
   /** 시작 인덱스 */
   start_idx: number;

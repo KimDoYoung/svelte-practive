@@ -30,4 +30,13 @@ export class DateYmdUtil {
     }
     return `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`;
   }
+  static displayYmdYoil(ymd: string, hanja: boolean = false) {
+    if (!this.isValidYmd(ymd)) {
+      return "XXXX-XX-XX";
+    }
+    const date = new Date(`${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`);
+    const yoil = date.getDay();
+    const yoilStr = hanja ? "日月火水木金土" : "일월화수목금토";
+    return `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)} (${yoilStr.charAt(yoil)})`;
+  }
 }
