@@ -121,3 +121,10 @@ export const load: PageLoad = async ({ fetch }) => {
     <div>{index+1} {review.title}</div>
   {/each}
 ```
+
+## icon button
+
+```html
+<a href="#none" aria-label="Edit" onclick={() => handleSelectedRow(item.id)}><i class="fa fa-edit"></i></a>
+```
+
