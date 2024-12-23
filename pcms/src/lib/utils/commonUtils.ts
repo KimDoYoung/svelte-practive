@@ -152,3 +152,19 @@ export function clean_text(text: string): string {
 export function displayMoney(amount: number): string {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
+export function humanFileSize(sizeInBytes: number): string {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let index = 0;
+  
+    let size = sizeInBytes;
+  
+    // 1024로 나누며 적절한 단위를 찾습니다.
+    while (size >= 1024 && index < units.length - 1) {
+      size /= 1024;
+      index++;
+    }
+  
+    // 소수점 두 자리까지 표시
+    return `${size.toFixed(1)}${units[index]}`;
+  }  

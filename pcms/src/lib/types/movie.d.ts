@@ -52,3 +52,43 @@ export interface MovieDvdListResponse  {
   "start_index": number,
   "next_index": number
 };
+
+//---------------------------------------------
+// HDD
+//---------------------------------------------
+
+export interface HddRequest {
+  search_text?: string;
+  start_index: number;
+  limit: number;
+  volumn_name : string;
+  gubun : string;
+}
+
+
+
+export interface HddResponseItem {
+  id: number; // 파일의 고유 ID
+  volumn_name: string; // 볼륨 이름 (예: "2T-1")
+  gubun: string; // 파일의 구분 또는 유형 (예: "F")
+  path: string; // 파일의 전체 경로
+  file_name: string; // 파일 이름 (경로 제외)
+  name: string; // 파일 이름 (확장자 포함)
+  pdir: string; // 상위 디렉토리 경로
+  extension: string; // 파일 확장자 (예: "mkv")
+  size: number; // 파일 크기 (바이트 단위)
+  sha1_cd: string; // 파일의 SHA-1 체크섬
+  srch_key: string; // 파일과 관련된 검색 키
+  last_modified_ymd: string; // 마지막 수정 날짜 (형식: "YYYYMMDDHHMMSS")
+  pid: number; // 부모 ID
+  right_pid: number | null; // 관련된 부모 ID (nullable)
+}
+
+export interface HddResponse {
+  list: HddResponseItem[];
+  data_count: number;
+  next_data_exists: boolean;
+  start_index: number;
+  last_index: number;
+  limit: number;
+}
