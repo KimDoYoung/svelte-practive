@@ -1,7 +1,7 @@
 <script lang="ts">
   let {textareaId} = $props(); // textarea의 id (외부에서 전달받음)
   let pageIndex = $state(0); // 현재 페이지 번호
-
+  //TODO 이미지 찾기 (kalpadbapi에서 처리하는게 좋을까?)
   //let emojis = ['😊', '😂', '😁', '😲', '😃','😱','😬','🥺','😰','🚴‍♂️','★','❤️','☂','☀','🌞','❄','☁','🌨️','☕','🍕']; // 기본 이모지 목록
   // emojis를 다중배열로 하고 pageIndex에 따라서 emojis를 바꿔주면 더 많은 이모지를 넣을 수 있음
   let emojes = [
