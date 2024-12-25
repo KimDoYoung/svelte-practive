@@ -2,13 +2,14 @@
   파일명 : jangbi/+page.svelte 
 -->
 <script lang="ts">
-  import { getFetch } from '$lib/api';
-  import type { JangbiDetailResponse, JangbiListRequest, JangbiListResponse, JangbiSearchCondition } from '$lib/types/jangbi';
+  import { getFetch, postFetch } from '$lib/api';
+  import type { JangbiDetailResponse, JangbiListRequest, JangbiListResponse, JangbiRequest, JangbiSearchCondition } from '$lib/types/jangbi';
   import JangbiList from '$lib/components/jangbi/JangbiList.svelte';
   import JangbiSearch from '$lib/components/jangbi/JangbiSearch.svelte';
 	import { migrate } from 'svelte/compiler';
 	import { page } from '$app/stores';
 	import JangbiView from '$lib/components/jangbi/JangbiView.svelte';
+	import JangbiEdit from '$lib/components/jangbi/JangbiEdit.svelte';
   
   let {data}= $props();
   let mode = $state('list');
@@ -99,6 +100,24 @@
   const backtoButtonClick = () => {
     mode = 'list';
   }
+  const handleSave = (jangbi: JangbiDetailResponse) => {
+    console.log("handleSave:", jangbi);
+    let item = {
+      id : jangbi.id,
+      ymd: jangbi.ymd,
+      item: jangbi.item,
+      location: jangbi.location,
+      cost: jangbi.cost,
+      spec: jangbi.spec,
+      lvl: jangbi.lvl,
+    }
+    postFetch('/jangbi', item).then((res) => {
+      console.log("res:", res);
+      pageNo = 1;
+      loadData();
+      mode = 'list';
+    });
+  }
 </script>
 <section class="section-list" class:invisible={mode !== 'list'} class:visible={mode === 'list'}>
   <div class="search-area">
@@ -119,7 +138,7 @@
   </div>
 </section> 
 <section class="section-insert" class:invisible={mode !== 'insert'} class:visible={mode === 'insert'}>
-  <div>추가화면</div>
+  <JangbiEdit mode="insert" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
 </section>
 <section class="section-update" class:invisible={mode !== 'view'} class:visible={mode === 'view'}>
   <JangbiView {jangbi} {backtoButtonClick}/>

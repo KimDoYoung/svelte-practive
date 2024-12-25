@@ -125,3 +125,13 @@ export interface JangbiDetailResponse {
 
   attachments: [ImageItem] | null;
 }
+
+interface JangbiRequest {
+  id: number; // 고유 ID
+  ymd: string; // 날짜 정보 (예: "YYYYMMDD" 형식으로 예상)
+  item: string; // 항목 이름
+  location: string; // 위치 정보
+  cost: number; // 비용
+  spec: string; // 사양 또는 설명
+  lvl: string; // 레벨 (예: "2")
+}
