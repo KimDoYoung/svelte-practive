@@ -3,11 +3,12 @@
 -->
 <script lang="ts">
   import { getFetch } from '$lib/api';
-  import type { JangbiListRequest, JangbiListResponse, JangbiSearchCondition } from '$lib/types/jangbi';
+  import type { JangbiDetailResponse, JangbiListRequest, JangbiListResponse, JangbiSearchCondition } from '$lib/types/jangbi';
   import JangbiList from '$lib/components/jangbi/JangbiList.svelte';
   import JangbiSearch from '$lib/components/jangbi/JangbiSearch.svelte';
 	import { migrate } from 'svelte/compiler';
 	import { page } from '$app/stores';
+	import JangbiView from '$lib/components/jangbi/JangbiView.svelte';
   
   let {data}= $props();
   let mode = $state('list');
@@ -85,7 +86,19 @@
     console.log("newButtonClick");
     mode = 'insert';
   }
-
+  //현재의 장비
+  let jangbi = $state({} as JangbiDetailResponse);
+  const handleView = (id: number) => {
+    console.log("handleView:", id);
+    getFetch(`/jangbi/${id}`).then((res) => {
+      jangbi = res as JangbiDetailResponse;
+      console.log("jangbi:", jangbi);
+    });
+    mode = 'view';
+  }
+  const backtoButtonClick = () => {
+    mode = 'list';
+  }
 </script>
 <section class="section-list" class:invisible={mode !== 'list'} class:visible={mode === 'list'}>
   <div class="search-area">
@@ -94,7 +107,7 @@
   {#if data.item_count === 0}
     <p>검색 결과가 없습니다.</p>
   {:else}
-    <JangbiList {data}/>
+    <JangbiList {data} {handleView}/>
   {/if}
   <div class="button-area">
     {#if data.start_index > 0}
@@ -108,8 +121,8 @@
 <section class="section-insert" class:invisible={mode !== 'insert'} class:visible={mode === 'insert'}>
   <div>추가화면</div>
 </section>
-<section class="section-update" class:invisible={mode !== 'update'} class:visible={mode === 'update'}>
-  <div>수정화면</div>
+<section class="section-update" class:invisible={mode !== 'view'} class:visible={mode === 'view'}>
+  <JangbiView {jangbi} {backtoButtonClick}/>
 </section>
 <style>
   .section-list {

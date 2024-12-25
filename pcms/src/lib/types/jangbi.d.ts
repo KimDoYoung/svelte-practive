@@ -93,3 +93,35 @@ export interface JangbiListResponse {
   next_index: number;
   start_index: number;
 }
+interface ImageItem {
+  file_name: string; // 파일 이름 (예: "IMG_20241212_220358.jpg")
+  file_size: string; // 파일 크기 (바이트 단위, 문자열 형식)
+  height: number | null; // 이미지 높이 (없을 경우 null)
+  node_id: string; // 노드 ID (유니크 식별자)
+  url: string; // 파일 URL
+  width: number | null; // 이미지 너비 (없을 경우 null)
+}
+export interface JangbiDetailResponse {
+  /** id */
+  id: number;
+
+  /** 구입일 */
+  ymd: string;
+
+  /** 품목 */
+  item: string
+
+  /** 위치 */
+  location?: string | null;
+
+  /** 가격 */
+  cost?: number | null;
+
+  /** 스펙(특징) */
+  spec?: string | null;
+
+  /** 레벨 */
+  lvl: string;
+
+  attachments: [ImageItem] | null;
+}

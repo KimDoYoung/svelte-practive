@@ -65,8 +65,6 @@ export interface HddRequest {
   gubun : string;
 }
 
-
-
 export interface HddResponseItem {
   id: number; // 파일의 고유 ID
   volumn_name: string; // 볼륨 이름 (예: "2T-1")

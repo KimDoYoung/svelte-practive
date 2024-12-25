@@ -6,8 +6,9 @@
 
   type JangbiListProps = {
     data: JangbiListResponse;
+    handleView: (id: number) => void;
   };
-  let {data} = $props();
+  let {data, handleView} : JangbiListProps = $props();
   const lvlText = (lvl: string) => {
     if (lvl === "1") {
       return '😡 실망';
@@ -17,12 +18,19 @@
       return '😃 만족';
     }
   }
+  const clickView = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const id = target.dataset.id;
+    if (id !== undefined) {
+      handleView(Number(id));
+    }
+  }
 </script>
 <!-- html -->
 {#each data.list as jangbi, index }
   <div class="jangbi-item-container">
     <div>{DateYmdUtil.displayYmdYoil(jangbi.ymd)}</div>
-    <div class="col-item">{jangbi.item}</div>
+    <div class="col-item"><a href="#none" data-id="{jangbi.id}" onclick={clickView}>{jangbi.item}</a></div>
     <div class="col-lvl" class:text-blue={jangbi.lvl === "3"}>{lvlText(jangbi.lvl)}</div>
     <div class="col-location">{jangbi.location}</div>
     <div class="col-cost">{displayMoney(jangbi.cost?? 0)}</div>
