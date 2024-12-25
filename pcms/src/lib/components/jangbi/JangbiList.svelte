@@ -7,8 +7,10 @@
   type JangbiListProps = {
     data: JangbiListResponse;
     handleView: (id: number) => void;
+    handleEdit: (id: number) => void;
+    handleDelete: (id: number) => void;
   };
-  let {data, handleView} : JangbiListProps = $props();
+  let {data, handleView, handleEdit, handleDelete} : JangbiListProps = $props();
   const lvlText = (lvl: string) => {
     if (lvl === "1") {
       return '😡 실망';
@@ -34,6 +36,10 @@
     <div class="col-lvl" class:text-blue={jangbi.lvl === "3"}>{lvlText(jangbi.lvl)}</div>
     <div class="col-location">{jangbi.location}</div>
     <div class="col-cost">{displayMoney(jangbi.cost?? 0)}</div>
+    <div>
+      <a href="#none" aria-label="수정" data-id={jangbi.id} onclick={()=>{handleEdit(jangbi.id)}}><i class="fa fa-edit"></i></a>
+      <a href="#none" aria-label="삭제" data-id={jangbi.id} onclick={()=>{handleDelete(jangbi.id)}}><i class="fa fa-trash"></i></a>
+    </div>
   </div>
 {/each}
 <style>

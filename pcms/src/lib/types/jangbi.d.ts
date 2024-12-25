@@ -123,7 +123,7 @@ export interface JangbiDetailResponse {
   /** 레벨 */
   lvl: string;
 
-  attachments: [ImageItem] | null;
+  attachments: ImageItem[] | null;
 }
 
 interface JangbiRequest {

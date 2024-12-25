@@ -2,7 +2,7 @@
   파일명 : jangbi/+page.svelte 
 -->
 <script lang="ts">
-  import { getFetch, postFetch } from '$lib/api';
+  import { getFetch, postFetch, deleteFetch } from '$lib/api';
   import type { JangbiDetailResponse, JangbiListRequest, JangbiListResponse, JangbiRequest, JangbiSearchCondition } from '$lib/types/jangbi';
   import JangbiList from '$lib/components/jangbi/JangbiList.svelte';
   import JangbiSearch from '$lib/components/jangbi/JangbiSearch.svelte';
@@ -10,6 +10,7 @@
 	import { page } from '$app/stores';
 	import JangbiView from '$lib/components/jangbi/JangbiView.svelte';
 	import JangbiEdit from '$lib/components/jangbi/JangbiEdit.svelte';
+	import { DateYmdUtil } from '$lib/utils/date_ymd_util.js';
   
   let {data}= $props();
   let mode = $state('list');
@@ -118,6 +119,24 @@
       mode = 'list';
     });
   }
+  const handleEdit = (id: number) => {
+    console.log("handleEdit:", id);
+    getFetch(`/jangbi/${id}`).then((res) => {
+      jangbi = res as JangbiDetailResponse;
+      jangbi.ymd = DateYmdUtil.displayYmd(jangbi.ymd);
+      // console.log("jangbi:", jangbi);
+    });
+    mode = 'update';
+  }
+  const handleDelete = (id: number) => {
+    console.log("handleDelete:", id);
+    if (confirm('삭제하시겠습니까?')) {
+      deleteFetch(`/jangbi/${id}`).then((res) => {
+        console.log("res:", res);
+        loadData();
+      });
+    }
+  }
 </script>
 <section class="section-list" class:invisible={mode !== 'list'} class:visible={mode === 'list'}>
   <div class="search-area">
@@ -126,7 +145,7 @@
   {#if data.item_count === 0}
     <p>검색 결과가 없습니다.</p>
   {:else}
-    <JangbiList {data} {handleView}/>
+    <JangbiList {data} {handleView} {handleEdit} {handleDelete}/>
   {/if}
   <div class="button-area">
     {#if data.start_index > 0}
@@ -139,6 +158,9 @@
 </section> 
 <section class="section-insert" class:invisible={mode !== 'insert'} class:visible={mode === 'insert'}>
   <JangbiEdit mode="insert" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
+</section>
+<section class="section-update" class:invisible={mode !== 'update'} class:visible={mode === 'update'}>
+  <JangbiEdit mode="update" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
 </section>
 <section class="section-update" class:invisible={mode !== 'view'} class:visible={mode === 'view'}>
   <JangbiView {jangbi} {backtoButtonClick}/>

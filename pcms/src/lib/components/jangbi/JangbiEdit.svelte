@@ -2,7 +2,8 @@
 <script lang="ts">
 import { DateYmdUtil } from '$lib/utils/date_ymd_util';
 import { displayMoney, displayContent } from '$lib/utils/commonUtils';
-import type { JangbiDetailResponse } from '$lib/types/jangbi';
+import type { JangbiDetailResponse, JangbiRequest } from '$lib/types/jangbi';
+
 type JangbiEditProps = {
   mode : string;
   jangbi : JangbiDetailResponse;
@@ -10,48 +11,76 @@ type JangbiEditProps = {
   handleCancel : () => void;
 };
 let {mode, jangbi, handleSave, handleCancel} : JangbiEditProps = $props();
-
+// let anotherJangbi = $derived(jangbi);
+let anotherJangbi: JangbiRequest = {
+  id: 0,
+  ymd: '',
+  item: '',
+  location: '',
+  cost: 0,
+  lvl: '',
+  spec: ''
+}
 const clickSaveButton = () => {
   let id  = (document.getElementById('id') as HTMLInputElement).value;
-  jangbi.id= Number(id);
-  jangbi.ymd =  (document.getElementById('ymd') as HTMLInputElement).value.replace(/-/g, '');
-  jangbi.item = (document.getElementById('item') as HTMLInputElement).value;
-  jangbi.location = (document.getElementById('location') as HTMLInputElement).value;
-  jangbi.cost = Number((document.getElementById('cost') as HTMLInputElement).value);
-  jangbi.lvl = (document.getElementById('lvl') as HTMLSelectElement).value;
-  jangbi.spec = (document.getElementById('spec') as HTMLTextAreaElement).value;
-  if (jangbi.ymd == '' || jangbi.item == '' || jangbi.location == '' || jangbi.cost == 0 || jangbi.lvl == '') {
+  let form = document.getElementById('jangbi-form') as HTMLFormElement;
+  anotherJangbi.id= Number(id);
+  debugger;
+  anotherJangbi.ymd =  (document.getElementById('ymd') as HTMLInputElement).value.replace(/-/g, '');
+  anotherJangbi.item = (document.getElementById('item') as HTMLInputElement).value;
+  anotherJangbi.location = (document.getElementById('location') as HTMLInputElement).value;
+  anotherJangbi.cost = Number((document.getElementById('cost') as HTMLInputElement).value);
+  anotherJangbi.lvl = (document.getElementById('lvl') as HTMLSelectElement).value;
+  anotherJangbi.spec = (document.getElementById('spec') as HTMLTextAreaElement).value;
+  debugger;
+  console.log("anotherJangbi:" + anotherJangbi);
+  if (anotherJangbi.ymd == '' || 
+      anotherJangbi.item == '' || 
+      anotherJangbi.location == '' || 
+      anotherJangbi.cost == 0 || 
+      anotherJangbi.spec == '' || 
+      anotherJangbi.lvl == '') {
     alert('입력값을 확인하세요');
     return;
   }
   //validation check
-  handleSave(jangbi);
+  let res : JangbiDetailResponse = {
+    id: anotherJangbi.id,
+    ymd: anotherJangbi.ymd,
+    item: anotherJangbi.item,
+    location: anotherJangbi.location,
+    cost: anotherJangbi.cost,
+    lvl: anotherJangbi.lvl,
+    spec: anotherJangbi.spec,
+    attachments: []
+  }
+  handleSave(res);
 }
 </script>
 
-<form>
+<form id="jangbi-form">
   <fieldset>
     <div class="grid">
       <div>
         <label for="ymd">구입일자</label>
-        <input type="date" id="ymd" name="ymd" bind:value={jangbi.ymd} />
-        <input type="hidden" id="id" name="id"  bind:value={jangbi.id}/>
+        <input type="date" id="ymd" name="ymd" bind:value={anotherJangbi.ymd} />
+        <input type="hidden" id="id" name="id" bind:value={anotherJangbi.id}/>
       </div>
       <div>
         <label for="item">품목</label>
-        <input type="text" id="item" name="item" bind:value={jangbi.item} />
+        <input type="text" id="item" name="item" bind:value={anotherJangbi.item} />
       </div>
       <div>
         <label for="location">위치</label>
-        <input type="text" id="location" name="location" bind:value={jangbi.location} />
+        <input type="text" id="location" name="location" bind:value={anotherJangbi.location} />
       </div>
       <div>
         <label for="cost">가격</label>
-        <input type="number" id="cost" name="cost" bind:value={jangbi.cost} />
+        <input type="number" id="cost" name="cost" bind:value={anotherJangbi.cost} />
       </div>
       <div>
         <label for="lvl">만족도</label>
-        <select id="lvl" name="lvl" bind:value={jangbi.lvl}>
+        <select id="lvl" name="lvl" bind:value={anotherJangbi.lvl}>
           <option value=""></option>
           <option value="3">😃 만족</option>
           <option value="2">🙁 보통</option>
@@ -60,7 +89,7 @@ const clickSaveButton = () => {
       </div>
     </div>
     <label for="spec">스펙</label>
-    <textarea id="spec" name="spec" style="height:400px" ></textarea>
+    <textarea id="spec" name="spec" style="height:400px" bind:value={anotherJangbi.spec} ></textarea>
   </fieldset>
   <div class="button-area">
     <input type="button" value="저장" onclick={clickSaveButton}/>
