@@ -86,7 +86,8 @@
   //신규버튼 클릭
   const newButtonClick = () => {
     console.log("newButtonClick");
-    mode = 'insert';
+    // mode = 'insert';
+    window.location.href = '/jangbi/0';
   }
   //현재의 장비
   let jangbi = $state({} as JangbiDetailResponse);
@@ -101,32 +102,33 @@
   const backtoButtonClick = () => {
     mode = 'list';
   }
-  const handleSave = (jangbi: JangbiDetailResponse) => {
-    console.log("handleSave:", jangbi);
-    let item = {
-      id : jangbi.id,
-      ymd: jangbi.ymd,
-      item: jangbi.item,
-      location: jangbi.location,
-      cost: jangbi.cost,
-      spec: jangbi.spec,
-      lvl: jangbi.lvl,
-    }
-    postFetch('/jangbi', item).then((res) => {
-      console.log("res:", res);
-      pageNo = 1;
-      loadData();
-      mode = 'list';
-    });
-  }
+  // const handleSave = (jangbi: JangbiDetailResponse) => {
+  //   console.log("handleSave:", jangbi);
+  //   let item = {
+  //     id : jangbi.id,
+  //     ymd: jangbi.ymd,
+  //     item: jangbi.item,
+  //     location: jangbi.location,
+  //     cost: jangbi.cost,
+  //     spec: jangbi.spec,
+  //     lvl: jangbi.lvl,
+  //   }
+  //   postFetch('/jangbi', item).then((res) => {
+  //     console.log("res:", res);
+  //     pageNo = 1;
+  //     loadData();
+  //     mode = 'list';
+  //   });
+  // }
   const handleEdit = (id: number) => {
     console.log("handleEdit:", id);
-    getFetch(`/jangbi/${id}`).then((res) => {
-      jangbi = res as JangbiDetailResponse;
-      jangbi.ymd = DateYmdUtil.displayYmd(jangbi.ymd);
-      // console.log("jangbi:", jangbi);
-    });
-    mode = 'update';
+    // getFetch(`/jangbi/${id}`).then((res) => {
+    //   jangbi = res as JangbiDetailResponse;
+    //   jangbi.ymd = DateYmdUtil.displayYmd(jangbi.ymd);
+    //   // console.log("jangbi:", jangbi);
+    // });
+    // mode = 'update';
+    window.location.href = `/jangbi/${id}`; 
   }
   const handleDelete = (id: number) => {
     console.log("handleDelete:", id);
@@ -156,12 +158,12 @@
     {/if}
   </div>
 </section> 
-<section class="section-insert" class:invisible={mode !== 'insert'} class:visible={mode === 'insert'}>
+<!-- <section class="section-insert" class:invisible={mode !== 'insert'} class:visible={mode === 'insert'}>
   <JangbiEdit mode="insert" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
 </section>
 <section class="section-update" class:invisible={mode !== 'update'} class:visible={mode === 'update'}>
   <JangbiEdit mode="update" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
-</section>
+</section> -->
 <section class="section-update" class:invisible={mode !== 'view'} class:visible={mode === 'view'}>
   <JangbiView {jangbi} {backtoButtonClick}/>
 </section>
