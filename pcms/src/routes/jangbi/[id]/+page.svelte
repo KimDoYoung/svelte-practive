@@ -29,7 +29,7 @@
     });
   }
   const handleCancel = () => {
-    window.history.back();
+    window.location.href = "/jangbi";
   } 
   let alertRef: Alert | null = null;
 </script>
