@@ -5,6 +5,19 @@ type ImageCardProps = {
   apfile: ApFile;
 };
 let {apfile} : ImageCardProps = $props();
+// 파일 삭제
+const deleteFile = () => {
+  if (confirm("삭제하시겠습니까?") == false) {
+    return;
+  }
+  const url = ''
+  //deleteFile(apfile.node_id);
+  console.log("deleteFile", apfile.node_id);
+}
+// 파일 노트 저장
+const saveNote = () => {
+  console.log("saveNote", apfile.node_id);
+}
 </script>
 
 <div class="card">
@@ -12,9 +25,9 @@ let {apfile} : ImageCardProps = $props();
       <a href="{apfile.url}" target="_blank"><img src={apfile.url} alt={apfile.file_name} /></a>
   </div>
   <div class="card-footer">
-    <a href="#none" aria-label="삭제 버튼" class="icon-btn trash"><i class="fa-solid fa-trash trash"></i></a>
+    <a href="#none" aria-label="삭제 버튼" class="icon-btn trash" onclick={deleteFile}><i class="fa-solid fa-trash trash"></i></a>
       <input type="text" placeholder="Enter text..." />
-      <a href="#none" aria-label="저장 버튼" class="icon-btn save"><i class="fa-solid fa-save save"></i></a>
+      <a href="#none" aria-label="저장 버튼" class="icon-btn save" onclick={saveNote}><i class="fa-solid fa-save save"></i></a>
   </div>
 </div>
 

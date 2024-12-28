@@ -54,11 +54,13 @@
     let note: string = noteElm ? (noteElm as HTMLTextAreaElement).value : '';
     let hintElm = document.getElementById('hint');
     let hint: string = hintElm ? (hintElm as HTMLInputElement).value : '';
-
+    debugger;
     let encrypted_note = await SnoteCrypto.encrypt(note, pw, hint)
     console.log('암호화된 노트 : ' + encrypted_note)
     postFetch('/snote', {id: data.id, title : title, note: encrypted_note}).then(()=>{
       alertRef?.showAlert("저장되었습니다.", "success", 1500);
+    }).catch((err) => {
+      alertRef?.showAlert("저장에 실패했습니다.", "error", 1500);
     });
   }
   const goSnoteList = () => {
@@ -86,20 +88,16 @@
     <legend>복원</legend>
     <button onclick={doEncrypt}>복원</button>
   </fieldset>
-  <!-- <button onclick={doEncrypt}>해독</button> -->
 </div>
-
-<Alert bind:this={alertRef}/>
-
 <div class="note-area">
-  <textarea name="encrypted_note" id="encrypted_note" style="height:300px">{plain_text}</textarea>
+  <textarea name="encrypted_note" id="encrypted_note" style="height:250px">{plain_text}</textarea>
 </div>
 <div class="button-area">
   <button onclick={updateSnote}>저장</button>
   <button class="secondary" onclick={copyClipboard}>클립보드로 복사</button>
   <button class="contrast" onclick={goSnoteList}>리스트로 이동</button>
 </div>
-
+<Alert bind:this={alertRef}/>
 <style>
   .button-area {
     text-align: center;
