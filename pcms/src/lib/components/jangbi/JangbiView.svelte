@@ -3,6 +3,7 @@
   import { DateYmdUtil } from '$lib/utils/date_ymd_util';
   import { displayMoney, displayContent } from '$lib/utils/commonUtils';
   import type { JangbiDetailResponse } from '$lib/types/jangbi';
+	import ImageCard from '../common/ImageCard.svelte';
 
   type JangbiViewProps = {
     jangbi: JangbiDetailResponse;
@@ -25,12 +26,20 @@
 <p> 가격 : {displayMoney(jangbi.cost ?? 0)}</p>
 <p> 스펙 : {@html displayContent(jangbi.spec)}</p>
 <p> 만족 : {lvlText(jangbi.lvl)}</p>
-<p>
-  {#if jangbi.attachments}
+{#if jangbi.attachments}
+  <div class="image-container">
     {#each jangbi.attachments as image, index}
-      <img src={image.url} alt={image.file_name || 'Image'} style="width: 100%;"/>
+      <!-- <img src={image.url} alt={image.file_name || 'Image'} style="width: 100%;"/> -->
+      <ImageCard apfile={image} />
     {/each}
-  {/if}
-</p>
+  </div>
+{/if}
 <style>
+.image-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 반응형 열 생성 */
+  gap: 1rem; /* 카드 사이의 간격 */
+  padding: 1rem; /* 컨테이너 외부 여백 */
+  box-sizing: border-box;
+}
 </style>
