@@ -7,3 +7,4 @@ export * from './calendar';
 export * from './movie';
 export * from './jangbi';
 export * from './file';
+export * from './essay';

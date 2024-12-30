@@ -13,6 +13,7 @@
       '/movie/dvd': 'Movie DVD',
       '/movie/hdd': 'Movie HDD',
       '/jangbi': 'Jangbi',
+      '/essay': 'Essay',
     };
     console.log("$page.url.pathname:",$page.url.pathname);
     const currentPageTitle = $derived.by(() => {
