@@ -8,8 +8,8 @@
   import { todayYmd } from '$lib/utils';
   import { toYmd } from '$lib/utils';
   import { fade } from 'svelte/transition';
-  
 
+  //TODO 찾기 일기를 기간별로 검색해서 찾기, 그리고 그것을 html로 떨어뜨리자. 이때 첨부된 이미지도...
 
   let today = todayYmd(); // 오늘 날짜를 가져옴
 
