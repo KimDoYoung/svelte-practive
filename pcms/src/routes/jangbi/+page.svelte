@@ -158,12 +158,7 @@
     {/if}
   </div>
 </section> 
-<!-- <section class="section-insert" class:invisible={mode !== 'insert'} class:visible={mode === 'insert'}>
-  <JangbiEdit mode="insert" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
-</section>
-<section class="section-update" class:invisible={mode !== 'update'} class:visible={mode === 'update'}>
-  <JangbiEdit mode="update" {jangbi} handleCancel={backtoButtonClick} {handleSave}/>
-</section> -->
+
 <section class="section-update" class:invisible={mode !== 'view'} class:visible={mode === 'view'}>
   <JangbiView {jangbi} {backtoButtonClick}/>
 </section>

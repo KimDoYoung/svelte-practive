@@ -1,10 +1,13 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+	import { getFetch } from '$lib/api';
+	import SearchInput from '$lib/components/common/SearchInput.svelte';
+  import EssayList from '$lib/components/essay/EssayList.svelte';
+	import type { EssayListResponse } from '$lib/types/essay.js';
+  
   let {data} = $props();
-//let pageNo = $derived( Math.ceil((data.start_index + data.essays.length) / data.item_count ));
-// let pageNo:number = $derived.by( ()=> {
-//   return Math.ceil((data.start_index + data.essays.length) / data.item_count);
-// });
+  let pageNo = $state(1);
+  let search_text = '';
+  let mode = $state('list');
   $effect(() => {
     console.log('컴포넌트가 마운트되었습니다.');
     return () => {
@@ -12,30 +15,75 @@
           // 정리 작업 수행
       };
   });
-
+  const loadPage = () => {
+    const url = '/essays';
+    const params = {
+      search_text: search_text,
+      limit : 10,
+      start_index : (pageNo - 1) * 10,
+      title_only: true
+    };
+    getFetch(url, params).then((res) => {
+      console.log(res);
+      data = res as EssayListResponse;
+      pageNo = Math.ceil((data.start_index + data.data_count) / data.page_size);
+    });
+  }
+  const searchInputClick = (keyword: string) => {
+    console.log(keyword);
+    search_text = keyword;
+    pageNo = 1;
+    loadPage();
+  }
+  //삭제버튼
+  const deleteButtonClick = (id: number) => {
+    console.log('deleteButtonClick:', id);
+  }
+  //보기
+  const selectedClick = (id: number) => {
+    console.log('selectedClick:', id);
+    mode = 'view';
+  }
 </script>
-{#if data.list.length > 0}
-<div>
-  {#each data.list as item, index}
-  {@const pageNo = Math.ceil((data.start_index + data.data_count) / data.page_size)}
-    <div class="small-char">
-      <p class="item-no">{(pageNo - 1)*data.page_size  + index+1}</p>
-      <p class="item-title">{item.title}</p>
-    </div>
-  {/each}
-</div>
-{/if}
-
+<section class="list-section" class:visible = {mode === 'list'} class:invisible= {mode !== 'list'}>  
+  <div class="search-area grid">
+    <SearchInput searchInputClick={searchInputClick} placeholder_text="검색어를 입력해주세요." />
+    <input type="button" value="글쓰기" onclick={() => {mode = 'write';}} />
+  </div>
+  <div>
+    <EssayList data={data} pageNo={pageNo} {deleteButtonClick} {selectedClick}/>
+  </div>
+  <div class="page-move-area">
+    {#if data.start_index > 0}
+      <input type="button" value="이전" onclick={() => {pageNo--;loadPage();}} />
+    {/if}
+    {#if data.exists_next}
+      <input type="button" value="다음" onclick={() => {pageNo++;loadPage();}} />
+    {/if}
+  </div>
+</section>
+<section class="section-view" class:visible={mode === 'view'} class:invisible={mode !== 'view'}>
+  <EssayView {essay} {backtoButtonClick} />
+</section>  
 <style>
-  .small-char {
-    font-size: 0.8rem;
+  .page-move-area {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    gap: 10px;
   }
-  .item-no {
-    display: inline-block;
-    width: 50px;
+  .page-move-area input {
+    padding: 5px 10px;
+    border: 1px solid #9076f0;
+    border-radius: 5px;
+    background-color: #667ee7;
+    width : 100px;
   }
-  .item-title {
-    display: inline-block;
-    width: 500px;
+
+  .visible {
+    display: block;
+  }
+  .invisible {
+    display: none;
   }
 </style>
