@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFetch } from '$lib/api';
+	import { getFetch, deleteFetch } from '$lib/api';
 	import SearchInput from '$lib/components/common/SearchInput.svelte';
   import EssayList from '$lib/components/essay/EssayList.svelte';
   import EssayView from '$lib/components/essay/EssayView.svelte';
@@ -46,6 +46,14 @@
   //삭제버튼
   const deleteClick = (id: number) => {
     console.log('deleteButtonClick:', id);
+    if (confirm('삭제하시겠습니까?') == false) {
+      return;
+    }
+    deleteFetch(`/essay/${id}`).then((res) => {
+      console.log(res);
+      loadPage();
+      mode = 'list';
+    });
   }
   //보기
   const viewClick = (id: number) => {
@@ -59,22 +67,30 @@
   //수정
   const editClick = (id: number) => {
     console.log('editClick:', id);
+    window.location.href = '/essay/'+id;
   }
   //뒤로가기
   const backtoButtonClick = (id: number) => {
     console.log('backtoButtonClick:', id);
     mode = 'list';
   }
+  //글쓰기
+  const newEssay = () => {
+    window.location.href = '/essay/0';
+  }
 </script>
 <section class="list-section" class:visible = {mode === 'list'} class:invisible= {mode !== 'list'}>  
   <div class="search-area grid">
     <SearchInput searchInputClick={searchInputClick} placeholder_text="검색어를 입력해주세요." />
-    <input type="button" value="글쓰기" onclick={() => {mode = 'write';}} />
+    <input type="button" value="글쓰기" onclick={newEssay} />
   </div>
   <div>
     <EssayList data={data} pageNo={pageNo} {deleteClick} {viewClick} {editClick}/>
   </div>
   <div class="page-move-area">
+    {#if pageNo > 2}
+      <input type="button" value="처음" onclick={() => {pageNo = 1;loadPage();}} />
+    {/if}
     {#if data.start_index > 0}
       <input type="button" value="이전" onclick={() => {pageNo--;loadPage();}} />
     {/if}
@@ -84,7 +100,7 @@
   </div>
 </section>
 <section class="section-view" class:visible={mode === 'view'} class:invisible={mode !== 'view'}>
-  <EssayView {essay} {backtoButtonClick} />
+  <EssayView {essay} {backtoButtonClick} deleteButtonClick={(id)=>{deleteClick(id)}} editButtonClick={(id)=>editClick(id)} />
 </section>  
 <style>
   .page-move-area {

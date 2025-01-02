@@ -35,7 +35,6 @@
 		"@fortawesome/free-solid-svg-icons": "^6.6.0",
 		"@fortawesome/svelte-fontawesome": "^0.2.2",
 		"@picocss/pico": "^2.0.6",
-		"@toast-ui/editor": "^3.2.2",
 		"crypto-js": "^4.2.0",
 		"quill": "^2.0.3",
 		"svg-country-flags": "^1.2.10"
