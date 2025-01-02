@@ -2,12 +2,20 @@
 	import { getFetch } from '$lib/api';
 	import SearchInput from '$lib/components/common/SearchInput.svelte';
   import EssayList from '$lib/components/essay/EssayList.svelte';
-	import type { EssayListResponse } from '$lib/types/essay.js';
+  import EssayView from '$lib/components/essay/EssayView.svelte';
+	import type { EssayListResponse,EssayBase } from '$lib/types';
   
   let {data} = $props();
   let pageNo = $state(1);
   let search_text = '';
   let mode = $state('list');
+  let essay: EssayBase = $state({
+    id: 0,
+    title: '',
+    content: '',
+    create_dt: '',
+    lastmodify_dt: ''
+  });
   $effect(() => {
     console.log('컴포넌트가 마운트되었습니다.');
     return () => {
@@ -36,13 +44,26 @@
     loadPage();
   }
   //삭제버튼
-  const deleteButtonClick = (id: number) => {
+  const deleteClick = (id: number) => {
     console.log('deleteButtonClick:', id);
   }
   //보기
-  const selectedClick = (id: number) => {
+  const viewClick = (id: number) => {
     console.log('selectedClick:', id);
-    mode = 'view';
+    getFetch(`/essay/${id}`).then((res) => {
+      console.log(res);
+      essay = res as EssayBase;
+      mode = 'view';
+    });
+  }
+  //수정
+  const editClick = (id: number) => {
+    console.log('editClick:', id);
+  }
+  //뒤로가기
+  const backtoButtonClick = (id: number) => {
+    console.log('backtoButtonClick:', id);
+    mode = 'list';
   }
 </script>
 <section class="list-section" class:visible = {mode === 'list'} class:invisible= {mode !== 'list'}>  
@@ -51,7 +72,7 @@
     <input type="button" value="글쓰기" onclick={() => {mode = 'write';}} />
   </div>
   <div>
-    <EssayList data={data} pageNo={pageNo} {deleteButtonClick} {selectedClick}/>
+    <EssayList data={data} pageNo={pageNo} {deleteClick} {viewClick} {editClick}/>
   </div>
   <div class="page-move-area">
     {#if data.start_index > 0}
