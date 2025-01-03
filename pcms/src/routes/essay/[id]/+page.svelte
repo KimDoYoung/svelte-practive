@@ -19,7 +19,7 @@
       //   ['image', 'link'],
 
       // ];     
-      var toolbarOptions = [
+      const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], //Bold, tilt, underline, strikethrough
             ['image','link'],  //upload picture
             ['clean'], //Clear format

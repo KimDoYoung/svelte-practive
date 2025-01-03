@@ -99,12 +99,14 @@
   //수정화면 이동
   const handleEdit = (e: MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     console.log("handleEdit", e);
-    
     // 클릭한 요소에서 가장 가까운 <a> 태그를 찾음
     const target = (e.target as HTMLElement).closest('a');
+    
     if (target) {
-      const id = target.getAttribute("data-id");
+      // const id = target.getAttribute("data-id");
+      const id = target.dataset.id;
       console.log("edit id", id);
       if (id) {
         LoadView(Number(id));
@@ -115,6 +117,16 @@
   //신규화면 이동
   const handleNewButton = () => {
     const today = DateYmdUtil.todayYmd();
+    review = {
+      id: 0,
+      title: "",
+      ymd: today,
+      lvl: 2,
+      nara: "",
+      year: "",
+      content: "",
+      lastmodify_dt: "",
+    };
     mode = 'insert';
   };
   // 신규등록
@@ -189,10 +201,16 @@
 <section class="movie-review-view"  class:visible={mode === 'view'} class:hidden={mode !== 'view'}>
   <MovieReviewDetail {review} {handleGoListButton}/>
 </section>
-
+{#if mode == 'insert'}
 <section class="movie-reivew-edit"  class:visible={mode === 'insert'} class:hidden={mode !== 'insert'}>
-  <MovieReviewEdit mode="insert"  {handleGoListButton} {handleInsertButton}/>
+  <MovieReviewEdit mode="insert" {review}  {handleGoListButton} {handleInsertButton}/>
 </section>
+{/if}
+{#if mode == 'update'}
+<section class="movie-reivew-edit"  class:visible={mode === 'update'} class:hidden={mode !== 'update'}>
+  <MovieReviewEdit mode="update" {review} {handleGoListButton} {handleInsertButton}/>
+</section>
+{/if}
 
 <style>
   a {
