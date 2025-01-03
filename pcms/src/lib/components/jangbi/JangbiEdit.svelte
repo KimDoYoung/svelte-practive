@@ -1,7 +1,5 @@
 <!-- 파일명 : JangbiEdit.svelte.svelte -->
 <script lang="ts">
-import { DateYmdUtil } from '$lib/utils/date_ymd_util';
-import { displayMoney, displayContent } from '$lib/utils/commonUtils';
 import type { JangbiDetailResponse, JangbiRequest } from '$lib/types/jangbi';
 
 type JangbiEditProps = {
@@ -11,76 +9,62 @@ type JangbiEditProps = {
   handleCancel : () => void;
 };
 let {mode, jangbi, handleSave, handleCancel} : JangbiEditProps = $props();
-// let anotherJangbi = $derived(jangbi);
-let anotherJangbi: JangbiRequest = {
-  id: 0,
-  ymd: '',
-  item: '',
-  location: '',
-  cost: 0,
-  lvl: '',
-  spec: ''
-}
-const clickSaveButton = () => {
-  let id  = (document.getElementById('id') as HTMLInputElement).value;
-  let form = document.getElementById('jangbi-form') as HTMLFormElement;
-  anotherJangbi.id= Number(id);
-  debugger;
-  anotherJangbi.ymd =  (document.getElementById('ymd') as HTMLInputElement).value.replace(/-/g, '');
-  anotherJangbi.item = (document.getElementById('item') as HTMLInputElement).value;
-  anotherJangbi.location = (document.getElementById('location') as HTMLInputElement).value;
-  anotherJangbi.cost = Number((document.getElementById('cost') as HTMLInputElement).value);
-  anotherJangbi.lvl = (document.getElementById('lvl') as HTMLSelectElement).value;
-  anotherJangbi.spec = (document.getElementById('spec') as HTMLTextAreaElement).value;
-  debugger;
-  console.log("anotherJangbi:" + anotherJangbi);
-  if (anotherJangbi.ymd == '' || 
-      anotherJangbi.item == '' || 
-      anotherJangbi.location == '' || 
-      anotherJangbi.cost == 0 || 
-      anotherJangbi.spec == '' || 
-      anotherJangbi.lvl == '') {
-    alert('입력값을 확인하세요');
-    return;
-  }
-  //validation check
-  let res : JangbiDetailResponse = {
-    id: anotherJangbi.id,
-    ymd: anotherJangbi.ymd,
-    item: anotherJangbi.item,
-    location: anotherJangbi.location,
-    cost: anotherJangbi.cost,
-    lvl: anotherJangbi.lvl,
-    spec: anotherJangbi.spec,
-    attachments: []
-  }
-  handleSave(res);
-}
-</script>
 
-<form id="jangbi-form">
+// Local state
+let formData: JangbiRequest = {
+  id: jangbi.id || 0,
+  ymd: jangbi.ymd || '',
+  item: jangbi.item || '',
+  location: jangbi.location || '',
+  cost: jangbi.cost || 0,
+  lvl: jangbi.lvl || '',
+  spec: jangbi.spec || '',
+};
+function handleKeydown(event: KeyboardEvent) {
+    event.preventDefault(); // 브라우저의 기본 저장 동작 막기
+    if (event.ctrlKey && event.key === 's') {
+        save(); // 저장 함수 호출
+    }
+}
+function save() {
+    if (!formData.ymd || !formData.item || !formData.location || !formData.cost || !formData.lvl || !formData.spec) {
+      alert('입력값을 확인하세요');
+      return;
+    }
+
+    // Convert formData to JangbiDetailResponse
+    const response: JangbiDetailResponse = {
+      ...formData,
+      attachments: jangbi.attachments || [],
+    };
+
+    handleSave(response);
+  }
+
+</script>
+<form id="jangbi-form" >
   <fieldset>
     <div class="grid">
       <div>
         <label for="ymd">구입일자</label>
-        <input type="date" id="ymd" name="ymd" bind:value={anotherJangbi.ymd} />
-        <input type="hidden" id="id" name="id" bind:value={anotherJangbi.id}/>
+        <input type="date" id="ymd" name="ymd" bind:value={formData.ymd} />
+        <input type="hidden" id="id" name="id" bind:value={formData.id}/>
       </div>
       <div>
         <label for="item">품목</label>
-        <input type="text" id="item" name="item" bind:value={anotherJangbi.item} />
+        <input type="text" id="item" name="item" bind:value={formData.item} />
       </div>
       <div>
         <label for="location">위치</label>
-        <input type="text" id="location" name="location" bind:value={anotherJangbi.location} />
+        <input type="text" id="location" name="location" bind:value={formData.location} />
       </div>
       <div>
         <label for="cost">가격</label>
-        <input type="number" id="cost" name="cost" bind:value={anotherJangbi.cost} />
+        <input type="number" id="cost" name="cost" bind:value={formData.cost} />
       </div>
       <div>
         <label for="lvl">만족도</label>
-        <select id="lvl" name="lvl" bind:value={anotherJangbi.lvl}>
+        <select id="lvl" name="lvl" bind:value={formData.lvl}>
           <option value=""></option>
           <option value="3">😃 만족</option>
           <option value="2">🙁 보통</option>
@@ -89,13 +73,14 @@ const clickSaveButton = () => {
       </div>
     </div>
     <label for="spec">스펙</label>
-    <textarea id="spec" name="spec" style="height:400px" bind:value={anotherJangbi.spec} ></textarea>
+    <textarea id="spec" name="spec" style="height:400px" bind:value={formData.spec} onkeydown={handleKeydown} ></textarea>
   </fieldset>
   <div class="button-area">
-    <input type="button" value="저장" onclick={clickSaveButton}/>
+    <input type="button" value="저장" onclick={save}/>
     <input type="button" class="secondary" value="취소" onclick={handleCancel}/>
   </div>
 </form>
+
 <style>
   .button-area {
     display: flex;

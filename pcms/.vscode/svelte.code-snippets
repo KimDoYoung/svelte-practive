@@ -39,7 +39,7 @@
       "deleteClick: (id: number) => void,",
       "todo: TodoBase",
       "}",
-      "let {todo, deleteClick} : TodoCardType = $props()"
+      "let {todo, deleteClick} : TodoCardType = $$props()"
       ],
       "description":"props의 사용법 1"
     },  
@@ -51,23 +51,23 @@
     "description":"console.log같은것 사용할 때 좋음 object를 strng으로 바꾸어 준다"
   },
   "new component":{
- 	"prefix":"my-new-component",
-	"body":[
-	"<!-- 파일명 : ${TM_FILENAME}.svelte -->",
-	"<script lang=\"ts\">",
-	"import { DateYmdUtil } from '$$lib/utils/date_ymd_util';",
-	"import { displayMoney, displayContent } from '$$lib/utils/commonUtils';",
-	"import type { JangbiDetailResponse } from '$$lib/types/jangbi';",
-	"type ${TM_FILENAME}Props = {",
-	"item: JangbiDetailResponse;",
-	"backtoButtonClick : () => void;",
-	"};",
-	"let {item, backtoButtonClick} : ${TM_FILENAME}Props = $props();",
-	"</script>",
-	"{item.name}",
-	"<style>",
-	"</style>"
-	],
-	"description":"새로운  component"
-}    
+    "prefix":"my-new-component",
+    "body":[
+    "<!-- 파일명 : ${TM_FILENAME}.svelte -->",
+    "<script lang=\"ts\">",
+    "import { DateYmdUtil } from '$$lib/utils/date_ymd_util';",
+    "import { displayMoney, displayContent } from '$$lib/utils/commonUtils';",
+    "import type { JangbiDetailResponse } from '$$lib/types/jangbi';",
+    "type ${TM_FILENAME}Props = {",
+    "item: JangbiDetailResponse;",
+    "backtoButtonClick : () => void;",
+    "};",
+    "let {item, backtoButtonClick} : ${TM_FILENAME}Props = $props();",
+    "</script>",
+    "{item.name}",
+    "<style>",
+    "</style>"
+    ],
+    "description":"새로운  component"
+  }    
 }

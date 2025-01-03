@@ -19,13 +19,21 @@
       return '😃 만족';
     }
   }
+  //edit
+  const editButtonClick = () => {
+    const id = jangbi.id;
+    window.location.href = `/jangbi/${id}`;
+  }
 </script>
-<h1>{jangbi.item} <span><a href="#none" aria-label="List" onclick={backtoButtonClick}><i class="fa fa-list"></i></a></span></h1>
+<h1>{jangbi.item} 
+  <span><a href="#none" aria-label="List" onclick={backtoButtonClick}><i class="fa fa-list"></i></a></span>
+  <span><a href="#none" aria-label="Edit" onclick={editButtonClick}><i class="fa fa-edit"></i></a></span>
+</h1>
 <p> 구일일자 : {DateYmdUtil.displayYmdYoil(jangbi.ymd)}</p>
 <p> 장소 : {jangbi.location}</p>
 <p> 가격 : {displayMoney(jangbi.cost ?? 0)}</p>
-<p> 스펙 : {@html displayContent(jangbi.spec)}</p>
 <p> 만족 : {lvlText(jangbi.lvl)}</p>
+<p> 스펙 : {@html displayContent(jangbi.spec)}</p>
 {#if jangbi.attachments}
   <div class="image-container">
     {#each jangbi.attachments as image, index}
@@ -39,7 +47,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 반응형 열 생성 */
   gap: 1rem; /* 카드 사이의 간격 */
-  padding: 1rem; /* 컨테이너 외부 여백 */
   box-sizing: border-box;
 }
 </style>
