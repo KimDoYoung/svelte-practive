@@ -1,6 +1,7 @@
 <!-- 파일명 : +page.svelte -->
 <!--
 TODO: update기능 필요 
+TODO: 검색에 전체/드라마/영화
 -->
 <script lang="ts">
 	import { getFetch } from "$lib/api";

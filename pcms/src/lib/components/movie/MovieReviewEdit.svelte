@@ -1,9 +1,11 @@
 <!-- 파일명 : MovieReviewEdit.svelte -->
+<!-- TODO : 파일업로드 -->
 <script lang="ts">
   import "quill/dist/quill.core.css";
   import 'quill/dist/quill.snow.css';
 	import type { MovieReviewItem } from '$lib/types';
 	import { onMount } from 'svelte';
+  import Alert from "../common/Alert.svelte";
 	
   
   type MovieReviewEditType = {
@@ -12,8 +14,9 @@
     // review: MovieReviewItem;
     handleGoListButton: () => void;
     handleInsertButton: (review: MovieReviewItem ) => void;
+    handleViewButton: (id:number) => void;
   }
-  let {review, mode, handleGoListButton, handleInsertButton } :MovieReviewEditType  = $props();
+  let {review, mode, handleGoListButton, handleInsertButton,handleViewButton } :MovieReviewEditType  = $props();
  
   let editor: any = null;
 
@@ -74,10 +77,12 @@
     review.content = editor.root.innerHTML;
     // console.log(review);
     handleInsertButton(review);
+    alertRef?.showAlert("저장되었습니다.", "info", 1500)
   }
 
   $effect( () => {
   });
+  let alertRef: Alert | null = null;
 </script>
 <!-- html -->
   <div>
@@ -106,8 +111,10 @@
 
   <div class="button-area">
     <button onclick={saveButtonClick}>저장</button>
+    <button class="" onclick={()=>handleViewButton(review.id)}>보기</button>
     <button class="secondary" onclick={handleGoListButton}>목록으로</button>
   </div>  
+  <Alert bind:this={alertRef}/> 
 <style>
 .horizontal {
   display: flex;

@@ -141,11 +141,15 @@
     postFetch("/movie_review", review).then((response) => {
       console.log("response", response);
       loadPage();
-      mode = 'list';
+      //mode = 'list';
     }).catch((error) => {
       console.log("error", error);
       alert("저장 중 오류 발생");
     });
+  };
+  const handleViewButton = (id: number) => {
+    LoadView(id);
+    mode = 'view';
   };
   $effect(() => {
     console.log("영화감상평....effect");
@@ -199,16 +203,16 @@
 </section>
 
 <section class="movie-review-view"  class:visible={mode === 'view'} class:hidden={mode !== 'view'}>
-  <MovieReviewDetail {review} {handleGoListButton}/>
+  <MovieReviewDetail {review} {handleGoListButton} handleGoEditButton={()=> mode = 'update'}/>
 </section>
 {#if mode == 'insert'}
 <section class="movie-reivew-edit"  class:visible={mode === 'insert'} class:hidden={mode !== 'insert'}>
-  <MovieReviewEdit mode="insert" {review}  {handleGoListButton} {handleInsertButton}/>
+  <MovieReviewEdit mode="insert" {review}  {handleGoListButton} {handleInsertButton} {handleViewButton}/>
 </section>
 {/if}
 {#if mode == 'update'}
 <section class="movie-reivew-edit"  class:visible={mode === 'update'} class:hidden={mode !== 'update'}>
-  <MovieReviewEdit mode="update" {review} {handleGoListButton} {handleInsertButton}/>
+  <MovieReviewEdit mode="update" {review} {handleGoListButton} {handleInsertButton} {handleViewButton}/>
 </section>
 {/if}
 

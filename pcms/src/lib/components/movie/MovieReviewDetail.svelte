@@ -7,8 +7,9 @@
   type MovieReviewDetailType = {
     review: MovieReviewItem;
     handleGoListButton: () => void;
+    handleGoEditButton: () => void;
   }
-  let {review, handleGoListButton} :MovieReviewDetailType  = $props();
+  let {review, handleGoListButton, handleGoEditButton} :MovieReviewDetailType  = $props();
   let formattedYmd = $derived(DateYmdUtil.displayYmd(review.ymd));
 
 </script>
@@ -29,6 +30,7 @@
 
 <div class="button-area">
   <button onclick={handleGoListButton}>목록</button>
+  <button onclick={handleGoEditButton}>편집</button>
 </div>
 <style>
   .sub-info {
@@ -50,6 +52,7 @@
 
   .button-area {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    gap: 10px;
   }
 </style>
