@@ -10,6 +10,9 @@
   import { fade } from 'svelte/transition';
 
   //TODO 찾기 일기를 기간별로 검색해서 찾기, 그리고 그것을 html로 떨어뜨리자. 이때 첨부된 이미지도...
+  //TODO 장비에 이미지 업로드를 하자.
+  //TODO Temp에 있는 것들을 날짜베이스로 폴더를 만들어서 옮기자.
+  //TODO thumb로 보여줄 수는 없는가?
 
   let today = todayYmd(); // 오늘 날짜를 가져옴
 
@@ -17,7 +20,7 @@
   let isLoading = true; // 로딩 상태 변수 추가
     
   let showForm = true;
-  let showList = true;
+  let showList = false;
 
   let page = 1;  
 

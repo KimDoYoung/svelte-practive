@@ -15,6 +15,9 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/diary">diary</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/diary/edit">diary/edit</a>
+              </li>
             </ul>
           </div>
         </div>

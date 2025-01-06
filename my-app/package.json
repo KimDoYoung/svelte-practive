@@ -19,11 +19,12 @@
 		"prettier-plugin-svelte": "^3.1.2",
 		"svelte": "^4.2.7",
 		"svelte-check": "^4.0.0",
-		"typescript": "^5.0.0",
+		"typescript": "^5.7.2",
 		"vite": "^5.0.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"bootstrap": "^5.3.3"
+		"bootstrap": "^5.3.3",
+		"tui-tree": "^4.0.9"
 	}
 }
