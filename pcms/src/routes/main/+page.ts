@@ -16,9 +16,4 @@ export const load: PageLoad = async ({  fetch }) => {
     list: list
   }
   return data;
-  // return {
-  //   props: {
-  //     todos: data
-  //   }
-  // }  
 };

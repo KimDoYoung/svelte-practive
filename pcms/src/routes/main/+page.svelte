@@ -6,21 +6,16 @@
   let {data}  = $props();
   let editVisible = $state(false);
   let todos: TodoBase[] = $state(data.list)
-  // let {data} = $props();
-  // let todos: TodoBase[] = $state(data);
+
   const loadTodos = async () => {
     const res = await getFetch<TodoBase[]>('/todo')
     console.log(res)
     todos = res;
   };
-  $effect(() => {
-    
-    //loadTodos();
-    console.log('todos:', todos);
 
+  $effect(() => {
     return () => {
       console.log('컴포넌트가 언마운트되었습니다.');
-      // 정리 작업 수행
     };
   });
   
