@@ -1,12 +1,13 @@
 <!-- src/routes/main/+page.svelte -->
 <script lang="ts">
-  import {type TodoBase} from '$lib/types';
+  import type { TodoBase} from '$lib/types';
   import {putFetch, getFetch, postFetch} from '$lib/api';
   import TodoCard from '$lib/components/todo/TodoCard.svelte';
-
-  let todos: TodoBase[] = $state([]);
+  let {data}  = $props();
   let editVisible = $state(false);
-
+  let todos: TodoBase[] = $state(data.list)
+  // let {data} = $props();
+  // let todos: TodoBase[] = $state(data);
   const loadTodos = async () => {
     const res = await getFetch<TodoBase[]>('/todo')
     console.log(res)
@@ -14,7 +15,8 @@
   };
   $effect(() => {
     
-    loadTodos();
+    //loadTodos();
+    console.log('todos:', todos);
 
     return () => {
       console.log('컴포넌트가 언마운트되었습니다.');
