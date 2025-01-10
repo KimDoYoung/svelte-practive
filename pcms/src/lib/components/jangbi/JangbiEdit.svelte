@@ -23,7 +23,18 @@ let formData: JangbiRequest = {
 function handleKeydown(event: KeyboardEvent) {
     event.preventDefault(); // 브라우저의 기본 저장 동작 막기
     if (event.ctrlKey && event.key === 's') {
-        save(); // 저장 함수 호출
+      event.preventDefault(); // 브라우저의 기본 저장 동작 막기
+      save(); // 저장 함수 호출
+    }else if (event.ctrlKey && event.key === 'b') {
+      event.preventDefault(); // 브라우저의 기본 저장 동작 막기
+      const textarea = event.target as HTMLTextAreaElement;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
+      const newText = `**${selectedText}**`;
+      textarea.setRangeText(newText, start, end, 'end');
+      const inputEvent = new Event('input', { bubbles: true });
+      textarea.dispatchEvent(inputEvent);   
     }
 }
 function save() {

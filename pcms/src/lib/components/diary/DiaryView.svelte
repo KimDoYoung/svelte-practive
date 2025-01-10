@@ -10,14 +10,17 @@
   import { displayContent, displayYmd } from '$lib/utils';
   import ColorDisplayYmd from '../common/ColorDisplayYmd.svelte';
 
-  let { ymd = '' } = $props()
+  type DiaryViewType = {
+    diary : DiaryDetailResponse | undefined,
+    ymd : string
+  }
+    let { diary, ymd }: DiaryViewType = $props()  
   
-  
-  let diary: DiaryDetailResponse | undefined = $state<DiaryDetailResponse | undefined>(undefined);
+  // let diary: DiaryDetailResponse | undefined = $state<DiaryDetailResponse | undefined>(undefined);
 
   $effect(() => {
-      console.log('ymd:', ymd);
-      fetchDiary(ymd);
+      // console.log('ymd:', ymd);
+      // fetchDiary(ymd);
   });
   // $inspect(()=>{
   //     console.log('diary:', diary);
