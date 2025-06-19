@@ -30,6 +30,14 @@ npm install --save-dev @sveltejs/kit
 npm run dev
 ```
 
+## docker
+
+1. Dockerfile
+```bash
+docker build -t pcms .
+docker-compose up -d
+```
+
 ## 초기 설정
 
 1. env에 이렇게 함
