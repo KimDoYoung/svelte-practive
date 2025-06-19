@@ -21,11 +21,20 @@
     - svelte 5.1.9 , svelte-kit
     - github
 
+## 설치
+
+```bash
+npm install
+npm install --save-dev @sveltejs/kit
+.env.development, .env.product 확인
+npm run dev
+```
+
 ## 초기 설정
 
 1. env에 이렇게 함
 
-  KALPADB_API_URL_BASE=<http://jskn.iptime.org:8088/api/v1>
+  KALPADB_API_URL_BASE=<http://xxxx.iptime.org:8088/api/v1>
 
 2.npm install @picocss/pico 을 수행함.
 
@@ -82,4 +91,3 @@ npm install @fortawesome/fontawesome-free
 - 개발 방법 즉 정해진 방법을 기록하고 그대로 하는게 좋지 않을까?
 - 반응성을 따라가면서 디버그 할 수 있는 방법이 있으면 좋을텐데.
 
-### 의문점 확인해서 명확히 인지할 것들
